@@ -13,6 +13,11 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/buildings')
+def buildings():
+    return render_template('buildings.html')
+
+
 def connect_to_database():
     db_name = 'suntree-inventory-tracker.db'
     try:
