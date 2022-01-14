@@ -53,6 +53,19 @@ class SitObject(ABC):
                 # Otherwise, just execute the query without parameters
                 cursor.execute(query)
 
+            col_names = [description[0] for description in cursor.description]
+
             # Get & return the results
-            result = cursor.fetchall()
-            return result
+            results = cursor.fetchall()
+
+            for result in results:
+                result_dict = {}
+                for i, col_result in enumerate(result):
+                    result_dict[col_names[i]] = col_result
+
+            return result_dict
+
+    @classmethod
+    @abstractmethod
+    def _get_from_db_result(cls, db_result):
+        pass

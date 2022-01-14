@@ -21,3 +21,8 @@ class Building(SitObject):
         return {
             'number': self.number
         }
+
+    @classmethod
+    def _get_from_db_result(cls, db_result):
+        pass
+
