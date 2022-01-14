@@ -7,9 +7,11 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 def connect_to_database():
     db_name = 'suntree-inventory-tracker.db'
@@ -21,6 +23,37 @@ def connect_to_database():
         # handle missing database case
         logging.warning('Could not find database - will initialize an empty one!')
         conn = sl.connect(db_name)
+
+        # BUILDING
+        with conn:
+            conn.execute("""
+                CREATE TABLE building (
+                    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    number TEXT
+                );                
+            """)
+
+        # ROOM
+        with conn:
+            conn.execute("""
+                CREATE TABLE room (
+                    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    number TEXT,
+                    building INT REFERENCES building(id) ON DELETE CASCADE
+                );                
+            """)
+
+        # ITEM
+        with conn:
+            conn.execute("""
+                CREATE TABLE item (
+                    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                    description TEXT NOT NULL,
+                    purchase_price TEXT,
+                    purchase_date INTEGER,
+                    room INT REFERENCES room(id) ON DELETE CASCADE
+                );                
+            """)
 
 
 if __name__ == '__main__':
