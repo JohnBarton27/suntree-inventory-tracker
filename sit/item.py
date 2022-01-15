@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from sit_object import SitObject
 from room import Room
@@ -43,6 +43,13 @@ class Item(SitObject):
         return self._purchase_date
 
     @property
+    def purchase_date_timestamp(self):
+        if not self.purchase_date:
+            return None
+
+        return datetime.combine(self.purchase_date, datetime.min.time()).timestamp()
+
+    @property
     def room(self):
         if self._room is None:
             self.populate()
@@ -53,8 +60,8 @@ class Item(SitObject):
         return {
             'description': self.description,
             'purchase_price': self._purchase_price,
-            'purchase_date': self._purchase_date,
-            'room': self.room
+            'purchase_date': self.purchase_date_timestamp,
+            'room': self.room.id
         }
 
     @classmethod

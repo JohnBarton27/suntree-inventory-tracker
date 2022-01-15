@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import os
 import sqlite3 as sl
@@ -50,7 +51,6 @@ def create_building():
 
 @app.route('/api/rooms/create', methods=['POST'])
 def create_room():
-    print(request.form)
     bldg_id = int(request.form['roomBldg'])
     room_num = request.form['roomNumber']
 
@@ -58,6 +58,21 @@ def create_room():
     room.create()
 
     return f'Created Room {room}'
+
+
+@app.route('/api/items/create', methods=['POST'])
+def create_items():
+    purchase_date_str = request.form['itemPurchaseDate']
+
+    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date()
+    item = Item(description=request.form['itemDesc'],
+                purchase_price=float(request.form['itemPurchasePrice']),
+                purchase_date=purchase_date,
+                room=Room(db_id=int(request.form['itemRoom'])))
+
+    item.create()
+
+    return f'Created item {item}'
 
 
 def connect_to_database():
