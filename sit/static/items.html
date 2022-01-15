@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>Suntree Inventory Tracker</title>
+    {% include 'head.html' %}
+
+    <script src="{{ url_for('static', filename='/js/items.js') }}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+	<h1 style="text-align: center;"><i class="fas fa-chair"></i> Items</h1>
+
+    <div style="text-align: center;">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newItemModal">
+            Create New
+        </button>
+    </div>
+
+    <div style="margin-top: 50px;">
+        {% for item in items %}
+        <span class="sit-item-display">
+            <i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-closed" style="margin-right: 5px;"></i> {{ item.room.number }} | <i class="fas fa-chair"></i> {{ item.description }}
+        </span>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newItemModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newItemModalLabel">Create New Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newItemForm" name="newItemForm" method="post">
+                        <div class="mb-3">
+                            <label for="itemDesc" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="itemDesc" name="itemDesc" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemPurchasePrice" class="form-label">Purchase Price (USD)</label>
+                            <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
+                            <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemRoom" class="form-label">Current Location</label>
+                            <select class="form-control" id="itemRoom" name="itemRoom">
+                                {% for room in rooms %}
+                                    <option value="{{ room.id }}">{{ room.building.number }} - {{ room.number }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="newItemForm" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
