@@ -25,7 +25,8 @@ def buildings():
 @app.route('/rooms')
 def rooms():
     all_rooms = Room.get_all()
-    return render_template('rooms.html', rooms=all_rooms)
+    all_buildings = Building.get_all()
+    return render_template('rooms.html', rooms=all_rooms, buildings=all_buildings)
 
 
 # API
@@ -37,6 +38,18 @@ def create_building():
     bldg.create()
 
     return f'Created Building {bldg.number}'
+
+
+@app.route('/api/rooms/create', methods=['POST'])
+def create_room():
+    print(request.form)
+    bldg_id = int(request.form['roomBldg'])
+    room_num = request.form['roomNumber']
+
+    room = Room(building=Building(db_id=bldg_id), number=room_num)
+    room.create()
+
+    return f'Created Room {room}'
 
 
 def connect_to_database():
