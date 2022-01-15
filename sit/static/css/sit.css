@@ -1,0 +1,14 @@
+:root {
+    --sit-white: #ffffff;
+    --sit-blue: #2035ac;
+    --sit-yellow: #f1c40f;
+}
+
+.sit-header {
+    background-color: var(--sit-blue);
+    color: var(--sit-white);
+    text-align: center;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.5rem;
+}

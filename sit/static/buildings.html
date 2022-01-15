@@ -1,13 +1,13 @@
 <html>
 <head>
 	<title>Suntree Inventory Tracker</title>
-    <link href="{{ url_for('static', filename='/css/thirdparty/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
-    <script src="{{ url_for('static', filename='/js/thirdparty/bootstrap/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='/js/thirdparty/jquery/jquery-3.6.0.min.js') }}"></script>
+    {% include 'head.html' %}
 
     <script src="{{ url_for('static', filename='/js/buildings.js') }}"></script>
 </head>
 <body>
+    {% include 'header.html' %}
+
 	<h1 style="text-align: center;">Buildings</h1>
 
     <div style="text-align: center;">
