@@ -5,7 +5,11 @@ $(function(){
         $.post('/api/rooms/create',
             $('#newRoomForm').serialize(),
             function(data, status, xhr){
-                console.log(data);
+                // Hide Modal
+                $('#newRoomModal').modal('hide')
+
+                // Update data on page
+                $('#room_list').html(data);
             });
     });
 });
