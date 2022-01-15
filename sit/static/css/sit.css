@@ -13,6 +13,12 @@
     font-size: 1.5rem;
 }
 
+.sit-subtle-link, .sit-subtle-link:hover {
+    text-decoration: none;
+    color: var(--sit-white);
+    cursor: pointer;
+}
+
 /* Bootstrap Color Overrides */
 .btn-primary, .btn-primary:active, .btn-primary:visited {
     background-color: var(--sit-blue) !important;
