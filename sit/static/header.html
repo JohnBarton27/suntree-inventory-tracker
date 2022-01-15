@@ -1,8 +1,25 @@
 <div class="sit-header">
-    <div class="sit-3-col sit-navbar">
-        <a href="/buildings">Buildings</a>
+    <div class="sit-3-col">
+        <div class="sit-navbar" id="sit-navbar">
+            <a href="javascript:void(0);" class="navbar-icon" onclick="displayResponsiveNavbar()">
+                <i class="fa fa-bars"></i>
+            </a>
+            <a href="/buildings">Buildings</a>
+        </div>
     </div>
     <div class="sit-3-col" style="text-align:center;">
         <a class="sit-subtle-link" href="/">Suntree Inventory Tracker</a>
     </div>
+
+    <script type="application/javascript">
+        /* Toggle between adding and removing the "responsive" class to topnav when the user clicks on the icon */
+        function displayResponsiveNavbar() {
+            let x = document.getElementById("sit-navbar");
+            if (x.className === "sit-navbar") {
+                x.className += " responsive";
+            } else {
+                x.className = "sit-navbar";
+            }
+        }
+    </script>
 </div>
