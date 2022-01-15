@@ -11,8 +11,7 @@ class SitObject(ABC):
         self.id = db_id
 
     def create(self):
-        if self.__class__.table_name is None:
-            raise Exception(f'The \'table_name\' class variable is undefined for {self.__class__.__name__}!')
+        self.__class__._check_for_class_name()
 
         create_params = self._get_create_params_dict()
 
@@ -68,15 +67,41 @@ class SitObject(ABC):
 
             # Get & return the results
             results = cursor.fetchall()
+            structured_results = []
 
             for result in results:
                 result_dict = {}
                 for i, col_result in enumerate(result):
                     result_dict[col_names[i]] = col_result
 
-            return result_dict
+                structured_results.append(result_dict)
+
+            return structured_results
 
     @classmethod
     @abstractmethod
     def _get_from_db_result(cls, db_result):
         pass
+
+    @classmethod
+    def _get_multiple_from_db_result(cls, db_results):
+        objs = []
+
+        for db_result in db_results:
+            objs.append(cls._get_from_db_result(db_result))
+
+        return objs
+
+    @classmethod
+    def get_all(cls):
+        cls._check_for_class_name()
+
+        query = f'SELECT * FROM {cls.table_name};'
+
+        results = cls.run_query(query)
+        return cls._get_multiple_from_db_result(results)
+
+    @classmethod
+    def _check_for_class_name(cls):
+        if cls.table_name is None:
+            raise Exception(f'The \'table_name\' class variable is undefined for {cls.__name__}!')

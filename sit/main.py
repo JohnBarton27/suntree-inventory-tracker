@@ -17,6 +17,8 @@ def index():
 
 @app.route('/buildings')
 def buildings():
+    all_buildings = Building.get_all()
+    print(all_buildings)
     return render_template('buildings.html')
 
 
