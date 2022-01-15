@@ -24,9 +24,12 @@ class SitObject(ABC):
         query = f'INSERT INTO {self.__class__.table_name} ({col_names_for_query}) VALUES ({q_marks_for_query});'
         self.id = self.__class__.run_query(query, tuple(create_params.values()))
 
-    @abstractmethod
     def populate(self):
-        pass
+        if not self.id:
+            raise Exception(f'Cannot populate a {self.__class__.__name__} when the ID is not set!')
+
+        same_obj = self.__class__.get_by_id(self.id)
+        self.__dict__.update(same_obj.__dict__)
 
     @abstractmethod
     def _get_create_params_dict(self):
@@ -100,6 +103,17 @@ class SitObject(ABC):
 
         results = cls.run_query(query)
         return cls._get_multiple_from_db_result(results)
+
+    @classmethod
+    def get_by_id(cls, db_id: int):
+        cls._check_for_class_name()
+
+        query = f'SELECT * FROM {cls.table_name} WHERE id=?;'
+
+        results = cls.run_query(query, (db_id,))
+
+        # Should only be one match, so return the 'first' result
+        return cls._get_from_db_result(results[0])
 
     @classmethod
     def _check_for_class_name(cls):

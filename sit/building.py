@@ -7,7 +7,7 @@ class Building(SitObject):
 
     def __init__(self, db_id: int = None, number: str = None):
         super().__init__(db_id)
-        self.__number = number
+        self._number = number
 
     def __repr__(self):
         return self.number
@@ -17,13 +17,10 @@ class Building(SitObject):
 
     @property
     def number(self):
-        if self.__number is None:
+        if self._number is None:
             self.populate()
 
-        return self.__number
-
-    def populate(self):
-        pass
+        return self._number
 
     def _get_create_params_dict(self):
         return {
