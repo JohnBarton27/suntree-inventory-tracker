@@ -24,6 +24,15 @@
     width: 33%;
 }
 
+.sit-item-display {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 15px;
+    margin: 15px;
+    text-align: center;
+}
+
+/* Navbar */
 .sit-navbar a {
     float: left;
     display: block;
