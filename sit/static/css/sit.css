@@ -12,3 +12,12 @@
     font-weight: bold;
     font-size: 1.5rem;
 }
+
+/* Bootstrap Color Overrides */
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: var(--sit-blue) !important;
+}
+
+.btn-primary:hover {
+    filter: brightness(85%) !important;
+}
