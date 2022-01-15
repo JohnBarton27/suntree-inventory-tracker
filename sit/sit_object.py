@@ -11,6 +11,9 @@ class SitObject(ABC):
         self.id = db_id
 
     def create(self):
+        if self.__class__.table_name is None:
+            raise Exception(f'The \'table_name\' class variable is undefined for {self.__class__.__name__}!')
+
         create_params = self._get_create_params_dict()
 
         col_names = [key for key in create_params]
@@ -20,7 +23,7 @@ class SitObject(ABC):
         q_marks_for_query = ', '.join(q_marks)
 
         query = f'INSERT INTO {self.__class__.table_name} ({col_names_for_query}) VALUES ({q_marks_for_query});'
-        return self.__class__.run_query(query, tuple(create_params.values()))
+        self.id = self.__class__.run_query(query, tuple(create_params.values()))
 
     @abstractmethod
     def populate(self):
@@ -52,6 +55,14 @@ class SitObject(ABC):
             else:
                 # Otherwise, just execute the query without parameters
                 cursor.execute(query)
+
+            if query.lower().startswith('insert'):
+                # This was an insert - return lastrowid
+                return cursor.lastrowid
+
+            if cursor.description is None:
+                # If no description is given, there are no 'results'
+                return
 
             col_names = [description[0] for description in cursor.description]
 

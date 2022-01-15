@@ -5,6 +5,8 @@ from urllib.request import pathname2url
 
 from flask import Flask, render_template, request
 
+from building import Building
+
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
 
@@ -16,6 +18,17 @@ def index():
 @app.route('/buildings')
 def buildings():
     return render_template('buildings.html')
+
+
+# API
+@app.route('/api/buildings/create', methods=['POST'])
+def create_building():
+    bldg_num = request.form['bldgNum']
+
+    bldg = Building(number=bldg_num)
+    bldg.create()
+
+    return f'Created Building {bldg.number}'
 
 
 def connect_to_database():

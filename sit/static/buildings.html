@@ -3,6 +3,9 @@
 	<title>Suntree Inventory Tracker</title>
     <link href="{{ url_for('static', filename='/css/thirdparty/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
     <script src="{{ url_for('static', filename='/js/thirdparty/bootstrap/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/thirdparty/jquery/jquery-3.6.0.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='/js/buildings.js') }}"></script>
 </head>
 <body>
 	<h1>Buildings</h1>
@@ -21,16 +24,16 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="newBldgForm" name="newBldgForm" method="post">
                         <div class="mb-3">
                             <label for="bldgNum" class="form-label">Building Name/Number</label>
-                            <input type="text" class="form-control" id="bldgNum">
+                            <input type="text" class="form-control" id="bldgNum" name="bldgNum">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create</button>
+                    <button type="submit" form="newBldgForm" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>
