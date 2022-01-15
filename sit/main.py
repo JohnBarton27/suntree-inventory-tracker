@@ -35,7 +35,7 @@ def rooms():
 def items():
     all_items = Item.get_all()
     all_rooms = Room.get_all()
-    return render_template('items.html', items=all_items, rooms=all_rooms)
+    return render_template('items/items.html', items=all_items, rooms=all_rooms)
 
 
 # API
@@ -76,7 +76,9 @@ def create_items():
 
     item.create()
 
-    return f'Created item {item}'
+    all_items = Item.get_all()
+
+    return render_template('items/list_items.html', items=all_items)
 
 
 def connect_to_database():

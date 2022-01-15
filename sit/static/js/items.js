@@ -5,7 +5,11 @@ $(function(){
         $.post('/api/items/create',
             $('#newItemForm').serialize(),
             function(data, status, xhr){
-                console.log(data);
+                // Hide Modal
+                $('#newItemModal').modal('hide')
+
+                // Update data on page
+                $('#item_list').html(data);
             });
     });
 });

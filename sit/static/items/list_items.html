@@ -1,0 +1,5 @@
+{% for item in items %}
+    <span class="sit-item-display">
+            <i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-closed" style="margin-right: 5px;"></i> {{ item.room.number }} | <i class="fas fa-chair"></i> {{ item.description }}
+        </span>
+{% endfor %}
