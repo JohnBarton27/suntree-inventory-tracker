@@ -1,0 +1,52 @@
+<html>
+<head>
+	<title>Suntree Inventory Tracker</title>
+    {% include 'head.html' %}
+
+    <script src="{{ url_for('static', filename='/js/rooms.js') }}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+	<h1 style="text-align: center;">Rooms</h1>
+
+    <div style="text-align: center;">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newRoomModal">
+            Create New
+        </button>
+    </div>
+
+    <div style="margin-top: 50px;">
+        {% for room in rooms %}
+        <span style="border: 2px solid black; border-radius: 5px; padding: 15px; margin: 15px; text-align: center">
+            {{ room.number }}
+        </span>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRoomModalLabel">Create New Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newRoomForm" name="newRoomForm" method="post">
+                        <div class="mb-3">
+                            <label for="bldgNum" class="form-label">Building Name/Number</label>
+                            <input type="text" class="form-control" id="bldgNum" name="bldgNum">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="newBldgForm" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

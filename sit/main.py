@@ -6,6 +6,7 @@ from urllib.request import pathname2url
 from flask import Flask, render_template, request
 
 from building import Building
+from room import Room
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
@@ -19,6 +20,12 @@ def index():
 def buildings():
     all_buildings = Building.get_all()
     return render_template('buildings.html', buildings=all_buildings)
+
+
+@app.route('/rooms')
+def rooms():
+    all_rooms = Room.get_all()
+    return render_template('rooms.html', rooms=all_rooms)
 
 
 # API
