@@ -5,7 +5,11 @@ $(function(){
         $.post('/api/buildings/create',
             $('#newBldgForm').serialize(),
             function(data, status, xhr){
-                console.log(data);
+                // Hide Modal
+                $('#newBldgModal').modal('hide')
+
+                // Update data on page
+                $('#building_list').html(data);
             });
     });
 });

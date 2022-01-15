@@ -17,12 +17,8 @@
         </button>
     </div>
 
-    <div style="margin-top: 50px;">
-        {% for building in buildings %}
-        <span class="sit-item-display">
-            <i class="fas fa-building" style="margin-right: 5px;"></i>{{ building.number }}
-        </span>
-        {% endfor %}
+    <div id="building_list" style="margin-top: 50px;">
+        {% include 'buildings/list_buildings.html' %}
     </div>
 
     <!-- Modal -->

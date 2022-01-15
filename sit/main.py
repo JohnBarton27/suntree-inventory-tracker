@@ -21,7 +21,7 @@ def index():
 @app.route('/buildings')
 def buildings():
     all_buildings = Building.get_all()
-    return render_template('buildings.html', buildings=all_buildings)
+    return render_template('buildings/buildings.html', buildings=all_buildings)
 
 
 @app.route('/rooms')
@@ -46,7 +46,9 @@ def create_building():
     bldg = Building(number=bldg_num)
     bldg.create()
 
-    return f'Created Building {bldg.number}'
+    all_buildings = Building.get_all()
+
+    return render_template('buildings/list_buildings.html', buildings=all_buildings)
 
 
 @app.route('/api/rooms/create', methods=['POST'])
