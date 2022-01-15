@@ -7,16 +7,46 @@
 .sit-header {
     background-color: var(--sit-blue);
     color: var(--sit-white);
-    text-align: center;
-    padding: 15px;
     font-weight: bold;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 .sit-subtle-link, .sit-subtle-link:hover {
     text-decoration: none;
     color: var(--sit-white);
     cursor: pointer;
+}
+
+.sit-3-col {
+    display: inline-block;
+    width: 33%;
+}
+
+.sit-navbar a {
+    float: left;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+.sit-navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add an active class to highlight the current page */
+.sit-navbar a.active {
+    background-color: #04AA6D;
+    color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.sit-navbar .icon {
+    display: none;
 }
 
 /* Bootstrap Color Overrides */
