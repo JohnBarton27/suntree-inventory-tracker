@@ -8,12 +8,14 @@
     <script src="{{ url_for('static', filename='/js/buildings.js') }}"></script>
 </head>
 <body>
-	<h1>Buildings</h1>
+	<h1 style="text-align: center;">Buildings</h1>
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newBldgModal">
-        Create New
-    </button>
+    <div style="text-align: center;">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newBldgModal">
+            Create New
+        </button>
+    </div>
 
     <div style="margin-top: 50px;">
         {% for building in buildings %}
