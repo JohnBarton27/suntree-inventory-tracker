@@ -1,4 +1,8 @@
+from barcode import EAN13
+from barcode.writer import ImageWriter
+import base64
 from datetime import date, datetime
+from io import BytesIO
 
 from sit_object import SitObject
 from room import Room
@@ -62,6 +66,16 @@ class Item(SitObject):
             self.populate()
 
         return self._room
+
+    @property
+    def barcode(self):
+        number = f'{100000000000 + self.id}'
+
+        rv = BytesIO()
+        EAN13(str(number), writer=ImageWriter()).write(rv)
+
+        img_str = base64.b64encode(rv.getvalue())
+        return img_str.decode('utf-8')
 
     def _get_create_params_dict(self):
         return {
