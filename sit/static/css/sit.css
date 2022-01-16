@@ -50,6 +50,10 @@
     background-color: #f2f2f2;
 }
 
+.sit-item-table tr:hover {
+    background-color: #c0c0c0;
+}
+
 .sit-item-display {
     border: 2px solid black;
     border-radius: 5px;
