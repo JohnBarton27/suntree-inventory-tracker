@@ -1,5 +1,7 @@
 {% for item in items %}
     <span class="sit-item-display">
-            <i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-closed" style="margin-right: 5px;"></i> {{ item.room.number }} | <i class="fas fa-chair"></i> {{ item.description }}
+            <span style="display:inline-block; font-size:1.4rem;">{{ item.description }}</span>
+            <br>
+            <span style="display:inline-block;"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</span>
         </span>
 {% endfor %}
