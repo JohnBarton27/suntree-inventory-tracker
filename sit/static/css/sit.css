@@ -29,6 +29,27 @@
     flex-direction: row;
 }
 
+.sit-item-table {
+    width: 90%;
+    text-align: center;
+    margin: auto;
+    height: 150px;
+    box-shadow: 0 0 15px grey;
+}
+
+.sit-item-table td, th {
+    padding: 15px 0;
+}
+
+.sit-item-table th {
+    background-color: var(--sit-blue);
+    color: var(--sit-white);
+}
+
+.sit-item-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
 .sit-item-display {
     border: 2px solid black;
     border-radius: 5px;
