@@ -39,6 +39,12 @@ def items():
     return render_template('items/items.html', items=all_items, rooms=all_rooms)
 
 
+@app.route('/item/<item_id>')
+def item(item_id):
+    this_item = Item.get_by_id(item_id)
+    return render_template('items/item.html', item=this_item)
+
+
 # API
 @app.route('/api/buildings/create', methods=['POST'])
 def create_building():
