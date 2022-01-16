@@ -5,6 +5,7 @@ import sqlite3 as sl
 from urllib.request import pathname2url
 
 from flask import Flask, render_template, request
+from waitress import serve
 
 from building import Building
 from item import Item
@@ -134,4 +135,4 @@ if __name__ == '__main__':
     connect_to_database()
     logging.info('Successfully connected to database.')
 
-    app.run(host='0.0.0.0', port=9263, debug=False, use_reloader=False)
+    serve(app, host='0.0.0.0', port=9263)
