@@ -3,3 +3,4 @@ xmlrunner
 coverage
 waitress
 python-barcode
+pillow
