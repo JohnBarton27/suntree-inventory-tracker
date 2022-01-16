@@ -72,6 +72,7 @@ class Item(SitObject):
         number = f'{100000000000 + self.id}'
 
         rv = BytesIO()
+        print(number)
         EAN13(str(number), writer=ImageWriter()).write(rv)
 
         img_str = base64.b64encode(rv.getvalue())
