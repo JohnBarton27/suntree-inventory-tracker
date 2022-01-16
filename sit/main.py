@@ -134,4 +134,4 @@ if __name__ == '__main__':
     connect_to_database()
     logging.info('Successfully connected to database.')
 
-    app.run(port=9263, debug=False, use_reloader=False)
+    app.run(host='0.0.0.0', port=9263, debug=False, use_reloader=False)
