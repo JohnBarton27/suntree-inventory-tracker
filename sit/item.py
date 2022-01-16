@@ -73,7 +73,8 @@ class Item(SitObject):
 
         rv = BytesIO()
         print(number)
-        ean = EAN13(str(number), writer=ImageWriter())
+        writer = ImageWriter()
+        ean = EAN13(str(number), writer=writer)
         ean.write(rv)
 
         img_str = base64.b64encode(rv.getvalue())
