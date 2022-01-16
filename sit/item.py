@@ -60,12 +60,12 @@ class Item(SitObject):
         return {
             'description': self.description,
             'purchase_price': self._purchase_price,
-            'purchase_date': self.purchase_date_timestamp,
-            'room': self.room.id
+            'room': self.room.id,
+            'purchase_date': self.purchase_date_timestamp if self._purchase_date else None
         }
 
     @classmethod
     def _get_from_db_result(cls, db_result):
         purchase_date_seconds = db_result['purchase_date']
-        purchase_date = date.fromtimestamp(purchase_date_seconds)
+        purchase_date = date.fromtimestamp(purchase_date_seconds) if purchase_date_seconds else None
         return Item(db_id=db_result['id'], description=db_result['description'], purchase_price=float(db_result['purchase_price']), purchase_date=purchase_date, room=Room(db_id=db_result['room']))

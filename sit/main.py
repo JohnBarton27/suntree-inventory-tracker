@@ -74,8 +74,7 @@ def create_room():
 @app.route('/api/items/create', methods=['POST'])
 def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
-
-    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date()
+    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
     item = Item(description=request.form['itemDesc'],
                 purchase_price=float(request.form['itemPurchasePrice']),
                 purchase_date=purchase_date,
