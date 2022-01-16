@@ -36,6 +36,13 @@ class Item(SitObject):
         return self._purchase_price
 
     @property
+    def purchase_price_readable(self):
+        if self.purchase_price is None:
+            return None
+
+        return '${:.2f}'.format(self.purchase_price)
+
+    @property
     def purchase_date(self):
         if self._purchase_date is None:
             self.populate()
@@ -68,4 +75,9 @@ class Item(SitObject):
     def _get_from_db_result(cls, db_result):
         purchase_date_seconds = db_result['purchase_date']
         purchase_date = date.fromtimestamp(purchase_date_seconds) if purchase_date_seconds else None
-        return Item(db_id=db_result['id'], description=db_result['description'], purchase_price=float(db_result['purchase_price']), purchase_date=purchase_date, room=Room(db_id=db_result['room']))
+        purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
+        return Item(db_id=db_result['id'],
+                    description=db_result['description'],
+                    purchase_price=purchase_price,
+                    purchase_date=purchase_date,
+                    room=Room(db_id=db_result['room']))

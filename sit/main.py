@@ -75,8 +75,9 @@ def create_room():
 def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
+    purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
     item = Item(description=request.form['itemDesc'],
-                purchase_price=float(request.form['itemPurchasePrice']),
+                purchase_price=purchase_price,
                 purchase_date=purchase_date,
                 room=Room(db_id=int(request.form['itemRoom'])))
 
