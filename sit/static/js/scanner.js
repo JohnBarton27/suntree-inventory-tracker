@@ -28,9 +28,7 @@ function initCapture() {
 
     // Begin capturing every second
     const interval = setInterval(function() {
-        let barcodeValue = sendScreenshot();
-        console.log(barcodeValue);
-
+        sendScreenshot();
     }, 1000);
 }
 
@@ -47,7 +45,12 @@ function sendScreenshot() {
         contentType: false,
         type: 'POST',
         success: function(data){
-            console.log(data);
+            if (data === "") {
+                console.log('EMPTY BARCODE')
+            } else {
+                console.log("Redirecting to " + data)
+                window.location.href = data;
+            }
         }
     });
 }

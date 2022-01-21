@@ -1,4 +1,5 @@
 from barcode import EAN13
+from barcode.upc import UniversalProductCodeA
 from barcode.writer import ImageWriter
 import base64
 from datetime import date, datetime
@@ -69,10 +70,14 @@ class Item(SitObject):
 
     @property
     def barcode(self):
-        number = f'{100000000000 + self.id}'
+        print(f'{self.id} - ({type(self.id)})')
+        ean_num = self.id + 10000000000
+        number = f'{ean_num}'
+        print(number)
+        print(str(number))
 
         rv = BytesIO()
-        ean = EAN13(str(number), writer=ImageWriter())
+        ean = UniversalProductCodeA(str(number), writer=ImageWriter())
         ean.write(rv)
 
         img_str = base64.b64encode(rv.getvalue())
@@ -91,7 +96,7 @@ class Item(SitObject):
         purchase_date_seconds = db_result['purchase_date']
         purchase_date = date.fromtimestamp(purchase_date_seconds) if purchase_date_seconds else None
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
-        return Item(db_id=db_result['id'],
+        return Item(db_id=int(db_result['id']),
                     description=db_result['description'],
                     purchase_price=purchase_price,
                     purchase_date=purchase_date,
