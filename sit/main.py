@@ -93,6 +93,14 @@ def create_items():
     return render_template('items/list_items.html', items=all_items)
 
 
+@app.route('/api/scan_barcode', methods=['POST'])
+def scan_barcode():
+    image_base_64 = request.form['image_source']
+    print(image_base_64)
+
+    return 'SUCCESS'
+
+
 def connect_to_database():
     db_name = 'suntree-inventory-tracker.db'
     try:

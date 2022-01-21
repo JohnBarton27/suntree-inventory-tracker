@@ -30,6 +30,21 @@ function initCapture() {
     const interval = setInterval(function() {
         let image64 = getScreenshot();
         console.log(image64);
+
+        let fd = new FormData();
+        fd.append( 'image_source', image64 );
+
+        $.ajax({
+            url: '/api/scan_barcode',
+            data: fd,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+            }
+        });
+
     }, 1000);
 }
 
