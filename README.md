@@ -4,6 +4,10 @@ Inventory tracker built for Suntree United Methodist Church
 ## Setup
 ### Requirements
 * Python 3
+* ZBar
+
+### Setup
+1. Install zbar. On Ubuntu/Debian based systems, this can be done with `sudo apt install zbar-tools`.
 
 ### Running
 1. Clone this repository

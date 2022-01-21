@@ -4,3 +4,5 @@ coverage
 waitress
 python-barcode
 pillow
+pyzbar
+opencv-python

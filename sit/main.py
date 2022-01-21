@@ -1,12 +1,21 @@
+# Standard Packages
+import base64
 from datetime import datetime
 import logging
+import numpy as np
 import os
 import sqlite3 as sl
 from urllib.request import pathname2url
 
+# Barcode Reading
+import cv2
+from pyzbar.pyzbar import decode
+
+# Flask/webapps
 from flask import Flask, render_template, request
 from waitress import serve
 
+# SIT
 from building import Building
 from item import Item
 from room import Room
@@ -95,10 +104,17 @@ def create_items():
 
 @app.route('/api/scan_barcode', methods=['POST'])
 def scan_barcode():
-    image_base_64 = request.form['image_source']
-    print(image_base_64)
+    image_base_64 = request.form['image_source'].split(',')[-1]
 
-    return 'SUCCESS'
+    img = base64.b64decode(image_base_64)
+    npimg = np.fromstring(img, dtype=np.uint8)
+    source = cv2.imdecode(npimg, 1)
+    detectedBarcodes = decode(source)
+
+    if len(detectedBarcodes) > 0:
+        return detectedBarcodes[0].data.decode('utf-8')
+
+    return ''
 
 
 def connect_to_database():
