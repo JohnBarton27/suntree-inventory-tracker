@@ -8,9 +8,12 @@
 <body>
     {% include 'header.html' %}
 
-    <h1>Scanner</h1>
-    <video autoplay></video>
-    <button id="screenshot-btn">Screenshot</button>
-    <img id="screenshot-img">
+    <h1 style="text-align: center">Scanner</h1>
+    <div style="width: 100%; display: grid">
+        <div style="text-align: center;">
+            <select id="videoSource" style="margin: 10px;"></select>
+        </div>
+        <video style="margin: auto" autoplay></video>
+    </div>
 </body>
 </html>
