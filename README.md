@@ -6,9 +6,11 @@ Inventory tracker built for Suntree United Methodist Church
 * Python 3
 * ZBar
 
+
 ### Setup
 1. Install zbar. On Ubuntu/Debian based systems, this can be done with `sudo apt install zbar-tools`.
-
+2. Install dependencies for `cv2`: `sudo apt-get install ffmpeg libsm6 libxext6`
+ 
 ### Running
 1. Clone this repository
 1. Run `pip install -r requirements.txt` from the root directory of the repository.
