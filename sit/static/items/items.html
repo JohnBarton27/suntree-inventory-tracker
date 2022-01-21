@@ -10,11 +10,17 @@
 
 	<h1 style="text-align: center;"><i class="fas fa-chair"></i> Items</h1>
 
-    <div style="text-align: center;">
+    <div style="text-align: center; display: grid; grid-auto-flow: column;">
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newItemModal">
-            Create New
-        </button>
+        <div>
+            <label for="item-search">Search: </label>
+            <input id="item-search" type="text">
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newItemModal">
+                Create New
+            </button>
+        </div>
     </div>
 
     <div id="item_list" class="sit-item-display-container" style="margin-top: 15px;">
