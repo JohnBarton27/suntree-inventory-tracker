@@ -1,0 +1,16 @@
+<html>
+<head>
+	<title>Suntree Inventory Tracker</title>
+    {% include 'head.html' %}
+
+    <script src="{{ url_for('static', filename='/js/scanner.js') }}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <h1>Scanner</h1>
+    <video autoplay></video>
+    <button id="screenshot-btn">Screenshot</button>
+    <img id="screenshot-img">
+</body>
+</html>

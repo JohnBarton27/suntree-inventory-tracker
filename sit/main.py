@@ -45,6 +45,11 @@ def item(item_id):
     return render_template('items/item.html', item=this_item)
 
 
+@app.route('/scanner')
+def scanner():
+    return render_template('items/scanner.html')
+
+
 # API
 @app.route('/api/buildings/create', methods=['POST'])
 def create_building():
