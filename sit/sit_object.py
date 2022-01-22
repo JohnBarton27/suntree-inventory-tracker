@@ -39,8 +39,7 @@ class SitObject(ABC):
         col_names_with_qs = [f'{key} = ?' for key in update_params]
 
         query = f"UPDATE {self.__class__.table_name} SET {', '.join(col_names_with_qs)} WHERE id = ?;"
-        print(query)
-        self.id = self.__class__.run_query(query, tuple(update_params.values()) + (self.id,))
+        self.__class__.run_query(query, tuple(update_params.values()) + (self.id,))
 
     @abstractmethod
     def _get_create_params_dict(self):

@@ -13,7 +13,7 @@ $(function(){
                 $('#editItemModal').modal('hide')
 
                 // Update data on page
-                // $('#item_list').html(data);
+                $('#item-card').html(data);
             }
         );
     });

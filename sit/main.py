@@ -111,19 +111,21 @@ def create_items():
 
 
 @app.route('/api/items/update', methods=['POST'])
-def edit_items():
+def edit_item():
     item_id = int(request.args['id'])
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
 
     item_to_update = Item.get_by_id(item_id)
+    logging.info(f'ITEM ID (1): {item_to_update.id}')
     item_to_update.update_description(request.form['itemDesc'])
     item_to_update.update_purchase_price(purchase_price)
     item_to_update.update_purchase_date(purchase_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
 
-    return 'Success'
+    logging.info(f'ITEM ID: {item_to_update.id}')
+    return render_template('items/item_card.html', item=item_to_update)
 
 
 @app.route('/api/items/search', methods=['GET'])

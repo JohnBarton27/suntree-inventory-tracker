@@ -1,0 +1,12 @@
+<div>
+    <h1 style="text-align: left; display: inline-block; margin-right: 15px;">{{ item.description }}</h1>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editItemModal" style="margin-top: -15px;">
+        Edit &nbsp;<i class="fas fa-edit"></i>
+    </button>
+</div>
+
+<p><strong>Location: </strong><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</p>
+<p><strong>Purchase Price: </strong>{{ item.purchase_price_readable }}</p>
+<p><strong>Purchase Date: </strong>{{ item.purchase_date }}</p>
+<img src="data:image/png;base64, {{ item.barcode }}">
+
