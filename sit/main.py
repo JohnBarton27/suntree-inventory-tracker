@@ -85,6 +85,14 @@ def create_room():
     return render_template('rooms/list_rooms.html', rooms=all_rooms)
 
 
+@app.route('/api/rooms/get_dropdown', methods=['GET'])
+def get_rooms_dropdown():
+    item_id = int(request.args['item_id'])
+    item_for_rooms = Item.get_by_id(item_id)
+    all_rooms = Room.get_all()
+    return render_template('rooms/rooms_dropdown.html', rooms=all_rooms, item=item_for_rooms)
+
+
 @app.route('/api/items/create', methods=['POST'])
 def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
@@ -100,6 +108,22 @@ def create_items():
     all_items = Item.get_all()
 
     return render_template('items/list_items.html', items=all_items)
+
+
+@app.route('/api/items/update', methods=['POST'])
+def edit_items():
+    item_id = int(request.args['id'])
+    purchase_date_str = request.form['itemPurchaseDate']
+    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
+    purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
+
+    item_to_update = Item.get_by_id(item_id)
+    item_to_update.update_description(request.form['itemDesc'])
+    item_to_update.update_purchase_price(purchase_price)
+    item_to_update.update_purchase_date(purchase_date)
+    item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
+
+    return 'Success'
 
 
 @app.route('/api/items/search', methods=['GET'])

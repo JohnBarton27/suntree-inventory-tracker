@@ -1,0 +1,6 @@
+<label for="itemRoom" class="form-label">Current Location</label>
+<select class="form-control" id="itemRoom" name="itemRoom">
+{% for room in rooms %}
+    <option value="{{ room.id }}" {{ 'selected' if room.id == item.room.id else ''}}>{{ room.building.number }} - {{ room.number }}</option>
+{% endfor %}
+</select>

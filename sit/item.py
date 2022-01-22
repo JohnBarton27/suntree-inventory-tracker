@@ -33,6 +33,13 @@ class Item(SitObject):
 
         return self._description
 
+    def update_description(self, description: str):
+        if self._description == description:
+            return
+
+        self._description = description
+        self.update()
+
     @property
     def purchase_price(self):
         if self._purchase_price is None:
@@ -40,12 +47,26 @@ class Item(SitObject):
 
         return self._purchase_price
 
+    def update_purchase_price(self, purchase_price: float):
+        if self._purchase_price == purchase_price:
+            return
+
+        self._purchase_price = purchase_price
+        self.update()
+
     @property
     def purchase_price_readable(self):
         if self.purchase_price is None:
             return None
 
         return '${:.2f}'.format(self.purchase_price)
+
+    def update_purchase_date(self, purchase_date: date):
+        if self._purchase_date == purchase_date:
+            return
+
+        self._purchase_date = purchase_date
+        self.update()
 
     @property
     def purchase_date(self):
@@ -67,6 +88,13 @@ class Item(SitObject):
             self.populate()
 
         return self._room
+
+    def update_room(self, room: Room):
+        if self._room == room:
+            return
+
+        self._room = room
+        self.update()
 
     @property
     def barcode(self):

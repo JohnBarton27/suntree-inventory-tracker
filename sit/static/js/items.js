@@ -12,7 +12,6 @@ $(function(){
                 $('#item_list').html(data);
             });
     });
-
     setupSearchField();
 });
 

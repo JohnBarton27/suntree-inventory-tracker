@@ -31,12 +31,19 @@ class SitObject(ABC):
         same_obj = self.__class__.get_by_id(self.id)
         self.__dict__.update(same_obj.__dict__)
 
+    def update(self):
+        self.__class__._check_for_class_name()
+
+        update_params = self._get_create_params_dict()
+
+        col_names_with_qs = [f'{key} = ?' for key in update_params]
+
+        query = f"UPDATE {self.__class__.table_name} SET {', '.join(col_names_with_qs)} WHERE id = ?;"
+        print(query)
+        self.id = self.__class__.run_query(query, tuple(update_params.values()) + (self.id,))
+
     @abstractmethod
     def _get_create_params_dict(self):
-        pass
-
-    @staticmethod
-    def get_by_id(db_id: int):
         pass
 
     @staticmethod
