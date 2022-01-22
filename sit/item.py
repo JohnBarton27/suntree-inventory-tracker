@@ -70,11 +70,8 @@ class Item(SitObject):
 
     @property
     def barcode(self):
-        print(f'{self.id} - ({type(self.id)})')
         ean_num = self.id + 10000000000
         number = f'{ean_num}'
-        print(number)
-        print(str(number))
 
         rv = BytesIO()
         ean = UniversalProductCodeA(str(number), writer=ImageWriter())
