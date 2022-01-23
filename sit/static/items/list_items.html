@@ -1,5 +1,6 @@
 <table class="sit-item-table">
     <tr>
+        <th></th>
         <th>Item</th>
         <th>Location</th>
         <th>Purchase Date</th>
@@ -7,6 +8,11 @@
     </tr>
     {% for item in items %}
     <tr onclick="window.location='/item/{{ item.id }}';" style="cursor: pointer;">
+        <td>
+            {% if item.photo %}
+                <img src="{{ item.photo }}" width="50">
+            {% endif %}
+        </td>
         <td>{{ item.description }}</td>
         <td><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</td>
         <td>{{ '-' if not item.purchase_date else item.purchase_date }}</td>
