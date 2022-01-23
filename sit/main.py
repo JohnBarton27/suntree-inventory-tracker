@@ -42,6 +42,12 @@ def rooms():
     return render_template('rooms/rooms.html', rooms=all_rooms, buildings=all_buildings)
 
 
+@app.route('/room/<room_id>')
+def room(room_id):
+    this_room = Room.get_by_id(room_id)
+    return render_template('rooms/room.html', room=this_room)
+
+
 @app.route('/items')
 def items():
     all_items = Item.get_all()
