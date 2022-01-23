@@ -7,6 +7,23 @@
 <body>
     {% include 'header.html' %}
 
-	<h1>Suntree Inventory Tracker</h1>
+	<h1 style="text-align: center;">Suntree Inventory Tracker</h1>
+    <div style="display: flex; justify-content: center;">
+        <a class="sit-inv-link sit-info-card" href="/items">
+            <h3>{{ num_items }}</h3>
+            <p>Item{{ '' if num_items == 1 else 's' }}</p>
+        </a>
+
+        <a class="sit-inv-link sit-info-card" href="/buildings">
+            <h3>{{ num_buildings }}</h3>
+            <p>Building{{ '' if num_buildings == 1 else 's' }}</p>
+        </a>
+
+        <a class="sit-inv-link sit-info-card" href="/rooms">
+            <h3>{{ num_rooms }}</h3>
+            <p>Room{{ '' if num_rooms == 1 else 's' }}</p>
+        </a>
+
+    </div>
 </body>
 </html>
