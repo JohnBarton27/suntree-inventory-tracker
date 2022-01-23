@@ -10,6 +10,8 @@
 
     <h1 style="text-align: center;"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}</h1>
 
+    {% include 'items/list_items.html' %}
+
     <!-- Modal -->
     <div class="modal fade" id="newRoomModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
