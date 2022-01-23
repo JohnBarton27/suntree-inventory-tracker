@@ -2,18 +2,45 @@
 $(function(){
     $('#newItemForm').on('submit', function(e){
         e.preventDefault();
-        $.post('/api/items/create',
-            $('#newItemForm').serialize(),
-            function(data, status, xhr){
-                // Hide Modal
-                $('#newItemModal').modal('hide')
 
-                // Update data on page
-                $('#item_list').html(data);
-            });
+        let form = $('#newItemForm')[0];
+        let formData = new FormData(form);
+
+        let reader = new FileReader();
+
+        let currentFilesArray = $("#itemPicture").prop('files')
+
+        if (currentFilesArray.length === 0) {
+            // No picture selected
+            makeCreateCall(formData);
+            return;
+        }
+
+        reader.readAsDataURL(currentFilesArray[0]);
+        reader.onload = function () {
+            formData.append('itemPicture', reader.result);
+
+            makeCreateCall(formData);
+        }
     });
     setupSearchField();
 });
+
+function makeCreateCall(formData) {
+    $.ajax({
+        url: '/api/items/create',
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(data){
+            // Hide Modal
+            $('#newItemModal').modal('hide')
+
+            // Update data on page
+            $('#item_list').html(data);               }
+    });
+}
 
 function setupSearchField() {
     let itemSearchElem = $('#item-search');
