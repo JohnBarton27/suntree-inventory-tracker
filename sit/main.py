@@ -123,7 +123,9 @@ def edit_item():
     item_to_update.update_purchase_price(purchase_price)
     item_to_update.update_purchase_date(purchase_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
-    item_to_update.update_photo(request.form['itemPicture'])
+
+    if 'itemPicture' in request.form:
+        item_to_update.update_photo(request.form['itemPicture'])
 
     return render_template('items/item_card.html', item=item_to_update)
 

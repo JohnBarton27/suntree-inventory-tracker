@@ -11,27 +11,21 @@ $(function(){
         let formData = new FormData(form);
 
         let reader = new FileReader();
-        reader.readAsDataURL($("#itemPicture").prop('files')[0]);
+
+        let currentFilesArray = $("#itemPicture").prop('files')
+
+        if (currentFilesArray.length === 0) {
+            // No picture selected
+            makeUpdateCall(formData);
+            return;
+        }
+
+        reader.readAsDataURL(currentFilesArray[0]);
         reader.onload = function () {
             formData.append('itemPicture', reader.result);
 
-            $.ajax({
-                url:'/api/items/update?id=' + item_id,
-                type: 'POST',
-                dataType: "JSON",
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (data, status)
-                {
-                    // Hide Modal
-                    $('#editItemModal').modal('hide')
-
-                    // Update data on page
-                    $('#item-card').html(data);
-                }
-            });
-        };
+            makeUpdateCall(formData);
+        }
     });
 
     $('#editItemModal').on('show.bs.modal', function () {
@@ -47,3 +41,19 @@ $(function(){
         );
     })
 });
+
+function makeUpdateCall(formData) {
+    $.ajax({
+        url: '/api/items/update?id=' + item_id,
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(data){
+            // Hide Modal
+            $('#editItemModal').modal('hide')
+
+            // Update data on page
+            $('#item-card').html(data);                }
+    });
+}
