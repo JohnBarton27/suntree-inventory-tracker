@@ -6,7 +6,13 @@
 </div>
 
 <p><strong>Location: </strong><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</p>
+{% if item.purchase_price %}
 <p><strong>Purchase Price: </strong>{{ item.purchase_price_readable }}</p>
+{% endif %}
+
+{% if item.purchase_date %}
 <p><strong>Purchase Date: </strong>{{ item.purchase_date }}</p>
+{% endif %}
+
 <img src="data:image/png;base64, {{ item.barcode }}" width="300">
 

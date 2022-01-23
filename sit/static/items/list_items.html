@@ -9,8 +9,8 @@
     <tr onclick="window.location='/item/{{ item.id }}';" style="cursor: pointer;">
         <td>{{ item.description }}</td>
         <td><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</td>
-        <td>{{ item.purchase_date }}</td>
-        <td>{{ item.purchase_price_readable }}</td>
+        <td>{{ '-' if not item.purchase_date else item.purchase_date }}</td>
+        <td>{{ '-' if not item.purchase_price else item.purchase_price_readable }}</td>
     </tr>
     {% endfor %}
 </table>
