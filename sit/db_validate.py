@@ -1,8 +1,14 @@
+import logging
 import sqlite3 as sl
 from urllib.request import pathname2url
 
+from item import Item
+
+conn = None
+
 
 def validate(db_name):
+    global conn
     try:
         dburi = 'file:{}?mode=rw'.format(pathname2url(db_name))
         conn = sl.connect(dburi, uri=True)
@@ -43,3 +49,24 @@ def validate(db_name):
                     photo TEXT
                 );                
             """)
+
+        return
+
+    check_columns()
+
+
+def check_columns():
+    check_items()
+
+
+def check_items():
+    results = Item.run_query(f"PRAGMA table_info({Item.table_name});")
+
+    column_defs = {
+        'photo': 'TEXT'
+    }
+
+    for column in column_defs:
+        if not any(result['name'] == column for result in results):
+            logging.warning(f'Found missing column in {Item.table_name}: {column}. Adding now...')
+            Item.run_query(f'ALTER TABLE {Item.table_name} ADD COLUMN {column} {column_defs[column]}')

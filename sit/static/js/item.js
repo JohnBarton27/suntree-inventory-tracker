@@ -6,16 +6,32 @@ $(function(){
 
     $('#editItemForm').on('submit', function(e){
         e.preventDefault();
-        $.post('/api/items/update?id=' + item_id,
-            $('#editItemForm').serialize(),
-            function(data, status, xhr){
-                // Hide Modal
-                $('#editItemModal').modal('hide')
 
-                // Update data on page
-                $('#item-card').html(data);
-            }
-        );
+        let form = $('#editItemForm')[0];
+        let formData = new FormData(form);
+
+        let reader = new FileReader();
+        reader.readAsDataURL($("#itemPicture").prop('files')[0]);
+        reader.onload = function () {
+            formData.append('itemPicture', reader.result);
+
+            $.ajax({
+                url:'/api/items/update?id=' + item_id,
+                type: 'POST',
+                dataType: "JSON",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (data, status)
+                {
+                    // Hide Modal
+                    $('#editItemModal').modal('hide')
+
+                    // Update data on page
+                    $('#item-card').html(data);
+                }
+            });
+        };
     });
 
     $('#editItemModal').on('show.bs.modal', function () {
