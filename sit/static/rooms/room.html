@@ -1,0 +1,49 @@
+<html>
+<head>
+	<title>Suntree Inventory Tracker</title>
+    {% include 'head.html' %}
+
+    <script src="{{ url_for('static', filename='/js/room.js') }}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <h1 style="text-align: center; margin-bottom: 25px;">
+        <i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}
+    </h1>
+
+    {% include 'items/list_items.html' %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="newRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newRoomModalLabel">Create New Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newRoomForm" name="newRoomForm" method="post">
+                        <div class="mb-3">
+                            <label for="roomBldg" class="form-label">Building</label>
+                            <select class="form-control" id="roomBldg" name="roomBldg">
+                                {% for building in buildings %}
+                                <option value="{{ building.id }}">{{ building.number }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="roomNumber" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="roomNumber" name="roomNumber" required/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="newRoomForm" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

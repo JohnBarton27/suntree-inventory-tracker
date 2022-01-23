@@ -123,6 +123,11 @@ class Item(SitObject):
         img_str = base64.b64encode(rv.getvalue())
         return img_str.decode('utf-8')
 
+    @classmethod
+    def get_for_room(cls, room: Room):
+        results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE room=?;', (room.id,))
+        return cls._get_multiple_from_db_result(results)
+
     def _get_create_params_dict(self):
         return {
             'description': self.description,

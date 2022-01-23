@@ -42,11 +42,18 @@ def rooms():
     return render_template('rooms/rooms.html', rooms=all_rooms, buildings=all_buildings)
 
 
+@app.route('/room/<room_id>')
+def room(room_id):
+    this_room = Room.get_by_id(room_id)
+    items_in_room = Item.get_for_room(this_room)
+    return render_template('rooms/room.html', room=this_room, items=items_in_room, show_item_locations=False)
+
+
 @app.route('/items')
 def items():
     all_items = Item.get_all()
     all_rooms = Room.get_all()
-    return render_template('items/items.html', items=all_items, rooms=all_rooms)
+    return render_template('items/items.html', items=all_items, rooms=all_rooms, show_item_locations=True)
 
 
 @app.route('/item/<item_id>')
@@ -113,7 +120,7 @@ def create_items():
 
     all_items = Item.get_all()
 
-    return render_template('items/list_items.html', items=all_items)
+    return render_template('items/list_items.html', items=all_items, show_item_locations=True)
 
 
 @app.route('/api/items/update', methods=['POST'])

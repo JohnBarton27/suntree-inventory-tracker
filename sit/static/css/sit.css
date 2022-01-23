@@ -11,6 +11,7 @@
     font-size: 1.5rem;
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .sit-subtle-link, .sit-subtle-link:hover {
@@ -33,7 +34,6 @@
     width: 90%;
     text-align: center;
     margin: auto;
-    height: 150px;
     box-shadow: 0 0 15px grey;
 }
 
