@@ -207,7 +207,6 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description='Suntree Inventory Tracker')
-    parser.add_argument('-dev', action='store_true')
 
     args = parser.parse_args()
 
@@ -220,8 +219,4 @@ if __name__ == '__main__':
     connect_to_database()
     logging.info('Successfully connected to database.')
 
-    if args.dev:
-        logging.info('Running in \'dev\' mode - will not use HTTPS.')
-        serve(app, host='0.0.0.0', port=9263)
-    else:
-        app.run(host='0.0.0.0', port=9263, ssl_context='adhoc')
+    serve(app, host='0.0.0.0', port=9263)
