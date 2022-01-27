@@ -1,5 +1,5 @@
 {% for building in buildings %}
-    <span class="sit-item-display">
-            <i class="fas fa-building" style="margin-right: 5px;"></i>{{ building.number }}
-        </span>
+    <a class="sit-inv-link sit-info-card" href="/building/{{ building.id }}">
+        <i class="fas fa-building" style="margin-right: 5px;"></i>{{ building.number }}
+    </a>
 {% endfor %}

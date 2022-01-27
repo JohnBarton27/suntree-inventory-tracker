@@ -38,5 +38,10 @@ class Room(SitObject):
         }
 
     @classmethod
+    def get_for_building(cls, building: Building):
+        results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE building=?;', (building.id,))
+        return cls._get_multiple_from_db_result(results)
+
+    @classmethod
     def _get_from_db_result(cls, db_result):
         return Room(db_id=db_result['id'], number=db_result['number'], building=Building(db_id=db_result['building']))
