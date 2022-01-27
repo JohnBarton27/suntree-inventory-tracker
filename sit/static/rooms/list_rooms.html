@@ -1,6 +1,6 @@
 {% for room in rooms %}
     <a class="sit-inv-link sit-info-card" href="/room/{{ room.id }}">
-        {% if show_room_locations %}
+        {% if show_room_locations|default(true, false) %}
         <i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} |
         {% endif %}
         <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}
