@@ -113,6 +113,7 @@ def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
+    quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     photo_src = None
     if 'itemPicture' in request.form:
         photo_src = request.form['itemPicture']
@@ -121,7 +122,8 @@ def create_items():
                 purchase_price=purchase_price,
                 purchase_date=purchase_date,
                 room=Room(db_id=int(request.form['itemRoom'])),
-                photo=photo_src)
+                photo=photo_src,
+                quantity=quantity)
 
     item.create()
 
@@ -136,12 +138,14 @@ def edit_item():
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
+    quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
 
     item_to_update = Item.get_by_id(item_id)
     item_to_update.update_description(request.form['itemDesc'])
     item_to_update.update_purchase_price(purchase_price)
     item_to_update.update_purchase_date(purchase_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
+    item_to_update.update_quantity(quantity)
 
     if 'itemPicture' in request.form:
         item_to_update.update_photo(request.form['itemPicture'])

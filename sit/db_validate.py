@@ -46,8 +46,9 @@ def validate(db_name):
                     purchase_price TEXT,
                     purchase_date INTEGER,
                     room INT REFERENCES room(id) ON DELETE CASCADE,
-                    photo TEXT
-                );                
+                    photo TEXT,
+                    quantity INTEGER
+                );
             """)
 
         return
@@ -63,7 +64,8 @@ def check_items():
     results = Item.run_query(f"PRAGMA table_info({Item.table_name});")
 
     column_defs = {
-        'photo': 'TEXT'
+        'photo': 'TEXT',
+        'quantity': 'INTEGER'
     }
 
     for column in column_defs:

@@ -13,13 +13,14 @@ class Item(SitObject):
 
     table_name = 'item'
 
-    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, room: Room = None, photo: str = None):
+    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, room: Room = None, photo: str = None, quantity: int = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
         self._purchase_date = purchase_date
         self._room = room
         self._photo = photo
+        self._quantity = quantity
 
     def __repr__(self):
         return f'{self.description}'
@@ -112,6 +113,20 @@ class Item(SitObject):
         self.update()
 
     @property
+    def quantity(self):
+        if self._quantity is None:
+            self.populate()
+
+        return self._quantity
+
+    def update_quantity(self, quantity: int):
+        if self._quantity == quantity:
+            return
+
+        self._quantity = quantity
+        self.update()
+
+    @property
     def barcode(self):
         ean_num = self.id + 10000000000
         number = f'{ean_num}'
@@ -134,7 +149,8 @@ class Item(SitObject):
             'purchase_price': self._purchase_price,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
-            'photo': self._photo
+            'photo': self._photo,
+            'quantity': self._quantity
         }
 
     @classmethod
@@ -147,4 +163,5 @@ class Item(SitObject):
                     purchase_price=purchase_price,
                     purchase_date=purchase_date,
                     room=Room(db_id=db_result['room']),
-                    photo=db_result['photo'])
+                    photo=db_result['photo'],
+                    quantity=db_result['quantity'])

@@ -42,12 +42,16 @@
                             <input type="text" class="form-control" id="itemDesc" name="itemDesc" required/>
                         </div>
                         <div class="mb-3">
-                            <label for="itemPurchasePrice" class="form-label">Purchase Price (USD)</label>
+                            <label for="itemPurchasePrice" class="form-label">Unit Purchase Price (USD)</label>
                             <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" />
                         </div>
                         <div class="mb-3">
                             <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
                             <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemQuantity" class="form-label">Item Quantity</label>
+                            <input type="number" min="1" step="any" value="1" class="form-control" id="itemQuantity" name="itemQuantity" />
                         </div>
                         <div class="mb-3">
                             <label for="itemRoom" class="form-label">Current Location</label>
