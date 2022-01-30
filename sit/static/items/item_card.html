@@ -1,5 +1,9 @@
 <div style="display:flex; justify-content: center; align-items: center;">
-    <h1 style="text-align: center; display: inline-block; margin-right: 15px;">{{ item.description }}</h1>
+    <h1 style="text-align: center; display: inline-block; margin-right: 15px;">{{ item.description }}
+    {% if item.quantity != 1 %}
+        (x{{ item.quantity }})
+    {% endif %}
+    </h1>
     <span>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editItemModal" style="margin-top: -15px;">
             Edit &nbsp;<i class="fas fa-edit"></i>

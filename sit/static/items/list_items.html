@@ -5,6 +5,7 @@
         {% if show_item_locations|default(true, false) %}
         <th>Location</th>
         {% endif %}
+        <th>Quantity</th>
         <th>Purchase Date</th>
         <th>Purchase Price</th>
     </tr>
@@ -19,6 +20,7 @@
         {% if show_item_locations|default(true, false) %}
         <td><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</td>
         {% endif %}
+        <td>{{ item.quantity }}</td>
         <td>{{ '-' if not item.purchase_date else item.purchase_date }}</td>
         <td>{{ '-' if not item.purchase_price else item.purchase_price_readable }}</td>
     </tr>
