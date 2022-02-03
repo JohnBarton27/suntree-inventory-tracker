@@ -173,6 +173,9 @@ def advanced_search_items():
     lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
     highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
 
+    earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemEarliestPurchaseDate'] else None
+    latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemLatestPurchaseDate'] else None
+
     matching_items = []
     for item_to_check in all_items:
         if description_search and description_search.lower() not in item_to_check.description.lower():
@@ -185,6 +188,15 @@ def advanced_search_items():
             continue
 
         if highest_price and highest_price < item_to_check.purchase_price:
+            continue
+
+        if (earliest_purchase_date or latest_purchase_date) and not item_to_check.purchase_date:
+            continue
+
+        if earliest_purchase_date and earliest_purchase_date > item_to_check.purchase_date:
+            continue
+
+        if latest_purchase_date and latest_purchase_date < item_to_check.purchase_date:
             continue
 
         # Match!

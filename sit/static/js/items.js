@@ -80,6 +80,8 @@ function makeResetCall() {
     $('#itemDescSearch').val('');
     $('#itemLowestPrice').val('');
     $('#itemHighestPrice').val('');
+    $('#itemEarliestPurchaseDate').val('');
+    $('#itemLatestPurchaseDate').val('');
 }
 
 function setupSearchField() {
