@@ -73,6 +73,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label for="itemBuildingSearch" class="form-label">Building</label>
+                            <select class="form-control" id="itemBuildingSearch" name="itemBuildingSearch">
+                                <option value="">Select Building...</option>
+                                {% for building in buildings %}
+                                    <option value="{{ building.id }}">{{ building.number }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">

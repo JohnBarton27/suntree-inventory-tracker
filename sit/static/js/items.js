@@ -82,6 +82,7 @@ function makeResetCall() {
     $('#itemHighestPrice').val('');
     $('#itemEarliestPurchaseDate').val('');
     $('#itemLatestPurchaseDate').val('');
+    $('#itemBuildingSearch').val('').change();
 }
 
 function setupSearchField() {

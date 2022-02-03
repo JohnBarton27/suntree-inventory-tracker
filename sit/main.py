@@ -60,7 +60,8 @@ def room(room_id):
 def items():
     all_items = Item.get_all()
     all_rooms = Room.get_all()
-    return render_template('items/items.html', items=all_items, rooms=all_rooms, show_item_locations=True)
+    all_buildings = Building.get_all()
+    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings, show_item_locations=True)
 
 
 @app.route('/item/<item_id>')
@@ -176,6 +177,8 @@ def advanced_search_items():
     earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemEarliestPurchaseDate'] else None
     latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemLatestPurchaseDate'] else None
 
+    search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form['itemBuildingSearch'] else None
+
     matching_items = []
     for item_to_check in all_items:
         if description_search and description_search.lower() not in item_to_check.description.lower():
@@ -197,6 +200,12 @@ def advanced_search_items():
             continue
 
         if latest_purchase_date and latest_purchase_date < item_to_check.purchase_date:
+            continue
+
+        if search_building and not item_to_check.room:
+            continue
+
+        if search_building and item_to_check.room.building != search_building:
             continue
 
         # Match!

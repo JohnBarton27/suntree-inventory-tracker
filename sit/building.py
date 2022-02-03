@@ -15,6 +15,15 @@ class Building(SitObject):
     def __str__(self):
         return self.number
 
+    def __eq__(self, o):
+        if not isinstance(o, Building):
+            return False
+
+        return self.number == o.number
+
+    def __hash__(self):
+        return hash(self.number)
+
     @property
     def number(self):
         if self._number is None:
