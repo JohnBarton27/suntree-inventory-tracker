@@ -165,11 +165,14 @@ def search_items():
 
 @app.route('/api/items/advanced_search', methods=['POST'])
 def advanced_search_items():
+    all_items = Item.get_all()
+    if not request.form:
+        return render_template('items/list_items.html', items=all_items)
+
     description_search = request.form['itemDescSearch']
     lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
     highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
 
-    all_items = Item.get_all()
     matching_items = []
     for item_to_check in all_items:
         if description_search and description_search.lower() not in item_to_check.description.lower():

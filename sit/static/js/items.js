@@ -66,6 +66,22 @@ function makeSearchCall(formData) {
     });
 }
 
+function makeResetCall() {
+    $.ajax({
+        url: '/api/items/advanced_search',
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(data){
+            // Update data on page
+            $('#item_list').html(data);               }
+    });
+
+    $('#itemDescSearch').val('');
+    $('#itemLowestPrice').val('');
+    $('#itemHighestPrice').val('');
+}
+
 function setupSearchField() {
     let itemSearchElem = $('#item-search');
     itemSearchElem.on('input', function() {
