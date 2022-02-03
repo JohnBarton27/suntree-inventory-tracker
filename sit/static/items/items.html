@@ -17,6 +17,11 @@
             <input id="item-search" type="text">
         </div>
         <div>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#searchItemsModal">
+                <i class="fas fa-search"></i>&nbsp;Advanced Search
+            </button>
+        </div>
+        <div>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newItemModal">
                 Create New
             </button>
@@ -27,7 +32,31 @@
         {% include 'items/list_items.html' %}
     </div>
 
-    <!-- Modal -->
+    <!-- Search Items Modal -->
+    <div class="modal fade" id="searchItemsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchItemsModalLabel">Search for Items</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="searchItemsForm" name="searchItemsForm" method="get">
+                        <div class="mb-3">
+                            <label for="itemDesc" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="itemDescSearch" name="itemDescSearch"/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="searchItemsForm" class="btn btn-primary">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Item Modal -->
     <div class="modal fade" id="newItemModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

@@ -24,6 +24,14 @@ $(function(){
         }
     });
     setupSearchField();
+    $('#searchItemsForm').on('submit', function(e){
+        e.preventDefault();
+
+        let form = $('#searchItemsForm')[0];
+        let formData = new FormData(form);
+
+        makeSearchCall(formData);
+    });
 });
 
 function makeCreateCall(formData) {
@@ -36,6 +44,22 @@ function makeCreateCall(formData) {
         success: function(data){
             // Hide Modal
             $('#newItemModal').modal('hide')
+
+            // Update data on page
+            $('#item_list').html(data);               }
+    });
+}
+
+function makeSearchCall(formData) {
+    $.ajax({
+        url: '/api/items/advanced_search',
+        data: formData,
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(data){
+            // Hide Modal
+            $('#searchItemsModal').modal('hide')
 
             // Update data on page
             $('#item_list').html(data);               }

@@ -163,6 +163,16 @@ def search_items():
     return render_template('items/list_items.html', items=matching_items)
 
 
+@app.route('/api/items/advanced_search', methods=['POST'])
+def advanced_search_items():
+    description_search = request.form['itemDescSearch']
+    all_items = Item.get_all()
+
+    matching_items = [item_to_check for item_to_check in all_items if description_search.lower() in item_to_check.description.lower()]
+
+    return render_template('items/list_items.html', items=matching_items)
+
+
 @app.route('/api/scan_barcode', methods=['POST'])
 def scan_barcode():
     image_base_64 = request.form['image_source'].split(',')[-1]
