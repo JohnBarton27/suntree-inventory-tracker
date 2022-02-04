@@ -45,7 +45,12 @@ function setupDataTables() {
         "ordering": true,
         "info": false,
         "searching": false,
-        "responsive": true
+        "responsive": true,
+        "order": [[ 1, "asc" ]],
+        columnDefs: [{
+            orderable: false,
+            targets: "no-sort"
+        }]
     });
 }
 
