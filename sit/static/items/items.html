@@ -4,6 +4,10 @@
     {% include 'head.html' %}
 
     <script src="{{ url_for('static', filename='/js/items.js') }}"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>
 </head>
 <body>
     {% include 'header.html' %}
@@ -31,7 +35,7 @@
         </div>
     </div>
 
-    <div id="item_list" class="sit-item-display-container" style="margin-top: 15px;">
+    <div id="item_list" class="sit-item-display-container" style="margin-top: 15px; display: flex; justify-content:center;">
         {% include 'items/list_items.html' %}
     </div>
 

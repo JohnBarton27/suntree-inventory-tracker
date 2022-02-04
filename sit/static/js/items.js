@@ -34,6 +34,21 @@ $(function(){
     });
 });
 
+$(document).ready( function () {
+    setupDataTables();
+});
+
+function setupDataTables() {
+    $('#itemsTable').DataTable({
+        "autoWidth": false,
+        "paging": false,
+        "ordering": true,
+        "info": false,
+        "searching": false,
+        "responsive": true
+    });
+}
+
 function makeCreateCall(formData) {
     $.ajax({
         url: '/api/items/create',
@@ -62,7 +77,9 @@ function makeSearchCall(formData) {
             $('#searchItemsModal').modal('hide')
 
             // Update data on page
-            $('#item_list').html(data);               }
+            $('#item_list').html(data);
+            setupDataTables();
+        }
     });
 }
 
@@ -74,7 +91,9 @@ function makeResetCall() {
         type: 'POST',
         success: function(data){
             // Update data on page
-            $('#item_list').html(data);               }
+            $('#item_list').html(data);
+            setupDataTables();
+        }
     });
 
     $('#itemDescSearch').val('');
@@ -100,6 +119,7 @@ function setupSearchField() {
             type: 'GET',
             success: function(data){
                 $('#item_list').html(data);
+                setupDataTables();
             }
         });
     });
