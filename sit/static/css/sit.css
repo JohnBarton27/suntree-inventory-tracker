@@ -41,6 +41,10 @@
     padding: 5px 15px !important;
 }
 
+.sit-item-table td {
+    height: 50px;
+}
+
 .sit-item-table th {
     background-color: var(--sit-blue);
     color: var(--sit-white);
