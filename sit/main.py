@@ -10,7 +10,7 @@ import cv2
 from pyzbar.pyzbar import decode
 
 # Flask/webapps
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from waitress import serve
 
 # SIT
@@ -152,6 +152,16 @@ def edit_item():
         item_to_update.update_photo(request.form['itemPicture'])
 
     return render_template('items/item_card.html', item=item_to_update)
+
+
+@app.route('/api/items/delete', methods=['DELETE'])
+def delete_item():
+    item_id = int(request.args['id'])
+    item_to_delete = Item.get_by_id(item_id)
+
+    item_to_delete.delete()
+
+    return '/items'
 
 
 @app.route('/api/items/search', methods=['GET'])

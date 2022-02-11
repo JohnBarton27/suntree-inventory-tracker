@@ -40,6 +40,10 @@ $(function(){
             }
         );
     })
+
+    $('#confirmDeleteBtn').click(function() {
+        makeDeleteCall();
+    });
 });
 
 function makeUpdateCall(formData) {
@@ -54,6 +58,23 @@ function makeUpdateCall(formData) {
             $('#editItemModal').modal('hide')
 
             // Update data on page
-            $('#item-card').html(data);                }
+            $('#item-card').html(data);
+        }
+    });
+}
+
+function makeDeleteCall(formData) {
+    $.ajax({
+        url: '/api/items/delete?id=' + item_id,
+        processData: false,
+        contentType: false,
+        type: 'DELETE',
+        success: function(data){
+            // Hide Modal
+            $('#deleteItemModal').modal('hide')
+
+            // Update data on page
+            window.location.href = data
+        }
     });
 }

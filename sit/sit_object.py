@@ -41,6 +41,15 @@ class SitObject(ABC):
         query = f"UPDATE {self.__class__.table_name} SET {', '.join(col_names_with_qs)} WHERE id = ?;"
         self.__class__.run_query(query, tuple(update_params.values()) + (self.id,))
 
+    def delete(self):
+        self.__class__._check_for_class_name()
+
+        if not self.id:
+            raise Exception(f'Cannot delete a {self.__class__.__name__} when the ID is not set!')
+        
+        query = f"DELETE FROM {self.__class__.table_name} WHERE id = ?;"
+        self.__class__.run_query(query, (self.id,))
+
     @abstractmethod
     def _get_create_params_dict(self):
         pass
