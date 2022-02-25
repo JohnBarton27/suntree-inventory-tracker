@@ -16,6 +16,7 @@ from waitress import serve
 # SIT
 from building import Building
 from item import Item
+from label import Label
 from room import Room
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
@@ -75,6 +76,12 @@ def scanner():
     return render_template('items/scanner.html')
 
 
+@app.route('/labels')
+def get_labels():
+    all_labels = Label.get_all()
+    return render_template('labels/labels.html', labels=all_labels)
+
+
 # API
 @app.route('/api/buildings/create', methods=['POST'])
 def create_building():
@@ -99,6 +106,18 @@ def create_room():
     all_rooms = Room.get_all()
 
     return render_template('rooms/list_rooms.html', rooms=all_rooms)
+
+
+@app.route('/api/labels/create', methods=['POST'])
+def create_label():
+    label_text = request.form['labelText']
+
+    label = Label(text=label_text)
+    label.create()
+
+    all_labels = Label.get_all()
+
+    return render_template('labels/list_labels.html', labels=all_labels)
 
 
 @app.route('/api/rooms/get_dropdown', methods=['GET'])

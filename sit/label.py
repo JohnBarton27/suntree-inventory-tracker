@@ -38,4 +38,4 @@ class Label(SitObject):
 
     @classmethod
     def _get_from_db_result(cls, db_result):
-        return Text(db_id=db_result['id'], text=db_result['text'])
+        return Label(db_id=db_result['id'], text=db_result['text'])
