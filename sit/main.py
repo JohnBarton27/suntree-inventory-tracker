@@ -83,6 +83,13 @@ def get_labels():
     return render_template('labels/labels.html', labels=all_labels)
 
 
+@app.route('/label/<label_id>')
+def label(label_id):
+    label = Label(db_id=int(label_id))
+    items = label.get_items()
+    return render_template('labels/label.html', label=label, items=items)
+
+
 # API
 @app.route('/api/buildings/create', methods=['POST'])
 def create_building():

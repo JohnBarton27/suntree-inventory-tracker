@@ -185,7 +185,10 @@ class Item(SitObject):
         purchase_date_seconds = db_result['purchase_date']
         purchase_date = date.fromtimestamp(purchase_date_seconds) if purchase_date_seconds else None
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
-        return Item(db_id=int(db_result['id']),
+
+        item_id = int(db_result['item_id'] if 'item_id' in db_result else db_result['id'])
+
+        return Item(db_id=item_id,
                     description=db_result['description'],
                     purchase_price=purchase_price,
                     purchase_date=purchase_date,

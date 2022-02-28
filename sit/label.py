@@ -37,6 +37,11 @@ class Label(SitObject):
             'text': self.text
         }
 
+    def get_items(self):
+        from item_label_mapping import ItemLabelMap
+        results = self.__class__.run_query(f'SELECT * FROM {ItemLabelMap.table_name} INNER JOIN item ON item.id == item_label_map.item_id WHERE label_id=?;', (self.id,))
+        return Item._get_multiple_from_db_result(results)
+
     @classmethod
     def get_for_item(cls, item: Item):
         from item_label_mapping import ItemLabelMap
