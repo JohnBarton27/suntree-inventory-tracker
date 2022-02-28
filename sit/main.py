@@ -148,6 +148,9 @@ def create_items():
     if 'itemPicture' in request.form:
         photo_src = request.form['itemPicture']
 
+    label_ids = request.form.getlist('itemLabels')
+    labels = [Label(db_id=int(label_id)) for label_id in label_ids]
+
     item = Item(description=request.form['itemDesc'],
                 purchase_price=purchase_price,
                 purchase_date=purchase_date,
@@ -156,6 +159,9 @@ def create_items():
                 quantity=quantity)
 
     item.create()
+
+    for label in labels:
+        item.add_label(label)
 
     all_items = Item.get_all()
 

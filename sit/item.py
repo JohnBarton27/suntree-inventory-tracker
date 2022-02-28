@@ -160,6 +160,11 @@ class Item(SitObject):
         img_str = base64.b64encode(rv.getvalue())
         return img_str.decode('utf-8')
 
+    def add_label(self, label):
+        from item_label_mapping import ItemLabelMap
+        ilm = ItemLabelMap(item=self, label=label)
+        ilm.create()
+
     @classmethod
     def get_for_room(cls, room: Room):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE room=?;', (room.id,))

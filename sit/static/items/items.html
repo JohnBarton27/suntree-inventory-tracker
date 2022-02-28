@@ -143,6 +143,14 @@
                             <label for="itemPicture">Picture</label>
                             <input type="file" class="form-control" id="itemPicture" name="itemPicture" accept="image/png, image/jpeg"/>
                         </div>
+                        <div class="mb-3" id="labelSelectElem">
+                            <label for="itemLabels" class="form-label">Labels</label>
+                            <select class="form-control" id="itemLabels" name="itemLabels" multiple>
+                                {% for label in labels %}
+                                    <option value="{{ label.id }}">{{ label.text }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
