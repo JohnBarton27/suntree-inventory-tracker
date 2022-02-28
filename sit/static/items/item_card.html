@@ -33,3 +33,11 @@
         <p style="margin-bottom: 0;"><strong>Purchase Date: </strong>{{ item.purchase_date }}</p>
     {% endif %}
 </div>
+
+<div id="labels" style="text-align: center; margin-top: 15px;">
+    {% for label in item.labels %}
+    <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}">
+        <i style="margin-right: 5px;"></i>{{ label.text }}
+    </a>
+    {% endfor %}
+</div>

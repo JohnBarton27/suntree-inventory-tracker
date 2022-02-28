@@ -1,4 +1,5 @@
 from sit_object import SitObject
+from item import Item
 
 
 class Label(SitObject):
@@ -35,6 +36,12 @@ class Label(SitObject):
         return {
             'text': self.text
         }
+
+    @classmethod
+    def get_for_item(cls, item: Item):
+        from item_label_mapping import ItemLabelMap
+        results = cls.run_query(f'SELECT label_id as id, text FROM {ItemLabelMap.table_name} INNER JOIN {Label.table_name} ON {Label.table_name}.id == {ItemLabelMap.table_name}.label_id WHERE item_id=?;', (item.id,))
+        return cls._get_multiple_from_db_result(results)
 
     @classmethod
     def _get_from_db_result(cls, db_result):

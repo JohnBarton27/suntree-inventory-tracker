@@ -128,6 +128,15 @@ def get_rooms_dropdown():
     return render_template('rooms/rooms_dropdown.html', rooms=all_rooms, item=item_for_rooms)
 
 
+@app.route('/api/labels/get_dropdown', methods=['GET'])
+def get_labels_dropdown():
+    item_id = int(request.args['item_id'])
+    item_for_labels = Item.get_by_id(item_id)
+    all_labels = Label.get_all()
+    labels_on_item = [label.id for label in Label.get_for_item(item_for_labels)]
+    return render_template('labels/labels_dropdown.html', labels=all_labels, item=item_for_labels, selected=labels_on_item)
+
+
 @app.route('/api/items/create', methods=['POST'])
 def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
@@ -159,6 +168,8 @@ def edit_item():
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
+    label_ids = request.form.getlist('itemLabels')
+    labels = [Label(db_id=int(label_id)) for label_id in label_ids]
 
     item_to_update = Item.get_by_id(item_id)
     item_to_update.update_description(request.form['itemDesc'])
@@ -166,6 +177,7 @@ def edit_item():
     item_to_update.update_purchase_date(purchase_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
     item_to_update.update_quantity(quantity)
+    item_to_update.update_labels(labels)
 
     if 'itemPicture' in request.form:
         item_to_update.update_photo(request.form['itemPicture'])

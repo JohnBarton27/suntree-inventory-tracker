@@ -1,0 +1,6 @@
+<label for="itemLabels" class="form-label">Labels</label>
+<select class="form-control" id="itemLabels" name="itemLabels" multiple>
+{% for label in labels %}
+    <option value="{{ label.id }}" {{ 'selected' if (label.id in selected) else ''}}>{{ label.text }}</option>
+{% endfor %}
+</select>

@@ -39,6 +39,17 @@ $(function(){
                 roomSelect.html(data);
             }
         );
+
+        // Get Labels
+        let labelSelect = $('#labelSelectElem');
+
+        $.get('/api/labels/get_dropdown?item_id=' + item_id,
+            null,
+            function(data, status, xhr){
+                // Update data on page
+                labelSelect.html(data);
+            }
+        );
     })
 
     $('#confirmDeleteBtn').click(function() {

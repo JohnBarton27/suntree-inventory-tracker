@@ -127,6 +127,28 @@ class Item(SitObject):
         self.update()
 
     @property
+    def labels(self):
+        from label import Label
+        return Label.get_for_item(self)
+
+    def update_labels(self, labels: list):
+        from item_label_mapping import ItemLabelMap
+
+        current_labels = self.labels
+        for label in labels:
+            if label not in current_labels:
+                # Create
+                ilm = ItemLabelMap(label=label, item=self)
+                ilm.create()
+
+        for current_label in current_labels:
+            if current_label not in labels:
+                # Delete
+                print(f'Deleting {current_label}...')
+                ilm = ItemLabelMap.get_by_item_and_label(self, current_label)
+                ilm.delete()
+
+    @property
     def barcode(self):
         ean_num = self.id + 10000000000
         number = f'{ean_num}'
