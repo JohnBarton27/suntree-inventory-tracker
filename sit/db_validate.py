@@ -56,7 +56,9 @@ def validate(db_name):
         conn.execute("""
             CREATE TABLE IF NOT EXISTS label (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                text TEXT NOT NULL
+                text TEXT NOT NULL,
+                label_color_id INT,
+                FOREIGN KEY (label_color_id) REFERENCES label_color(id)
             );
         """)
 
@@ -69,6 +71,16 @@ def validate(db_name):
                 item_id INT NOT NULL,
                 FOREIGN KEY (label_id) REFERENCES label(id),
                 FOREIGN KEY (item_id) REFERENCES item(id)                
+            );
+        """)
+
+    # LABEL COLORS
+    with conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS label_color (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                hex_code TEXT NOT NULL,
+                white_text INT NOT NULL
             );
         """)
 

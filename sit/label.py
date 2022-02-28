@@ -51,3 +51,49 @@ class Label(SitObject):
     @classmethod
     def _get_from_db_result(cls, db_result):
         return Label(db_id=db_result['id'], text=db_result['text'])
+
+
+class LabelColor(SitObject):
+
+    table_name = 'label_cclor'
+
+    def __init__(self, db_id: int = None, hex_code: str = None, white_text: bool = True):
+        super().__init__(db_id)
+        self._hex_code = hex_code
+        self._white_text = white_text
+
+    @property
+    def hex_code(self):
+        if self._hex_code is None:
+            self.populate()
+
+        return self._hex_code
+
+    @property
+    def white_text(self):
+        if self._white_text is None:
+            self.populate()
+
+        return self._white_text
+
+    @staticmethod
+    def generate():
+        blue_jeans = LabelColor('##5DA9E9')
+        bone = LabelColor('#DDDBCB', white_text=False)
+        dark_cornflower_blue = LabelColor('#003F91')
+        charcoal = LabelColor('#3C474B')
+        light_coral = LabelColor('#FF7073')
+        middle_blue_green = LabelColor('#9EEFE5', white_text=False)
+        midnight = LabelColor('#6D326D')
+        steel_blue = LabelColor('#4F7CAC')
+        return [blue_jeans, bone, charcoal, dark_cornflower_blue, light_coral, middle_blue_green, midnight, steel_blue]
+
+    def _get_create_params_dict(self):
+        return {
+            'hex_code': self.hex_code,
+            'white_text': self.white_text
+        }
+
+    @classmethod
+    def _get_from_db_result(cls, db_result):
+        return LabelColor(db_id=db_result['id'], hex_code=db_result['hex_code'], white_text=db_result['white_text'])
