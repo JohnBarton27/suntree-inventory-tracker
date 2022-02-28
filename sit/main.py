@@ -62,7 +62,8 @@ def items():
     all_items = Item.get_all()
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
-    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings, show_item_locations=True)
+    all_labels = Label.get_all()
+    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings, labels=all_labels, show_item_locations=True)
 
 
 @app.route('/item/<item_id>')
@@ -220,6 +221,8 @@ def advanced_search_items():
 
     search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form['itemBuildingSearch'] else None
 
+    search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
+
     matching_items = []
     for item_to_check in all_items:
         if description_search and description_search.lower() not in item_to_check.description.lower():
@@ -247,6 +250,9 @@ def advanced_search_items():
             continue
 
         if search_building and item_to_check.room.building != search_building:
+            continue
+
+        if search_label and search_label not in item_to_check.labels:
             continue
 
         # Match!

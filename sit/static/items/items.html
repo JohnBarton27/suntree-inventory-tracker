@@ -86,6 +86,15 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="itemLabelSearch" class="form-label">Label</label>
+                            <select class="form-control" id="itemLabelSearch" name="itemLabelSearch">
+                                <option value="">Select Label...</option>
+                                {% for label in labels %}
+                                    <option value="{{ label.id }}">{{ label.text }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
