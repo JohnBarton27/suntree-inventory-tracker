@@ -1,5 +1,5 @@
 {% for label in labels %}
-    <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}">
-        <i style="margin-right: 5px;"></i>{{ label.text }}
+    <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}" style="background-color: {{ label.color.hex_code }}; {{ 'color: white;' if label.color.white_text else '' }}">
+        {{ label.text }}
     </a>
 {% endfor %}

@@ -16,7 +16,7 @@ from waitress import serve
 # SIT
 from building import Building
 from item import Item
-from label import Label
+from label import Label, LabelColor
 from room import Room
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
@@ -120,7 +120,8 @@ def create_room():
 def create_label():
     label_text = request.form['labelText']
 
-    label = Label(text=label_text)
+    label_color = LabelColor.get_random()
+    label = Label(text=label_text, color=label_color)
     label.create()
 
     all_labels = Label.get_all()

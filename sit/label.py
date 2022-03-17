@@ -1,3 +1,5 @@
+import random
+
 from sit_object import SitObject
 from item import Item
 
@@ -36,6 +38,11 @@ class LabelColor(SitObject):
         midnight = LabelColor(hex_code='#6D326D')
         steel_blue = LabelColor(hex_code='#4F7CAC')
         return [blue_jeans, bone, charcoal, dark_cornflower_blue, light_coral, middle_blue_green, midnight, steel_blue]
+
+    @staticmethod
+    def get_random():
+        all_colors = LabelColor.get_all()
+        return random.choice(all_colors)
 
     def _get_create_params_dict(self):
         return {
