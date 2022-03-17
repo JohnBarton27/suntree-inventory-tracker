@@ -55,7 +55,7 @@ class Label(SitObject):
 
 class LabelColor(SitObject):
 
-    table_name = 'label_cclor'
+    table_name = 'label_color'
 
     def __init__(self, db_id: int = None, hex_code: str = None, white_text: bool = True):
         super().__init__(db_id)
@@ -78,14 +78,14 @@ class LabelColor(SitObject):
 
     @staticmethod
     def generate():
-        blue_jeans = LabelColor('##5DA9E9')
-        bone = LabelColor('#DDDBCB', white_text=False)
-        dark_cornflower_blue = LabelColor('#003F91')
-        charcoal = LabelColor('#3C474B')
-        light_coral = LabelColor('#FF7073')
-        middle_blue_green = LabelColor('#9EEFE5', white_text=False)
-        midnight = LabelColor('#6D326D')
-        steel_blue = LabelColor('#4F7CAC')
+        blue_jeans = LabelColor(hex_code='#5DA9E9')
+        bone = LabelColor(hex_code='#DDDBCB', white_text=False)
+        dark_cornflower_blue = LabelColor(hex_code='#003F91')
+        charcoal = LabelColor(hex_code='#3C474B')
+        light_coral = LabelColor(hex_code='#FF7073')
+        middle_blue_green = LabelColor(hex_code='#9EEFE5', white_text=False)
+        midnight = LabelColor(hex_code='#6D326D')
+        steel_blue = LabelColor(hex_code='#4F7CAC')
         return [blue_jeans, bone, charcoal, dark_cornflower_blue, light_coral, middle_blue_green, midnight, steel_blue]
 
     def _get_create_params_dict(self):
