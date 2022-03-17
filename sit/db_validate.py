@@ -84,6 +84,15 @@ def validate(db_name):
             );
         """)
 
+        # Ensure label colors exist
+        from label import LabelColor
+        all_colors = LabelColor.get_all()
+
+        if len(all_colors) == 0:
+            logging.info('No label colors found - generating defaults...')
+            for label_color in LabelColor.generate():
+                label_color.create()
+
     check_columns()
 
 
