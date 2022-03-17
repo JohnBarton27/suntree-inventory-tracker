@@ -36,7 +36,7 @@
 
 <div id="labels" style="text-align: center; margin-top: 15px;">
     {% for label in item.labels %}
-    <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}">
+    <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}" style="background-color: {{ label.color.hex_code }}; {{ 'color: white;' if label.color.white_text else '' }}">
         <i style="margin-right: 5px;"></i>{{ label.text }}
     </a>
     {% endfor %}
