@@ -13,11 +13,12 @@ class Item(SitObject):
 
     table_name = 'item'
 
-    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, room: Room = None, photo: str = None, quantity: int = None):
+    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, quantity: int = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
         self._purchase_date = purchase_date
+        self._end_of_life_date = end_of_life_date
         self._room = room
         self._photo = photo
         self._quantity = quantity
@@ -83,6 +84,27 @@ class Item(SitObject):
             return None
 
         return datetime.combine(self.purchase_date, datetime.min.time()).timestamp()
+
+    @property
+    def end_of_life_date(self):
+        if self._end_of_life_date is None:
+            self.populate()
+
+        return self._end_of_life_date
+
+    def update_end_of_life_date(self, end_of_life_date: date):
+        if self._end_of_life_date == end_of_life_date:
+            return
+
+        self._end_of_life_date = end_of_life_date
+        self.update()
+
+    @property
+    def end_of_life_date_timestamp(self):
+        if not self.end_of_life_date:
+            return None
+
+        return datetime.combine(self.end_of_life_date, datetime.min.time()).timestamp()
 
     @property
     def room(self):
@@ -176,6 +198,7 @@ class Item(SitObject):
             'purchase_price': self._purchase_price,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
+            'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
             'quantity': self._quantity
         }
@@ -184,6 +207,10 @@ class Item(SitObject):
     def _get_from_db_result(cls, db_result):
         purchase_date_seconds = db_result['purchase_date']
         purchase_date = date.fromtimestamp(purchase_date_seconds) if purchase_date_seconds else None
+
+        end_of_life_date_seconds = db_result['end_of_life_date']
+        end_of_life_date = date.fromtimestamp(end_of_life_date_seconds) if end_of_life_date_seconds else None
+
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
 
         item_id = int(db_result['item_id'] if 'item_id' in db_result else db_result['id'])
@@ -192,6 +219,7 @@ class Item(SitObject):
                     description=db_result['description'],
                     purchase_price=purchase_price,
                     purchase_date=purchase_date,
+                    end_of_life_date=end_of_life_date,
                     room=Room(db_id=db_result['room']),
                     photo=db_result['photo'],
                     quantity=db_result['quantity'])

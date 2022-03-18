@@ -45,6 +45,7 @@ def validate(db_name):
                 description TEXT NOT NULL,
                 purchase_price TEXT,
                 purchase_date INTEGER,
+                end_of_life_date INTEGER,
                 room INT REFERENCES room(id) ON DELETE CASCADE,
                 photo TEXT,
                 quantity INTEGER
@@ -105,7 +106,8 @@ def check_items():
 
     column_defs = {
         'photo': 'TEXT',
-        'quantity': 'INTEGER'
+        'quantity': 'INTEGER',
+        'end_of_life_date': 'INTEGER'
     }
 
     for column in column_defs:
