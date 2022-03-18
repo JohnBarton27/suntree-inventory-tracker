@@ -150,6 +150,10 @@ def get_labels_dropdown():
 def create_items():
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
+
+    end_of_life_date_str = request.form['itemEndOfLifeDate']
+    end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
+
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     photo_src = None
@@ -162,6 +166,7 @@ def create_items():
     item = Item(description=request.form['itemDesc'],
                 purchase_price=purchase_price,
                 purchase_date=purchase_date,
+                end_of_life_date=end_of_life_date,
                 room=Room(db_id=int(request.form['itemRoom'])),
                 photo=photo_src,
                 quantity=quantity)
