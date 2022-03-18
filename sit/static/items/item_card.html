@@ -32,6 +32,10 @@
     {% if item.purchase_date %}
         <p style="margin-bottom: 0;"><strong>Purchase Date: </strong>{{ item.purchase_date }}</p>
     {% endif %}
+
+    {% if item.end_of_life_date %}
+        <p style="margin-bottom: 0;"><strong>End-of-Life Date: </strong>{{ item.end_of_life_date }}</p>
+    {% endif %}
 </div>
 
 <div id="labels" style="text-align: center; margin-top: 15px;">

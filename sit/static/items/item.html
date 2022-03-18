@@ -35,6 +35,10 @@
                             <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" value="{{ item.purchase_date }}"/>
                         </div>
                         <div class="mb-3">
+                            <label for="itemEndOfLifeDate" class="form-label">End-of-Life Date</label>
+                            <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate" value="{{ item.end_of_life_date }}"/>
+                        </div>
+                        <div class="mb-3">
                             <label for="itemQuantity" class="form-label">Item Quantity</label>
                             <input type="number" min="1" step="any" value="1" class="form-control" id="itemQuantity" name="itemQuantity" />
                         </div>

@@ -179,8 +179,13 @@ def create_items():
 @app.route('/api/items/update', methods=['POST'])
 def edit_item():
     item_id = int(request.args['id'])
+
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
+
+    end_of_life_date_str = request.form['itemEndOfLifeDate']
+    end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
+
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     label_ids = request.form.getlist('itemLabels')
@@ -190,6 +195,7 @@ def edit_item():
     item_to_update.update_description(request.form['itemDesc'])
     item_to_update.update_purchase_price(purchase_price)
     item_to_update.update_purchase_date(purchase_date)
+    item_to_update.update_end_of_life_date(end_of_life_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
     item_to_update.update_quantity(quantity)
     item_to_update.update_labels(labels)
