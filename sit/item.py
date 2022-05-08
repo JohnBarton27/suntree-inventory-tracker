@@ -231,6 +231,8 @@ class Item(SitObject):
 
         item_id = int(db_result['item_id'] if 'item_id' in db_result else db_result['id'])
 
+        condition = int(db_result['condition']) if 'condition' in db_result else None
+
         return Item(db_id=item_id,
                     description=db_result['description'],
                     purchase_price=purchase_price,
@@ -238,4 +240,5 @@ class Item(SitObject):
                     end_of_life_date=end_of_life_date,
                     room=Room(db_id=db_result['room']),
                     photo=db_result['photo'],
-                    quantity=db_result['quantity'])
+                    quantity=db_result['quantity'],
+                    condition=condition)
