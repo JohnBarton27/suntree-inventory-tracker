@@ -5,6 +5,7 @@ import base64
 from datetime import date, datetime
 from io import BytesIO
 
+from condition import Condition
 from sit_object import SitObject
 from room import Room
 
@@ -13,7 +14,7 @@ class Item(SitObject):
 
     table_name = 'item'
 
-    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, condition: int = None, quantity: int = None):
+    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, condition: Condition = None, quantity: int = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
@@ -213,7 +214,7 @@ class Item(SitObject):
             'purchase_price': self._purchase_price,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
-            'condition': self.condition,
+            'condition': self.condition.int_value,
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
             'quantity': self._quantity
@@ -231,7 +232,7 @@ class Item(SitObject):
 
         item_id = int(db_result['item_id'] if 'item_id' in db_result else db_result['id'])
 
-        condition = int(db_result['condition']) if 'condition' in db_result else None
+        condition = Condition.get_by_value(int(db_result['condition'])) if 'condition' in db_result else None
 
         return Item(db_id=item_id,
                     description=db_result['description'],

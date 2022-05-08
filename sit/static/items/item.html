@@ -42,23 +42,23 @@
                             <label class="form-label">Current Condition</label><br>
                             <span style="display: grid; grid-auto-flow: column; text-align: center;">
                                 <span>
-                                    <input type="radio" name="itemCondition" id="itemConditionBad" value="1" {{ 'checked' if item.condition == 1 else '' }}><br>
-                                    <label for="itemConditionPoor">Bad</label>
-                                </span>
-                                <span>
-                                    <input type="radio" name="itemCondition" id="itemConditionPoor" value="2" {{ 'checked' if item.condition == 2 else '' }}><br>
+                                    <input type="radio" name="itemCondition" id="itemConditionPoor" value="1" {{ 'checked' if item.condition.int_value == 1 else '' }}><br>
                                     <label for="itemConditionPoor">Poor</label>
                                 </span>
                                 <span>
-                                    <input type="radio" name="itemCondition" id="itemConditionFair" value="3" {{ 'checked' if item.condition == 3 else '' }}><br>
+                                    <input type="radio" name="itemCondition" id="itemConditionBad" value="2" {{ 'checked' if item.condition.int_value == 2 else '' }}><br>
+                                    <label for="itemConditionBad">Bad</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionFair" value="3" {{ 'checked' if item.condition.int_value == 3 else '' }}><br>
                                     <label for="itemConditionFair">Fair</label>
                                 </span>
                                 <span>
-                                    <input type="radio" name="itemCondition" id="itemConditionGood" value="4" {{ 'checked' if item.condition == 4 else '' }}><br>
+                                    <input type="radio" name="itemCondition" id="itemConditionGood" value="4" {{ 'checked' if item.condition.int_value == 4 else '' }}><br>
                                     <label for="itemConditionGood">Good</label>
                                 </span>
                                 <span>
-                                    <input type="radio" name="itemCondition" id="itemConditionExcellent" value="5" {{ 'checked' if item.condition == 5 else '' }}><br>
+                                    <input type="radio" name="itemCondition" id="itemConditionExcellent" value="5" {{ 'checked' if item.condition.int_value == 5 else '' }}><br>
                                     <label for="itemConditionExcellent">Excellent</label>
                                 </span>
                             </span>

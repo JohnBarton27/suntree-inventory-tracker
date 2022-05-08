@@ -15,6 +15,7 @@ from waitress import serve
 
 # SIT
 from building import Building
+from condition import Condition
 from item import Item
 from label import Label, LabelColor
 from room import Room
@@ -192,7 +193,7 @@ def edit_item():
     end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
 
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
-    condition = int(request.form['itemCondition']) if request.form['itemCondition'] else None
+    condition = Condition.get_by_value(int(request.form['itemCondition'])) if request.form['itemCondition'] else None
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     label_ids = request.form.getlist('itemLabels')
     labels = [Label(db_id=int(label_id)) for label_id in label_ids]

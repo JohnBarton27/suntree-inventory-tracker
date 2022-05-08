@@ -94,11 +94,12 @@
     padding: 10px 25px;
     margin: 10px;
     text-align: center;
-    cursor: pointer;
+    cursor: default;
 }
 
-.sit-info-card:hover {
+a.sit-info-card:hover {
     background-color: #bbb;
+    cursor: pointer;
 }
 
 .sit-info-card p , .sit-info-card h3 {
