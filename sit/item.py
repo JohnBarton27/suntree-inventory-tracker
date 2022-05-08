@@ -13,7 +13,7 @@ class Item(SitObject):
 
     table_name = 'item'
 
-    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, quantity: int = None):
+    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, condition: int = None, quantity: int = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
@@ -21,6 +21,7 @@ class Item(SitObject):
         self._end_of_life_date = end_of_life_date
         self._room = room
         self._photo = photo
+        self._condition = condition
         self._quantity = quantity
 
     def __repr__(self):
@@ -135,6 +136,20 @@ class Item(SitObject):
         self.update()
 
     @property
+    def condition(self):
+        if self._condition is None:
+            self.populate()
+
+        return self._condition
+
+    def update_condition(self, condition: int):
+        if self._condition == condition:
+            return
+
+        self._condition = condition
+        self.update()
+
+    @property
     def quantity(self):
         if self._quantity is None:
             self.populate()
@@ -198,6 +213,7 @@ class Item(SitObject):
             'purchase_price': self._purchase_price,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
+            'condition': self.condition,
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
             'quantity': self._quantity

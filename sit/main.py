@@ -192,6 +192,7 @@ def edit_item():
     end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
 
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
+    condition = int(request.form['itemCondition']) if request.form['itemCondition'] else None
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     label_ids = request.form.getlist('itemLabels')
     labels = [Label(db_id=int(label_id)) for label_id in label_ids]
@@ -202,6 +203,7 @@ def edit_item():
     item_to_update.update_purchase_date(purchase_date)
     item_to_update.update_end_of_life_date(end_of_life_date)
     item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
+    item_to_update.update_condition(condition)
     item_to_update.update_quantity(quantity)
     item_to_update.update_labels(labels)
 

@@ -1,4 +1,5 @@
 let item_id = null;
+let current_rating = null;
 
 $(function(){
     let url_pieces = window.location.href.split('/')
@@ -23,7 +24,7 @@ $(function(){
         reader.readAsDataURL(currentFilesArray[0]);
         reader.onload = function () {
             formData.append('itemPicture', reader.result);
-
+            formData.append('itemCondition', current_rating)
             makeUpdateCall(formData);
         }
     });
@@ -54,6 +55,21 @@ $(function(){
 
     $('#confirmDeleteBtn').click(function() {
         makeDeleteCall();
+    });
+
+    $(document).ready(function(){
+        // Check Radio-box
+        $(".rating input:radio").attr("checked", false);
+
+        $('.rating input').click(function () {
+            $(".rating span").removeClass('checked');
+            $(this).parent().addClass('checked');
+        });
+
+        $('input:radio').change(
+            function(){
+                current_rating = this.value;
+            });
     });
 });
 
