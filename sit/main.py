@@ -98,6 +98,12 @@ def get_printing_orders():
     return render_template('printing/printing.html', print_orders=all_orders)
 
 
+@app.route('/printing/<order_id>')
+def print_order(order_id):
+    order = BarcodePrintOrder(db_id=int(order_id))
+    return render_template('printing/order.html', order=order)
+
+
 # API
 @app.route('/api/buildings/create', methods=['POST'])
 def create_building():

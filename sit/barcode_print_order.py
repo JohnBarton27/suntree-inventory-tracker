@@ -44,6 +44,10 @@ class BarcodePrintOrder(SitObject):
         return self._initiated
 
     @property
+    def initiated_readable(self):
+        return self.initiated.strftime('%b %d %Y - %I:%M:%S %p')
+
+    @property
     def items(self):
         if len(self._items) == 0:
             mappings = BarcodePrintOrderMapping.get_for_order(self)
