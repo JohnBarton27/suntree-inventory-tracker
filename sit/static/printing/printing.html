@@ -1,0 +1,50 @@
+<html>
+<head>
+	<title>Suntree Inventory Tracker - Printing</title>
+    {% include 'head.html' %}
+
+    <script src="{{ url_for('static', filename='/js/printing.js') }}"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+
+    <h1 style="text-align: center; margin-bottom: 25px;">
+        <i class="fas fa-print" style="margin-right: 5px;"></i> Printing
+    </h1>
+
+    <div style="text-align: center;">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newPrintOrderModal">
+            Create New
+        </button>
+    </div>
+
+    <div id="print_order_list" style="margin-top: 50px;">
+        {% include 'printing/list_orders.html' %}
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newPrintOrderModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newPrintOrderModalLabel">Create New Barcode Print Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="newPrintOrderForm" name="newPrintOrderForm" method="post">
+                        <div class="mb-3">
+                            <label for="orderNameText" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="orderNameText" name="orderNameText" required/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="newPrintOrderForm" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

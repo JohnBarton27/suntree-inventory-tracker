@@ -95,7 +95,7 @@ def label(label_id):
 @app.route('/printing')
 def get_printing_orders():
     all_orders = BarcodePrintOrder.get_all()
-    return render_template('printing/printing.html', orders=all_orders)
+    return render_template('printing/printing.html', print_orders=all_orders)
 
 
 # API
@@ -313,6 +313,19 @@ def scan_barcode():
         return f'/item/{item_id}'
 
     return ''
+
+
+@app.route('/api/printing/create', methods=['POST'])
+def create_print_order():
+    order_name = request.form['orderNameText']
+    initiated = datetime.now()
+
+    barcode_print_order = BarcodePrintOrder(name=order_name, initiated=initiated)
+    barcode_print_order.create()
+
+    all_orders = BarcodePrintOrder.get_all()
+
+    return render_template('printing/list_orders.html', print_orders=all_orders)
 
 
 def connect_to_database():
