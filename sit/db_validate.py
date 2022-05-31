@@ -95,6 +95,25 @@ def validate(db_name):
             for label_color in LabelColor.generate():
                 label_color.create()
 
+    # BARCODE PRINT ORDERS
+    with conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS barcode_print_order (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                initiated INTEGER NOT NULL
+            );
+        """)
+
+    # BARCODE PRINT ORDER MAPPINGS
+    with conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS barcode_print_order_mapping (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                order_id INTEGER NOT NULL,
+                item_id INTEGER NOT NULL
+            );
+        """)
+
     check_columns()
 
 
