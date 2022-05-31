@@ -45,6 +45,18 @@ class BarcodePrintOrder(SitObject):
 
         return self._items
 
+    def add_item(self, item):
+        new_mapping = BarcodePrintOrderMapping(barcode_print_order=self, item=item)
+        new_mapping.create()
+
+        self._items.append(item)
+
+    def remove_item(self, item):
+        mapping_to_remove = BarcodePrintOrderMapping(barcode_print_order=self, item=item)
+        mapping_to_remove.delete()
+
+        self._items.remove(item)
+
     def _get_create_params_dict(self):
         return {
             'initiated': int(self._initiated.timestamp())
