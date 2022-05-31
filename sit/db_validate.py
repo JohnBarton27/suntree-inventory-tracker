@@ -3,6 +3,7 @@ import sqlite3 as sl
 from urllib.request import pathname2url
 
 from item import Item
+from barcode_print_order import BarcodePrintOrder
 
 conn = None
 
@@ -100,6 +101,7 @@ def validate(db_name):
         conn.execute("""
             CREATE TABLE IF NOT EXISTS barcode_print_order (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                order_name TEXT NOT NULL,
                 initiated INTEGER NOT NULL
             );
         """)
@@ -119,11 +121,10 @@ def validate(db_name):
 
 def check_columns():
     check_items()
+    check_barcode_print_orders()
 
 
 def check_items():
-    results = Item.run_query(f"PRAGMA table_info({Item.table_name});")
-
     column_defs = {
         'photo': 'TEXT',
         'quantity': 'INTEGER',
@@ -131,7 +132,21 @@ def check_items():
         'condition': 'INTEGER DEFAULT 5'
     }
 
+    _correct_columns(Item, column_defs)
+
+
+def check_barcode_print_orders():
+    column_defs = {
+        'order_name': 'TEXT'
+    }
+
+    _correct_columns(BarcodePrintOrder, column_defs)
+
+
+def _correct_columns(object_class, column_defs):
+    results = object_class.run_query(f"PRAGMA table_info({object_class.table_name});")
+
     for column in column_defs:
         if not any(result['name'] == column for result in results):
-            logging.warning(f'Found missing column in {Item.table_name}: {column}. Adding now...')
-            Item.run_query(f'ALTER TABLE {Item.table_name} ADD COLUMN {column} {column_defs[column]}')
+            logging.warning(f'Found missing column in {object_class.table_name}: {column}. Adding now...')
+            object_class.run_query(f'ALTER TABLE {object_class.table_name} ADD COLUMN {column} {column_defs[column]}')

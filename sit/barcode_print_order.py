@@ -8,16 +8,17 @@ class BarcodePrintOrder(SitObject):
 
     table_name = 'barcode_print_order'
 
-    def __init__(self, db_id: int = None, initiated: datetime = datetime.now()):
+    def __init__(self, db_id: int = None, name: str = None, initiated: datetime = datetime.now()):
         super().__init__(db_id)
+        self._name = name
         self._initiated = initiated
         self._items = []
 
     def __repr__(self):
-        return self.initiated
+        return self.name
 
     def __str__(self):
-        return self.initiated
+        return self.name
 
     def __eq__(self, o):
         if not isinstance(o, BarcodePrintOrder):
@@ -27,6 +28,13 @@ class BarcodePrintOrder(SitObject):
 
     def __hash__(self):
         return hash(self._initiated)
+
+    @property
+    def name(self):
+        if self._name is None:
+            self.populate()
+
+        return self._name
 
     @property
     def initiated(self):
@@ -59,6 +67,7 @@ class BarcodePrintOrder(SitObject):
 
     def _get_create_params_dict(self):
         return {
+            'order_name': self._name,
             'initiated': int(self._initiated.timestamp())
         }
 
@@ -66,4 +75,4 @@ class BarcodePrintOrder(SitObject):
     def _get_from_db_result(cls, db_result):
         initiated_ts = int(db_result['initiated'])
         initiated = datetime.fromtimestamp(initiated_ts)
-        return BarcodePrintOrder(db_id=db_result['id'], initiated=initiated)
+        return BarcodePrintOrder(db_id=db_result['id'], name=db_result['order_name'], initiated=initiated)

@@ -19,6 +19,7 @@ from condition import Condition
 from item import Item
 from label import Label, LabelColor
 from room import Room
+from barcode_print_order import BarcodePrintOrder
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
@@ -89,6 +90,12 @@ def label(label_id):
     label = Label(db_id=int(label_id))
     items = label.get_items()
     return render_template('labels/label.html', label=label, items=items)
+
+
+@app.route('/printing')
+def get_printing_orders():
+    all_orders = BarcodePrintOrder.get_all()
+    return render_template('printing/printing.html', orders=all_orders)
 
 
 # API
