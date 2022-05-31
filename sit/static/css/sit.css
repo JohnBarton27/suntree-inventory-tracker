@@ -176,3 +176,20 @@ a.sit-info-card:hover {
     background:#F90;
     color:#FFF;
 }
+
+.item-card-info {
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+    width: 35%;
+    margin: auto;
+    font-size: 2rem;
+}
+
+@media (max-width: 780px) {
+    .item-card-info {
+        width: 100%;
+    }
+}
