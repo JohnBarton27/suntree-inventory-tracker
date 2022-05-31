@@ -183,13 +183,7 @@ a.sit-info-card:hover {
     justify-items: center;
     align-items: center;
     gap: 10px;
-    width: 35%;
+    width: 100%;
     margin: auto;
     font-size: 2rem;
-}
-
-@media (max-width: 780px) {
-    .item-card-info {
-        width: 100%;
-    }
 }

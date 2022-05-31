@@ -25,17 +25,17 @@
 
 <div class="item-card-info">
 
-    <span>
+    <span style="justify-self: end;">
         <strong>Location: </strong>
     </span>
-    <span>
+    <span style="justify-self: start;">
        <i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}
     </span>
 
-    <span>
+    <span style="justify-self: end;">
         <strong>Condition:</strong>
     </span>
-    <span style="font-size: 1rem;">
+    <span style="justify-self: start; font-size: 1rem;">
         <div style="text-align: center; margin-bottom: 10px;">
             <span class="sit-info-card" style="margin: auto; background-color: {{ item.condition.background_color }}; color: {{ item.condition.text_color }}">
                 {{ item.condition.text }}
@@ -44,36 +44,36 @@
     </span>
 
     {% if item.purchase_price %}
-        <span>
+        <span style="justify-self: end;">
             <strong>Purchase Price: </strong>
         </span>
-        <span>
+        <span style="justify-self: start;">
         {{ item.purchase_price_readable }}
         </span>
     {% endif %}
 
     {% if item.purchase_date %}
-        <span>
+        <span style="justify-self: end;">
             <strong>Purchase Date: </strong>
         </span>
-        <span>
+        <span style="justify-self: start;">
             {{ item.purchase_date }}
         </span>
     {% endif %}
 
     {% if item.end_of_life_date %}
-        <span>
+        <span style="justify-self: end;">
             <strong>End-of-Life Date: </strong>
         </span>
-        <span>
+        <span style="justify-self: start;">
             {{ item.end_of_life_date }}
         </span>
     {% endif %}
 
-    <span>
+    <span style="justify-self: end;">
         <strong>Labels:</strong>
     </span>
-    <span style="font-size: 1rem;">
+    <span style="justify-self: start; font-size: 1rem;">
         <div id="labels" style="text-align: center; margin-top: 15px;">
             {% for label in item.labels %}
                 <a class="sit-inv-link sit-info-card" href="/label/{{ label.id }}" style="background-color: {{ label.color.hex_code }}; {{ 'color: white;' if label.color.white_text else '' }}">
