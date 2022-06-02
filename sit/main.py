@@ -101,7 +101,7 @@ def get_printing_orders():
 @app.route('/printing/<order_id>')
 def print_order(order_id):
     order = BarcodePrintOrder(db_id=int(order_id))
-    return render_template('printing/order.html', order=order)
+    return render_template('printing/order.html', order=order, items=order.items)
 
 
 # API
