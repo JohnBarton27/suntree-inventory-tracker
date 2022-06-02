@@ -187,3 +187,12 @@ a.sit-info-card:hover {
     margin: auto;
     font-size: 2rem;
 }
+
+.sit-vertical-list {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 80%;
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+}

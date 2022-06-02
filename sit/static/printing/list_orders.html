@@ -1,5 +1,6 @@
 {% for order in print_orders %}
-    <a class="sit-inv-link sit-info-card" href="/printing/{{ order.id }}" style="">
-        {{ order.name }}
+    <a class="sit-vertical-list sit-inv-link" href="/printing/{{ order.id }}" style="">
+        <strong>{{ order.name }}</strong>
+        <p style="float: right;">{{ order.initiated_readable }}</p>
     </a>
 {% endfor %}
