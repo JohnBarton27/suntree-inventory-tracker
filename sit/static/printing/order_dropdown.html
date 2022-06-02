@@ -1,0 +1,6 @@
+<label for="printingOrders" class="form-label">Print Order</label>
+<select class="form-control" id="printingOrders" name="printingOrders">
+{% for order in print_orders %}
+    <option value="{{ order.id }}">{{ order.name }}</option>
+{% endfor %}
+</select>

@@ -331,7 +331,27 @@ def create_print_order():
 
     all_orders = BarcodePrintOrder.get_all()
 
-    return render_template('printing/list_orders.html', print_orders=all_orders)
+    return render_template('printing/order_dropdown.html', orders=all_orders)
+
+
+@app.route('/api/printing/dropdown', methods=['GET'])
+def get_printing_order_dropdown():
+    all_orders = BarcodePrintOrder.get_all()
+
+    return render_template('printing/order_dropdown.html', print_orders=all_orders)
+
+
+@app.route('/api/printing/<order_id>/add_item', methods=['POST'])
+def add_item_to_print_order(order_id):
+    order = BarcodePrintOrder.get_by_id(int(order_id))
+    item_id = int(request.form['itemId'])
+
+    item_to_add = Item.get_by_id(item_id)
+
+    order.add_item(item_to_add)
+
+    return 'SUCCESS'
+
 
 
 def connect_to_database():

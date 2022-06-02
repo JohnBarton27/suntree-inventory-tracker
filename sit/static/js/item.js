@@ -57,6 +57,42 @@ $(function(){
         makeDeleteCall();
     });
 
+    $('#printItemModal').on('show.bs.modal', function () {
+        // Get Print Orders
+        let printOrderSelect = $('#printOrderSelectElem');
+
+        $.get('/api/printing/dropdown',
+            null,
+            function(data, status, xhr){
+                // Update data on page
+                printOrderSelect.html(data);
+            }
+        );
+    });
+
+    $('#printItemForm').on('submit', function(e){
+        e.preventDefault();
+
+        let form = $('#printItemForm')[0];
+        let formData = new FormData(form);
+
+        formData.append('itemId', item_id);
+
+        let printingOrderId = formData.get('printingOrders');
+
+        $.ajax({
+            url: '/api/printing/' + printingOrderId + '/add_item',
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                // Hide Modal
+                $('#printItemModal').modal('hide')
+            }
+        });
+    });
+
     $(document).ready(function(){
         // Check Radio-box
         $(".rating input:radio").attr("checked", false);

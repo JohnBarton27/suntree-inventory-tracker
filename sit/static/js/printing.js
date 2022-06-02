@@ -2,9 +2,7 @@
 console.log('LOADED PRINTING.JS')
 
 $(function() {
-    console.log("IN FUNCTION")
     $('#newPrintOrderForm').on('submit', function (e) {
-        console.log("FORM SUBMITTED");
         e.preventDefault();
         $.post('/api/printing/create',
             $('#newPrintOrderForm').serialize(),
