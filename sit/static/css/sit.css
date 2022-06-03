@@ -196,3 +196,7 @@ a.sit-info-card:hover {
     margin: 10px auto;
     padding: 10px;
 }
+
+.sit-vertical-list:hover {
+    background-color: #eee;
+}
