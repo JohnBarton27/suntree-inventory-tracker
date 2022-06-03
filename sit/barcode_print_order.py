@@ -83,6 +83,34 @@ class BarcodePrintOrder(SitObject):
             'initiated': int(self._initiated.timestamp())
         }
 
+    def export_for_printing(self):
+        from fpdf import FPDF
+
+
+        # save FPDF() class into a
+        # variable pdf
+        pdf = FPDF()
+
+        # Add a page
+        pdf.add_page()
+
+        # set style and size of font
+        # that you want in the pdf
+        pdf.set_font("Arial", size = 15)
+
+        # create a cell
+        pdf.cell(200, 10, txt=self.name, ln=1, align='C')
+
+        for item in self.items:
+            barcode_url = f'http://localhost:9263/api/items/{item.id}/barcode.png'
+            pdf.image(name=barcode_url)
+
+        # save the pdf with name .pdf
+        pdf.output("GFG.pdf")
+
+        import os
+        print(os.getcwd())
+
     @classmethod
     def _get_from_db_result(cls, db_result):
         initiated_ts = int(db_result['initiated'])

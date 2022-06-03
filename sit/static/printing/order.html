@@ -11,8 +11,14 @@
 <h1 style="text-align: center; margin-bottom: 25px;">
     <i class="fas fa-print" style="margin-right: 5px;"></i> {{ order.name }}
 </h1>
-<div style="text-align: center">
+<div style="text-align: center; margin-top: -15px;">
     Order Created: {{ order.initiated_readable }}
+</div>
+
+<div style="text-align: center;">
+    <button type="button" class="btn btn-secondary" style="margin: auto;" onclick="printBarcodes()">
+        Print Barcodes &nbsp;<i class="fas fa-print"></i>
+    </button>
 </div>
 
 <div id="item_list" class="sit-item-display-container" style="margin: 15px auto; display: flex; justify-content:center; width: 80%;">

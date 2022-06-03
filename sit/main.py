@@ -10,7 +10,7 @@ import cv2
 from pyzbar.pyzbar import decode
 
 # Flask/webapps
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from waitress import serve
 
 # SIT
@@ -302,6 +302,18 @@ def advanced_search_items():
     return render_template('items/list_items.html', items=matching_items)
 
 
+@app.route('/api/items/<item_id>/barcode.png', methods=['GET'])
+def get_barcode_for_item(item_id):
+    item_for_barcode = Item.get_by_id(int(item_id))
+    import base64
+    import io
+
+    f = base64.b64decode(item_for_barcode.barcode)
+    f = io.BytesIO(f)
+
+    return send_file(f, attachment_filename='barcode.png')
+
+
 @app.route('/api/scan_barcode', methods=['POST'])
 def scan_barcode():
     image_base_64 = request.form['image_source'].split(',')[-1]
@@ -352,6 +364,12 @@ def add_item_to_print_order(order_id):
 
     return 'SUCCESS'
 
+
+@app.route('/api/printing/<order_id>/export', methods=['GET'])
+def export_barcodes(order_id):
+    order = BarcodePrintOrder.get_by_id(int(order_id))
+    order.export_for_printing()
+    return send_file('GFG.pdf', attachment_filename='exported.pdf')
 
 
 def connect_to_database():
