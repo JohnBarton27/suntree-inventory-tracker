@@ -83,33 +83,36 @@ class BarcodePrintOrder(SitObject):
             'initiated': int(self._initiated.timestamp())
         }
 
-    def export_for_printing(self):
+    def export_for_printing(self, base_url: str):
         from fpdf import FPDF
+        page_width = 4.25
+        page_height = 12
+        side_margins = 0.2
 
+        barcode_height = 0.95
+        barcode_width = barcode_height * 3
 
-        # save FPDF() class into a
-        # variable pdf
-        pdf = FPDF()
+        space_between_barcode = 0.15
+
+        barcode_x_offset = (page_width - barcode_width) / 2
+
+        pdf = FPDF(orientation='p', unit='in', format=(page_width, page_height))
+        pdf.set_margins(left=side_margins, right=side_margins, top=0)
 
         # Add a page
         pdf.add_page()
 
         # set style and size of font
         # that you want in the pdf
-        pdf.set_font("Arial", size = 15)
+        pdf.set_font("Arial", size=15)
 
-        # create a cell
-        pdf.cell(200, 10, txt=self.name, ln=1, align='C')
-
-        for item in self.items:
-            barcode_url = f'http://localhost:9263/api/items/{item.id}/barcode.png'
-            pdf.image(name=barcode_url)
+        for i, item in enumerate(self.items):
+            barcode_url = f'{base_url}/api/items/{item.id}/barcode.png'
+            y_offset = 0 if i == 0 else i * (space_between_barcode + barcode_height)
+            pdf.image(name=barcode_url, h=barcode_height, w=barcode_width, x=barcode_x_offset, y=y_offset)
 
         # save the pdf with name .pdf
         pdf.output("GFG.pdf")
-
-        import os
-        print(os.getcwd())
 
     @classmethod
     def _get_from_db_result(cls, db_result):

@@ -311,7 +311,7 @@ def get_barcode_for_item(item_id):
     f = base64.b64decode(item_for_barcode.barcode)
     f = io.BytesIO(f)
 
-    return send_file(f, attachment_filename='barcode.png')
+    return send_file(f, download_name='barcode.png')
 
 
 @app.route('/api/scan_barcode', methods=['POST'])
@@ -368,8 +368,9 @@ def add_item_to_print_order(order_id):
 @app.route('/api/printing/<order_id>/export', methods=['GET'])
 def export_barcodes(order_id):
     order = BarcodePrintOrder.get_by_id(int(order_id))
-    order.export_for_printing()
-    return send_file('GFG.pdf', attachment_filename='exported.pdf')
+    base_url = request.url_root
+    order.export_for_printing(base_url)
+    return send_file('GFG.pdf', download_name='exported.pdf')
 
 
 def connect_to_database():
