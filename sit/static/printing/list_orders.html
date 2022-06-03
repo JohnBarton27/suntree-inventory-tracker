@@ -1,6 +1,7 @@
 {% for order in print_orders %}
-    <a class="sit-vertical-list sit-inv-link" href="/printing/{{ order.id }}" style="">
+    <a class="sit-vertical-list sit-inv-link" href="/printing/{{ order.id }}" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-auto-flow: row; align-items: center; justify-items: center;">
         <strong>{{ order.name }}</strong>
-        <p style="float: right;">{{ order.initiated_readable }}</p>
+        <span>{{ order.num_items }} item(s)</span>
+        <span style="float: right;">{{ order.initiated_readable }}</span>
     </a>
 {% endfor %}

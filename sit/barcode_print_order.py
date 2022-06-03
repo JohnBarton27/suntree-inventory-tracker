@@ -57,6 +57,10 @@ class BarcodePrintOrder(SitObject):
 
         return self._items
 
+    @property
+    def num_items(self):
+        return len(self.items)
+
     def add_item(self, item):
         if item in self.items:
             # Refuse to add the same item twice
