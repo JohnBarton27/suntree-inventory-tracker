@@ -58,6 +58,10 @@ class BarcodePrintOrder(SitObject):
         return self._items
 
     def add_item(self, item):
+        if item in self.items:
+            # Refuse to add the same item twice
+            return
+
         new_mapping = BarcodePrintOrderMapping(barcode_print_order=self, item=item)
         new_mapping.create()
 
