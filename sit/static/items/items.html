@@ -132,6 +132,31 @@
                             <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate"/>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Current Condition</label><br>
+                            <span style="display: grid; grid-auto-flow: column; text-align: center;">
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionPoor" value="1"><br>
+                                    <label for="itemConditionPoor">Poor</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionBad" value="2"><br>
+                                    <label for="itemConditionBad">Bad</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionFair" value="3"><br>
+                                    <label for="itemConditionFair">Fair</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionGood" value="4"><br>
+                                    <label for="itemConditionGood">Good</label>
+                                </span>
+                                <span>
+                                    <input type="radio" name="itemCondition" id="itemConditionExcellent" value="5" checked><br>
+                                    <label for="itemConditionExcellent">Excellent</label>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="mb-3">
                             <label for="itemQuantity" class="form-label">Item Quantity</label>
                             <input type="number" min="1" step="any" value="1" class="form-control" id="itemQuantity" name="itemQuantity" />
                         </div>

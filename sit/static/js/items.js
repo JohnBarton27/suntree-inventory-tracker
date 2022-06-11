@@ -1,6 +1,7 @@
+let current_rating = null;
 
-$(function(){
-    $('#newItemForm').on('submit', function(e){
+$(function() {
+    $('#newItemForm').on('submit', function (e) {
         e.preventDefault();
 
         let form = $('#newItemForm')[0];
@@ -9,6 +10,9 @@ $(function(){
         let reader = new FileReader();
 
         let currentFilesArray = $("#itemPicture").prop('files')
+
+        // Add rating
+        formData.append('itemCondition', current_rating)
 
         if (currentFilesArray.length === 0) {
             // No picture selected
@@ -24,7 +28,7 @@ $(function(){
         }
     });
     setupSearchField();
-    $('#searchItemsForm').on('submit', function(e){
+    $('#searchItemsForm').on('submit', function (e) {
         e.preventDefault();
 
         let form = $('#searchItemsForm')[0];
@@ -32,6 +36,12 @@ $(function(){
 
         makeSearchCall(formData);
     });
+
+    $('input:radio').change(
+        function () {
+            current_rating = this.value;
+        }
+    );
 });
 
 $(document).ready( function () {

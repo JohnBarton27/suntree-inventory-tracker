@@ -176,6 +176,7 @@ def create_items():
 
     label_ids = request.form.getlist('itemLabels')
     labels = [Label(db_id=int(label_id)) for label_id in label_ids]
+    condition = Condition.get_by_value(int(request.form['itemCondition'])) if request.form['itemCondition'] else None
 
     item = Item(description=request.form['itemDesc'],
                 purchase_price=purchase_price,
@@ -183,7 +184,8 @@ def create_items():
                 end_of_life_date=end_of_life_date,
                 room=Room(db_id=int(request.form['itemRoom'])),
                 photo=photo_src,
-                quantity=quantity)
+                quantity=quantity,
+                condition=condition)
 
     item.create()
 
