@@ -109,24 +109,29 @@ class BarcodePrintOrder(SitObject):
         # Add a page
         pdf.add_page()
 
-        # pdf.line(0, 1, 4.5, 1)
-        # pdf.line(0, 2, 4.5, 2)
-        # pdf.line(0, 3, 4.5, 3)
-        # pdf.line(0, 4, 4.5, 4)
-        # pdf.line(0, 5, 4.5, 5)
-
+        first_of_page = True
+        nth_of_page = 0
         for i, item in enumerate(self.items):
-            if i == 0:
+            if i % 10 == 0 and i != 0:
+                # 11th/21st/31st/etc. item, needs new page
+                pdf.add_page()
+                first_of_page = True
+
+            if i == 0 or first_of_page:
                 y_offset = initial_y_offset
                 pdf.ln(y_offset)
+                nth_of_page = 0
+                first_of_page = False
             else:
-                y_offset = initial_y_offset + i * (space_between_barcode + barcode_height)
+                y_offset = initial_y_offset + nth_of_page * (space_between_barcode + barcode_height)
 
             pdf.cell(w=0, border=0, h=text_height, txt=item.description.upper(), align='C', ln=1)
             pdf.ln(barcode_height + space_between_barcode - text_height)
 
             barcode_url = f'{base_url}/api/items/{item.id}/barcode.png'
             pdf.image(name=barcode_url, h=barcode_height, w=barcode_width, x=barcode_x_offset, y=y_offset + text_height)
+
+            nth_of_page += 1
 
         # save the pdf with name .pdf
         pdf.output("GFG.pdf")
