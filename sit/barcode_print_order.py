@@ -89,16 +89,16 @@ class BarcodePrintOrder(SitObject):
         page_height = 12
         side_margins = 0.2
 
-        barcode_height = 0.85
-        barcode_width = barcode_height * 3
-
-        # Skip first label because printer margins may cut it off
-        initial_y_offset = 1
-
         font_size = 10
         text_height = font_size / 72
 
-        space_between_barcode = 0.25 + text_height
+        barcode_height = 0.80
+        barcode_width = barcode_height * 3
+
+        # Skip first label because printer margins may cut it off
+        initial_y_offset = 0.95
+
+        space_between_barcode = 0.12 + text_height
 
         barcode_x_offset = (page_width - barcode_width) / 2
 
@@ -109,11 +109,21 @@ class BarcodePrintOrder(SitObject):
         # Add a page
         pdf.add_page()
 
-        for i, item in enumerate(self.items):
-            y_offset = initial_y_offset if i == 0 else (initial_y_offset + i * (space_between_barcode + barcode_height))
-            pdf.line(barcode_x_offset, y_offset, barcode_x_offset + barcode_width, y_offset)
+        # pdf.line(0, 1, 4.5, 1)
+        # pdf.line(0, 2, 4.5, 2)
+        # pdf.line(0, 3, 4.5, 3)
+        # pdf.line(0, 4, 4.5, 4)
+        # pdf.line(0, 5, 4.5, 5)
 
-            pdf.text(x=barcode_x_offset, y=y_offset + text_height, txt=item.description.upper())
+        for i, item in enumerate(self.items):
+            if i == 0:
+                y_offset = initial_y_offset
+                pdf.ln(y_offset)
+            else:
+                y_offset = initial_y_offset + i * (space_between_barcode + barcode_height)
+
+            pdf.cell(w=0, border=0, h=text_height, txt=item.description.upper(), align='C', ln=1)
+            pdf.ln(barcode_height + space_between_barcode - text_height)
 
             barcode_url = f'{base_url}/api/items/{item.id}/barcode.png'
             pdf.image(name=barcode_url, h=barcode_height, w=barcode_width, x=barcode_x_offset, y=y_offset + text_height)
