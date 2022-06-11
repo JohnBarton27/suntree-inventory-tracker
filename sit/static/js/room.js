@@ -9,6 +9,7 @@ $(function() {
 function generateRoomOrder() {
     $.post('/api/printing/forRoom/' + room_id,
         function (data, status, xhr) {
-            console.log('Order created!')
+            let new_order_id = data['order_id']
+            window.location.href = '/printing/' + new_order_id
         });
 }

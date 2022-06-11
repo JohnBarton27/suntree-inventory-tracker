@@ -42,7 +42,8 @@ def buildings():
 def building(building_id):
     this_bldg = Building.get_by_id(building_id)
     rooms_in_building = Room.get_for_building(this_bldg)
-    return render_template('buildings/building.html', building=this_bldg, rooms=rooms_in_building, show_room_locations=False)
+    return render_template('buildings/building.html', building=this_bldg, rooms=rooms_in_building,
+                           show_room_locations=False)
 
 
 @app.route('/rooms')
@@ -65,7 +66,8 @@ def items():
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
     all_labels = Label.get_all()
-    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings, labels=all_labels, show_item_locations=True)
+    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
+                           labels=all_labels, show_item_locations=True)
 
 
 @app.route('/item/<item_id>')
@@ -157,7 +159,8 @@ def get_labels_dropdown():
     item_for_labels = Item.get_by_id(item_id)
     all_labels = Label.get_all()
     labels_on_item = [label.id for label in Label.get_for_item(item_for_labels)]
-    return render_template('labels/labels_dropdown.html', labels=all_labels, item=item_for_labels, selected=labels_on_item)
+    return render_template('labels/labels_dropdown.html', labels=all_labels, item=item_for_labels,
+                           selected=labels_on_item)
 
 
 @app.route('/api/items/create', methods=['POST'])
@@ -244,7 +247,8 @@ def search_items():
     search_term = request.args['search_term']
     all_items = Item.get_all()
 
-    matching_items = [item_to_check for item_to_check in all_items if search_term.lower() in item_to_check.description.lower()]
+    matching_items = [item_to_check for item_to_check in all_items if
+                      search_term.lower() in item_to_check.description.lower()]
 
     return render_template('items/list_items.html', items=matching_items)
 
@@ -259,10 +263,13 @@ def advanced_search_items():
     lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
     highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
 
-    earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemEarliestPurchaseDate'] else None
-    latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form['itemLatestPurchaseDate'] else None
+    earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if \
+    request.form['itemEarliestPurchaseDate'] else None
+    latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form[
+        'itemLatestPurchaseDate'] else None
 
-    search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form['itemBuildingSearch'] else None
+    search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form[
+        'itemBuildingSearch'] else None
 
     search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
 
@@ -386,7 +393,7 @@ def create_order_for_room(room_id):
     for room_item in room_items:
         order.add_item(room_item)
 
-    return 'SUCCESS!'
+    return {'order_id': order.id}
 
 
 def connect_to_database():
