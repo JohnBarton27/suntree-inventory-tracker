@@ -89,27 +89,34 @@ class BarcodePrintOrder(SitObject):
         page_height = 12
         side_margins = 0.2
 
-        barcode_height = 0.95
+        barcode_height = 0.85
         barcode_width = barcode_height * 3
 
-        space_between_barcode = 0.15
+        # Skip first label because printer margins may cut it off
+        initial_y_offset = 1
+
+        font_size = 10
+        text_height = font_size / 72
+
+        space_between_barcode = 0.25 + text_height
 
         barcode_x_offset = (page_width - barcode_width) / 2
 
         pdf = FPDF(orientation='p', unit='in', format=(page_width, page_height))
         pdf.set_margins(left=side_margins, right=side_margins, top=0)
+        pdf.set_font('Arial', size=font_size)
 
         # Add a page
         pdf.add_page()
 
-        # set style and size of font
-        # that you want in the pdf
-        pdf.set_font("Arial", size=15)
-
         for i, item in enumerate(self.items):
+            y_offset = initial_y_offset if i == 0 else (initial_y_offset + i * (space_between_barcode + barcode_height))
+            pdf.line(barcode_x_offset, y_offset, barcode_x_offset + barcode_width, y_offset)
+
+            pdf.text(x=barcode_x_offset, y=y_offset + text_height, txt=item.description.upper())
+
             barcode_url = f'{base_url}/api/items/{item.id}/barcode.png'
-            y_offset = 0 if i == 0 else i * (space_between_barcode + barcode_height)
-            pdf.image(name=barcode_url, h=barcode_height, w=barcode_width, x=barcode_x_offset, y=y_offset)
+            pdf.image(name=barcode_url, h=barcode_height, w=barcode_width, x=barcode_x_offset, y=y_offset + text_height)
 
         # save the pdf with name .pdf
         pdf.output("GFG.pdf")
