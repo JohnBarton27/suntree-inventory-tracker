@@ -44,8 +44,8 @@ class BarcodePrintOrderMapping(SitObject):
 
     @classmethod
     def _get_from_db_result(cls, db_result):
-        from sit.barcode_print_order import BarcodePrintOrder
-        from sit.item import Item
+        from barcode_print_order import BarcodePrintOrder
+        from item import Item
 
         order = BarcodePrintOrder(db_id=db_result['order_id'])
         item = Item(db_id=db_result['item_id'])

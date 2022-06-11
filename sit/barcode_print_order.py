@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from sit_object import SitObject
-from sit.barcode_print_order_mapping import BarcodePrintOrderMapping
+from barcode_print_order_mapping import BarcodePrintOrderMapping
 
 
 class BarcodePrintOrder(SitObject):
