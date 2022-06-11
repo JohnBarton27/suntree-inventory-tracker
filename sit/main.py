@@ -373,6 +373,20 @@ def export_barcodes(order_id):
     return send_file('GFG.pdf', download_name='exported.pdf')
 
 
+@app.route('/api/printing/forRoom/<room_id>', methods=['POST'])
+def create_order_for_room(room_id):
+    this_room = Room.get_by_id(int(room_id))
+    room_items = Item.get_for_room(this_room)
+
+    order = BarcodePrintOrder(name=f'{str(this_room)}')
+    order.create()
+
+    for room_item in room_items:
+        order.add_item(room_item)
+
+    return 'SUCCESS!'
+
+
 def connect_to_database():
     from db_validate import validate
     db_name = 'suntree-inventory-tracker.db'
