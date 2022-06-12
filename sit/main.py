@@ -15,87 +15,32 @@ from barcode_print_order import BarcodePrintOrder
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
+# VIEWS
+from routes.views import building_view_routes, item_view_routes, label_view_routes, printing_view_routes, room_view_routes, view_routes
 
-@app.route('/')
-def index():
-    num_items = len(Item.get_all())
-    num_buildings = len(Building.get_all())
-    num_rooms = len(Room.get_all())
-    return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms)
+# Top Level
+app.add_url_rule('/', view_func=view_routes.index)
+app.add_url_rule('/scanner', view_func=view_routes.scanner)
 
+# Buildings
+app.add_url_rule('/buildings', view_func=building_view_routes.buildings)
+app.add_url_rule('/building/<building_id>', view_func=building_view_routes.building)
 
-@app.route('/buildings')
-def buildings():
-    all_buildings = Building.get_all()
-    return render_template('buildings/buildings.html', buildings=all_buildings)
+# Items
+app.add_url_rule('/items', view_func=item_view_routes.items)
+app.add_url_rule('/item/<item_id>', view_func=item_view_routes.item)
 
+# Labels
+app.add_url_rule('/labels', view_func=label_view_routes.get_labels)
+app.add_url_rule('/label/<label_id>', view_func=label_view_routes.label)
 
-@app.route('/building/<building_id>')
-def building(building_id):
-    this_bldg = Building.get_by_id(building_id)
-    rooms_in_building = Room.get_for_building(this_bldg)
-    return render_template('buildings/building.html', building=this_bldg, rooms=rooms_in_building,
-                           show_room_locations=False)
+# Printing
+app.add_url_rule('/printing', view_func=printing_view_routes.get_printing_orders)
+app.add_url_rule('/printing/<order_id>', view_func=printing_view_routes.print_order)
 
-
-@app.route('/rooms')
-def rooms():
-    all_rooms = Room.get_all()
-    all_buildings = Building.get_all()
-    return render_template('rooms/rooms.html', rooms=all_rooms, buildings=all_buildings, show_room_locations=True)
-
-
-@app.route('/room/<room_id>')
-def room(room_id):
-    this_room = Room.get_by_id(room_id)
-    items_in_room = Item.get_for_room(this_room)
-    return render_template('rooms/room.html', room=this_room, items=items_in_room, show_item_locations=False)
-
-
-@app.route('/items')
-def items():
-    all_items = Item.get_all()
-    all_rooms = Room.get_all()
-    all_buildings = Building.get_all()
-    all_labels = Label.get_all()
-    return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
-                           labels=all_labels, show_item_locations=True)
-
-
-@app.route('/item/<item_id>')
-def item(item_id):
-    this_item = Item.get_by_id(item_id)
-    return render_template('items/item.html', item=this_item)
-
-
-@app.route('/scanner')
-def scanner():
-    return render_template('items/scanner.html')
-
-
-@app.route('/labels')
-def get_labels():
-    all_labels = Label.get_all()
-    return render_template('labels/labels.html', labels=all_labels)
-
-
-@app.route('/label/<label_id>')
-def label(label_id):
-    label = Label(db_id=int(label_id))
-    items = label.get_items()
-    return render_template('labels/label.html', label=label, items=items)
-
-
-@app.route('/printing')
-def get_printing_orders():
-    all_orders = BarcodePrintOrder.get_all()
-    return render_template('printing/printing.html', print_orders=all_orders)
-
-
-@app.route('/printing/<order_id>')
-def print_order(order_id):
-    order = BarcodePrintOrder(db_id=int(order_id))
-    return render_template('printing/order.html', order=order, items=order.items)
+# Rooms
+app.add_url_rule('/rooms', view_func=room_view_routes.rooms)
+app.add_url_rule('/room/<room_id>', view_func=room_view_routes.room)
 
 
 # API
