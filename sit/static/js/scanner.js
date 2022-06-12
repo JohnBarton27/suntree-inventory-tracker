@@ -27,6 +27,9 @@ function initCapture() {
     videoSelect.onchange = getStream;
 
     function gotDevices(deviceInfos) {
+        let lastUsedCamera = localStorage.getItem('lastUsedCamera');
+        console.log('LAST USED CAMERA:')
+        console.log(lastUsedCamera);
         for (let i = 0; i !== deviceInfos.length; ++i) {
             const deviceInfo = deviceInfos[i];
             const option = document.createElement("option");
@@ -34,13 +37,18 @@ function initCapture() {
             if (deviceInfo.kind === "videoinput") {
                 option.text = deviceInfo.label || "camera " + (videoSelect.length + 1);
                 videoSelect.appendChild(option);
-            } else {
-                console.log("Found another kind of device: ", deviceInfo);
+            }
+
+            if (lastUsedCamera === deviceInfo.deviceId) {
+                console.log("SETTING CAMERA TO THE ONE THAT WAS USED LAST")
+                console.log(deviceInfo.deviceId)
+                videoSelect.value = deviceInfo.deviceId;
             }
         }
     }
 
     function getStream() {
+        localStorage.setItem('lastUsedCamera', videoSelect.value);
         if (window.stream) {
             window.stream.getTracks().forEach(function (track) {
                 track.stop();
@@ -86,9 +94,7 @@ function sendScreenshot() {
         contentType: false,
         type: 'POST',
         success: function(data){
-            if (data === "") {
-                console.log('EMPTY BARCODE')
-            } else {
+            if (data !== "") {
                 console.log("Redirecting to " + data)
                 window.location.href = data;
             }
