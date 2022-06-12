@@ -28,8 +28,6 @@ function initCapture() {
 
     function gotDevices(deviceInfos) {
         let lastUsedCamera = localStorage.getItem('lastUsedCamera');
-        console.log('LAST USED CAMERA:')
-        console.log(lastUsedCamera);
         for (let i = 0; i !== deviceInfos.length; ++i) {
             const deviceInfo = deviceInfos[i];
             const option = document.createElement("option");
@@ -40,8 +38,6 @@ function initCapture() {
             }
 
             if (lastUsedCamera === deviceInfo.deviceId) {
-                console.log("SETTING CAMERA TO THE ONE THAT WAS USED LAST")
-                console.log(deviceInfo.deviceId)
                 videoSelect.value = deviceInfo.deviceId;
             }
         }
