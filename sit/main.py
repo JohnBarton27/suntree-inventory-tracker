@@ -1,23 +1,15 @@
 # Standard Packages
-import base64
-from datetime import datetime
 import logging
-import numpy as np
 import os
 
-# Barcode Reading
-import cv2
-from pyzbar.pyzbar import decode
-
 # Flask/webapps
-from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask import Flask, render_template
 from waitress import serve
 
 # SIT
 from building import Building
-from condition import Condition
 from item import Item
-from label import Label, LabelColor
+from label import Label
 from room import Room
 from barcode_print_order import BarcodePrintOrder
 
@@ -107,293 +99,37 @@ def print_order(order_id):
 
 
 # API
-@app.route('/api/buildings/create', methods=['POST'])
-def create_building():
-    bldg_num = request.form['bldgNum']
-
-    bldg = Building(number=bldg_num)
-    bldg.create()
-
-    all_buildings = Building.get_all()
-
-    return render_template('buildings/list_buildings.html', buildings=all_buildings)
-
-
-@app.route('/api/rooms/create', methods=['POST'])
-def create_room():
-    bldg_id = int(request.form['roomBldg'])
-    room_num = request.form['roomNumber']
-
-    room = Room(building=Building(db_id=bldg_id), number=room_num)
-    room.create()
-
-    all_rooms = Room.get_all()
-
-    return render_template('rooms/list_rooms.html', rooms=all_rooms)
-
-
-@app.route('/api/labels/create', methods=['POST'])
-def create_label():
-    label_text = request.form['labelText']
-
-    label_color = LabelColor.get_random()
-    label = Label(text=label_text, color=label_color)
-    label.create()
-
-    all_labels = Label.get_all()
-
-    return render_template('labels/list_labels.html', labels=all_labels)
-
-
-@app.route('/api/rooms/get_dropdown', methods=['GET'])
-def get_rooms_dropdown():
-    item_id = int(request.args['item_id'])
-    item_for_rooms = Item.get_by_id(item_id)
-    all_rooms = Room.get_all()
-    return render_template('rooms/rooms_dropdown.html', rooms=all_rooms, item=item_for_rooms)
-
-
-@app.route('/api/labels/get_dropdown', methods=['GET'])
-def get_labels_dropdown():
-    item_id = int(request.args['item_id'])
-    item_for_labels = Item.get_by_id(item_id)
-    all_labels = Label.get_all()
-    labels_on_item = [label.id for label in Label.get_for_item(item_for_labels)]
-    return render_template('labels/labels_dropdown.html', labels=all_labels, item=item_for_labels,
-                           selected=labels_on_item)
-
-
-@app.route('/api/items/create', methods=['POST'])
-def create_items():
-    purchase_date_str = request.form['itemPurchaseDate']
-    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
-
-    end_of_life_date_str = request.form['itemEndOfLifeDate']
-    end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
-
-    purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
-    quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
-    photo_src = None
-    if 'itemPicture' in request.form:
-        photo_src = request.form['itemPicture']
-
-    label_ids = request.form.getlist('itemLabels')
-    labels = [Label(db_id=int(label_id)) for label_id in label_ids]
-    condition = Condition.get_by_value(int(request.form['itemCondition'])) if request.form['itemCondition'] else None
-
-    item = Item(description=request.form['itemDesc'],
-                purchase_price=purchase_price,
-                purchase_date=purchase_date,
-                end_of_life_date=end_of_life_date,
-                room=Room(db_id=int(request.form['itemRoom'])),
-                photo=photo_src,
-                quantity=quantity,
-                condition=condition)
-
-    item.create()
-
-    for label in labels:
-        item.add_label(label)
-
-    all_items = Item.get_all()
-
-    return render_template('items/list_items.html', items=all_items, show_item_locations=True)
-
-
-@app.route('/api/items/update', methods=['POST'])
-def edit_item():
-    item_id = int(request.args['id'])
-
-    purchase_date_str = request.form['itemPurchaseDate']
-    purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
-
-    end_of_life_date_str = request.form['itemEndOfLifeDate']
-    end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
-
-    purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
-    condition = Condition.get_by_value(int(request.form['itemCondition'])) if request.form['itemCondition'] else None
-    quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
-    label_ids = request.form.getlist('itemLabels')
-    labels = [Label(db_id=int(label_id)) for label_id in label_ids]
-
-    item_to_update = Item.get_by_id(item_id)
-    item_to_update.update_description(request.form['itemDesc'])
-    item_to_update.update_purchase_price(purchase_price)
-    item_to_update.update_purchase_date(purchase_date)
-    item_to_update.update_end_of_life_date(end_of_life_date)
-    item_to_update.update_room(Room(db_id=int(request.form['itemRoom'])))
-    item_to_update.update_condition(condition)
-    item_to_update.update_quantity(quantity)
-    item_to_update.update_labels(labels)
-
-    if 'itemPicture' in request.form:
-        item_to_update.update_photo(request.form['itemPicture'])
-
-    return render_template('items/item_card.html', item=item_to_update)
-
-
-@app.route('/api/items/delete', methods=['DELETE'])
-def delete_item():
-    item_id = int(request.args['id'])
-    item_to_delete = Item.get_by_id(item_id)
-
-    item_to_delete.delete()
-
-    return '/items'
-
-
-@app.route('/api/items/search', methods=['GET'])
-def search_items():
-    search_term = request.args['search_term']
-    all_items = Item.get_all()
-
-    matching_items = [item_to_check for item_to_check in all_items if
-                      search_term.lower() in item_to_check.description.lower()]
-
-    return render_template('items/list_items.html', items=matching_items)
-
-
-@app.route('/api/items/advanced_search', methods=['POST'])
-def advanced_search_items():
-    all_items = Item.get_all()
-    if not request.form:
-        return render_template('items/list_items.html', items=all_items)
-
-    description_search = request.form['itemDescSearch']
-    lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
-    highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
-
-    earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if \
-    request.form['itemEarliestPurchaseDate'] else None
-    latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form[
-        'itemLatestPurchaseDate'] else None
-
-    search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form[
-        'itemBuildingSearch'] else None
-
-    search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
-
-    matching_items = []
-    for item_to_check in all_items:
-        if description_search and description_search.lower() not in item_to_check.description.lower():
-            continue
-
-        if (lowest_price or highest_price) and not item_to_check.purchase_price:
-            continue
-
-        if lowest_price and lowest_price > item_to_check.purchase_price:
-            continue
-
-        if highest_price and highest_price < item_to_check.purchase_price:
-            continue
-
-        if (earliest_purchase_date or latest_purchase_date) and not item_to_check.purchase_date:
-            continue
-
-        if earliest_purchase_date and earliest_purchase_date > item_to_check.purchase_date:
-            continue
-
-        if latest_purchase_date and latest_purchase_date < item_to_check.purchase_date:
-            continue
-
-        if search_building and not item_to_check.room:
-            continue
-
-        if search_building and item_to_check.room.building != search_building:
-            continue
-
-        if search_label and search_label not in item_to_check.labels:
-            continue
-
-        # Match!
-        matching_items.append(item_to_check)
-
-    return render_template('items/list_items.html', items=matching_items)
-
-
-@app.route('/api/items/<item_id>/barcode.png', methods=['GET'])
-def get_barcode_for_item(item_id):
-    item_for_barcode = Item.get_by_id(int(item_id))
-    import base64
-    import io
-
-    f = base64.b64decode(item_for_barcode.barcode)
-    f = io.BytesIO(f)
-
-    return send_file(f, download_name='barcode.png')
-
-
-@app.route('/api/scan_barcode', methods=['POST'])
-def scan_barcode():
-    image_base_64 = request.form['image_source'].split(',')[-1]
-
-    img = base64.b64decode(image_base_64)
-    npimg = np.fromstring(img, dtype=np.uint8)
-    source = cv2.imdecode(npimg, 1)
-    detectedBarcodes = decode(source)
-
-    if len(detectedBarcodes) > 0:
-        barcode_val = detectedBarcodes[0].data.decode('utf-8')
-        print(detectedBarcodes[0])
-        item_id = int(f'{barcode_val}'[:-1]) - 10000000000
-
-        return f'/item/{item_id}'
-
-    return ''
-
-
-@app.route('/api/printing/create', methods=['POST'])
-def create_print_order():
-    order_name = request.form['orderNameText']
-    initiated = datetime.now()
-
-    barcode_print_order = BarcodePrintOrder(name=order_name, initiated=initiated)
-    barcode_print_order.create()
-
-    all_orders = BarcodePrintOrder.get_all()
-
-    return render_template('printing/order_dropdown.html', orders=all_orders)
-
-
-@app.route('/api/printing/dropdown', methods=['GET'])
-def get_printing_order_dropdown():
-    all_orders = BarcodePrintOrder.get_all()
-
-    return render_template('printing/order_dropdown.html', print_orders=all_orders)
-
-
-@app.route('/api/printing/<order_id>/add_item', methods=['POST'])
-def add_item_to_print_order(order_id):
-    order = BarcodePrintOrder.get_by_id(int(order_id))
-    item_id = int(request.form['itemId'])
-
-    item_to_add = Item.get_by_id(item_id)
-
-    order.add_item(item_to_add)
-
-    return 'SUCCESS'
-
-
-@app.route('/api/printing/<order_id>/export', methods=['GET'])
-def export_barcodes(order_id):
-    order = BarcodePrintOrder.get_by_id(int(order_id))
-    base_url = request.url_root
-    order.export_for_printing(base_url)
-    return send_file('GFG.pdf', download_name='exported.pdf')
-
-
-@app.route('/api/printing/forRoom/<room_id>', methods=['POST'])
-def create_order_for_room(room_id):
-    this_room = Room.get_by_id(int(room_id))
-    room_items = Item.get_for_room(this_room)
-
-    order = BarcodePrintOrder(name=f'{str(this_room)}')
-    order.create()
-
-    for room_item in room_items:
-        order.add_item(room_item)
-
-    return {'order_id': order.id}
+from routes.api import api_routes, building_api_routes, item_api_routes, label_api_routes, printing_api_routes, \
+    room_api_routes
+
+# Top Level
+app.add_url_rule('/api/scan_barcode', view_func=api_routes.scan_barcode, methods=['POST'])
+
+# Buildings
+app.add_url_rule('/api/buildings/create', view_func=building_api_routes.create_building, methods=['POST'])
+
+# Items
+app.add_url_rule('/api/items/<item_id>', view_func=item_api_routes.get_barcode_for_item, methods=['GET'])
+app.add_url_rule('/api/items/advanced_search', view_func=item_api_routes.advanced_search_items, methods=['POST'])
+app.add_url_rule('/api/items/create', view_func=item_api_routes.create_item, methods=['POST'])
+app.add_url_rule('/api/items/delete', view_func=item_api_routes.delete_item, methods=['DELETE'])
+app.add_url_rule('/api/items/search', view_func=item_api_routes.search_items, methods=['GET'])
+app.add_url_rule('/api/items/update', view_func=item_api_routes.edit_item, methods=['POST'])
+
+# Labels
+app.add_url_rule('/api/labels/create', view_func=label_api_routes.create_label, methods=['POST'])
+app.add_url_rule('/api/labels/get_dropdown', view_func=label_api_routes.get_label_dropdown, methods=['GET'])
+
+# Printing
+app.add_url_rule('/api/printing/<order_id>/add_item', view_func=printing_api_routes.add_item_to_print_order, methods=['POST'])
+app.add_url_rule('/api/printing/<order_id>/export', view_func=printing_api_routes.export_barcodes, methods=['GET'])
+app.add_url_rule('/api/printing/create', view_func=printing_api_routes.create_print_order, methods=['POST'])
+app.add_url_rule('/api/printing/dropdown', view_func=printing_api_routes.get_printing_order_dropdown, methods=['GET'])
+app.add_url_rule('/api/printing/forRoom/<room_id>', view_func=printing_api_routes.create_order_for_room, methods=['POST'])
+
+# Rooms
+app.add_url_rule('/api/rooms/create', view_func=room_api_routes.create_room, methods=['POST'])
+app.add_url_rule('/api/rooms/get_dropdown', view_func=room_api_routes.get_room_dropdown, methods=['GET'])
 
 
 def connect_to_database():
