@@ -4,8 +4,11 @@
     </h1>
 
     <div id="roomButtons">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editRoomModal" style="margin-top: auto;">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editRoomModal" style="margin: auto;">
             Edit &nbsp;<i class="fas fa-edit"></i>
+        </button>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRoomModal" style="margin: auto;">
+            Delete &nbsp;<i class="fas fa-trash"></i>
         </button>
         <button type="button" class="btn btn-secondary" style="margin: auto;" onclick="generateRoomOrder()">
             Generate Print Order for {{ room.building.number }}-{{ room.number }}&nbsp;<i class="fas fa-print"></i>

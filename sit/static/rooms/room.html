@@ -45,5 +45,32 @@
             </div>
         </div>
     </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Room</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>{{ room.building.number }}-{{ room.number }}</strong>?</p>
+
+                    <div class="btn-danger" style="display: flex; align-items: center; justify-content: center; font-size:1.25rem; border-radius: 15px; padding: 5px 15px;">
+                        <span style="padding-left: 0; padding-right: 15px; font-size:2rem;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span>Deleting this room will also delete all items contained in it.</span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

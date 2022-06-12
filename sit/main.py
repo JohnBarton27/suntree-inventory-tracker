@@ -67,6 +67,7 @@ app.add_url_rule('/api/printing/forRoom/<room_id>', view_func=printing_api_route
 
 # Rooms
 app.add_url_rule('/api/rooms/create', view_func=room_api_routes.create_room, methods=['POST'])
+app.add_url_rule('/api/rooms/delete', view_func=room_api_routes.delete_room, methods=['DELETE'])
 app.add_url_rule('/api/rooms/get_dropdown', view_func=room_api_routes.get_room_dropdown, methods=['GET'])
 app.add_url_rule('/api/rooms/update', view_func=room_api_routes.edit_room, methods=['POST'])
 

@@ -128,6 +128,9 @@ class SitObject(ABC):
         results = cls.run_query(query, (db_id,))
 
         # Should only be one match, so return the 'first' result
+        if len(results) < 1:
+            raise Exception(f'{cls.__name__} item {db_id} not found!')
+
         return cls._get_from_db_result(results[0])
 
     @classmethod

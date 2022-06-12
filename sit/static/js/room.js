@@ -25,8 +25,11 @@ $(function() {
             }
         });
     });
-});
 
+    $("#confirmDeleteBtn").on("click", function() {
+        deleteRoom();
+    });
+});
 
 function generateRoomOrder() {
     $.post('/api/printing/forRoom/' + room_id,
@@ -34,4 +37,20 @@ function generateRoomOrder() {
             let new_order_id = data['order_id']
             window.location.href = '/printing/' + new_order_id
         });
+}
+
+function deleteRoom() {
+    $.ajax({
+        url: '/api/rooms/delete?id=' + room_id,
+        processData: false,
+        contentType: false,
+        type: 'DELETE',
+        success: function(data){
+            // Hide Modal
+            $('#deleteRoomModal').modal('hide')
+
+            // Update data on page
+            window.location.href = data
+        }
+    });
 }

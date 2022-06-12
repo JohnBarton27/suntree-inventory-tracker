@@ -35,3 +35,16 @@ def edit_room():
     room_to_update.update_number(room_num)
 
     return render_template('rooms/room_header.html', room=room_to_update)
+
+
+def delete_room():
+    room_id = int(request.args['id'])
+    room_to_delete = Room.get_by_id(room_id)
+
+    # Delete items
+    for item in Item.get_for_room(room_to_delete):
+        item.delete()
+
+    room_to_delete.delete()
+
+    return '/rooms'
