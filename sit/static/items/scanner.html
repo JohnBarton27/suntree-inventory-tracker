@@ -5,7 +5,7 @@
 
     <script src="{{ url_for('static', filename='/js/scanner.js') }}"></script>
 </head>
-<body>
+<body style="height: 100%">
     {% include 'header.html' %}
 
     <h1 style="text-align: center">Scanner</h1>
@@ -13,7 +13,11 @@
         <div style="text-align: center;">
             <select id="videoSource" class="form-control" style="margin: 10px auto; width:250px;"></select>
         </div>
-        <video style="margin: auto" autoplay></video>
     </div>
+
+    <div style="display: flex; height: 80%">
+        <video style="display: flex; flex-flow: column; margin: 0 auto;" autoplay></video>
+    </div>
+
 </body>
 </html>
