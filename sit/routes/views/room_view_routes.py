@@ -14,4 +14,5 @@ def rooms():
 def room(room_id):
     this_room = Room.get_by_id(room_id)
     items_in_room = Item.get_for_room(this_room)
-    return render_template('rooms/room.html', room=this_room, items=items_in_room, show_item_locations=False)
+    all_buildings = Building.get_all()
+    return render_template('rooms/room.html', room=this_room, items=items_in_room, buildings=all_buildings, show_item_locations=False)

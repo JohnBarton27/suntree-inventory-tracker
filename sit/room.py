@@ -37,6 +37,20 @@ class Room(SitObject):
             'building': self.building.id
         }
 
+    def update_building(self, building: Building):
+        if self._building == building:
+            return
+
+        self._building = building
+        self.update()
+
+    def update_number(self, number: str):
+        if self._number == number:
+            return
+
+        self._number = number
+        self.update()
+
     @classmethod
     def get_for_building(cls, building: Building):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE building=?;', (building.id,))
