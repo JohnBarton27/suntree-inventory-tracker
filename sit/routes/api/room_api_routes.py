@@ -34,5 +34,4 @@ def edit_room():
     room_to_update.update_building(Building(db_id=bldg_id))
     room_to_update.update_number(room_num)
 
-    items_in_room = Item.get_for_room(room_to_update)
-    return render_template('rooms/room.html', room=room_to_update, items=items_in_room, show_item_locations=False)
+    return render_template('rooms/room_header.html', room=room_to_update)

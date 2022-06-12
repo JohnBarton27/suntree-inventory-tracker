@@ -8,45 +8,39 @@
 <body>
     {% include 'header.html' %}
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; grid-auto-flow: row;">
-        <h1 style="text-align: center; margin-bottom: 25px; grid-column: 2">
-            <i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}
-        </h1>
-
-        <button type="button" class="btn btn-secondary" style="margin: auto;" onclick="generateRoomOrder()">
-            Generate Print Order for {{ room.building.number }}-{{ room.number }}&nbsp;<i class="fas fa-print"></i>
-        </button>
+    <div id="roomHeader">
+        {% include 'rooms/room_header.html' %}
     </div>
 
     {% include 'items/list_items.html' %}
 
-    <!-- Modal -->
-    <div class="modal fade" id="newRoomModal" tabindex="-1" aria-hidden="true">
+    <!-- Edit Room Modal -->
+    <div class="modal fade" id="editRoomModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="newRoomModalLabel">Create New Room</h5>
+                    <h5 class="modal-title" id="editRoomModalLabel">Edit Room</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="newRoomForm" name="newRoomForm" method="post">
+                    <form id="editRoomForm" name="editRoomForm" method="post">
                         <div class="mb-3">
-                            <label for="roomBldg" class="form-label">Building</label>
-                            <select class="form-control" id="roomBldg" name="roomBldg">
+                            <label for="editRoomBldg" class="form-label">Building</label>
+                            <select class="form-control" id="editRoomBldg" name="editRoomBldg">
                                 {% for building in buildings %}
-                                <option value="{{ building.id }}">{{ building.number }}</option>
+                                    <option value="{{ building.id }}" {{ 'selected' if room.building.id == building.id else ''}}>{{ building.number }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="roomNumber" class="form-label">Room Number</label>
-                            <input type="text" class="form-control" id="roomNumber" name="roomNumber" required/>
+                            <label for="editRoomNumber" class="form-label">Room Number</label>
+                            <input type="text" class="form-control" id="editRoomNumber" name="editRoomNumber" value="{{ room.number }}" required/>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="newRoomForm" class="btn btn-primary">Create</button>
+                    <button type="submit" form="editRoomForm" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

@@ -3,6 +3,28 @@ let room_id = null;
 $(function() {
     let url_pieces = window.location.href.split('/')
     room_id = url_pieces[url_pieces.length - 1];
+
+    $('#editRoomForm').on('submit', function(e){
+        e.preventDefault();
+
+        let form = $('#editRoomForm')[0];
+        let formData = new FormData(form);
+
+        $.ajax({
+            url: '/api/rooms/update?id=' + room_id,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                // Hide Modal
+                $('#editRoomModal').modal('hide')
+
+                // Update data on page
+                $('#roomHeader').html(data.replace(/<html>(.*)<\/html>/, "$1"));
+            }
+        });
+    });
 });
 
 
