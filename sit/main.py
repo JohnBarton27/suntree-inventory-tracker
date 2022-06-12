@@ -3,15 +3,8 @@ import logging
 import os
 
 # Flask/webapps
-from flask import Flask, render_template
+from flask import Flask
 from waitress import serve
-
-# SIT
-from building import Building
-from item import Item
-from label import Label
-from room import Room
-from barcode_print_order import BarcodePrintOrder
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 
