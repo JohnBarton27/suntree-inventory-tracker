@@ -13,3 +13,11 @@ def create_building():
 
     return render_template('buildings/list_buildings.html', buildings=all_buildings)
 
+
+def delete_building():
+    building_id = int(request.args['id'])
+    building_to_delete = Building.get_by_id(building_id)
+
+    building_to_delete.delete()
+
+    return '/buildings'

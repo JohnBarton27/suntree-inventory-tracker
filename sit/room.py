@@ -51,6 +51,13 @@ class Room(SitObject):
         self._number = number
         self.update()
 
+    def delete(self):
+        from item import Item
+        for item in Item.get_for_room(self):
+            item.delete()
+
+        super().delete()
+
     @classmethod
     def get_for_building(cls, building: Building):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE building=?;', (building.id,))

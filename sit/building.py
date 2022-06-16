@@ -36,6 +36,13 @@ class Building(SitObject):
             'number': self.number
         }
 
+    def delete(self):
+        from room import Room
+        for room in Room.get_for_building(self):
+            room.delete()
+
+        super().delete()
+
     @classmethod
     def _get_from_db_result(cls, db_result):
         return Building(db_id=db_result['id'], number=db_result['number'])

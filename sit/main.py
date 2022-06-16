@@ -45,6 +45,7 @@ app.add_url_rule('/api/scan_barcode', view_func=api_routes.scan_barcode, methods
 
 # Buildings
 app.add_url_rule('/api/buildings/create', view_func=building_api_routes.create_building, methods=['POST'])
+app.add_url_rule('/api/buildings/delete', view_func=building_api_routes.delete_building, methods=['DELETE'])
 
 # Items
 app.add_url_rule('/api/items/<item_id>', view_func=item_api_routes.get_barcode_for_item, methods=['GET'])

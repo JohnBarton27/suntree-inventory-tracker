@@ -40,11 +40,6 @@ def edit_room():
 def delete_room():
     room_id = int(request.args['id'])
     room_to_delete = Room.get_by_id(room_id)
-
-    # Delete items
-    for item in Item.get_for_room(room_to_delete):
-        item.delete()
-
     room_to_delete.delete()
 
     return '/rooms'
