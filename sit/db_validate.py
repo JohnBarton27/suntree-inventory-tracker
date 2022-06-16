@@ -49,7 +49,7 @@ def validate(db_name):
                 end_of_life_date INTEGER,
                 room INT REFERENCES room(id) ON DELETE CASCADE,
                 photo TEXT,
-                condition INTEGER DEFAULT 5,
+                condition INTEGER DEFAULT 4,
                 quantity INTEGER
             );
         """)
@@ -114,6 +114,11 @@ def validate(db_name):
                 order_id INTEGER NOT NULL,
                 item_id INTEGER NOT NULL
             );
+        """)
+
+    with conn:
+        conn.execute("""
+        UPDATE item SET condition = 4 WHERE condition = 5;
         """)
 
     check_columns()

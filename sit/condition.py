@@ -16,10 +16,9 @@ class Condition(Enum):
         self.int_value = int_value
 
     ONE   = 'Poor',      '#9e2121', 'white', 1
-    TWO   = 'Bad',       '#bd5428', 'white', 2
-    THREE = 'Fair',      '#636363', 'white', 3
-    FOUR  = 'Good',      '#3d37bd', 'white', 4
-    FIVE  = 'Excellent', '#35a147', 'white', 5
+    TWO   = 'Fair',      '#636363', 'white', 2
+    THREE = 'Good',      '#3d37bd', 'white', 3
+    FOUR  = 'Excellent', '#35a147', 'white', 4
 
     @staticmethod
     def get_by_value(value: int):
@@ -31,7 +30,5 @@ class Condition(Enum):
             return Condition.THREE
         elif value == 4:
             return Condition.FOUR
-        elif value == 5:
-            return Condition.FIVE
         else:
             raise Exception(f'No such condition - {value}')
