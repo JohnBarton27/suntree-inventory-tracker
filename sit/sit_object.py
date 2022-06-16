@@ -112,18 +112,20 @@ class SitObject(ABC):
         return objs
 
     @classmethod
-    def get_all(cls, order_by: str = None):
-        cls._check_for_class_name()
-
+    def get_ordering_str(cls, order_by: str = None):
         if cls.default_ordering and not order_by:
             order_by = cls.default_ordering
 
-        query = f'SELECT * FROM {cls.table_name}'
-
         if order_by:
-            query += f' ORDER BY {order_by}'
+            return f' ORDER BY {order_by}'
 
-        query += ';'
+        return ''
+
+    @classmethod
+    def get_all(cls, order_by: str = None):
+        cls._check_for_class_name()
+
+        query = f'SELECT * FROM {cls.table_name}{cls.get_ordering_str(order_by)};'
 
         results = cls.run_query(query)
         return cls._get_multiple_from_db_result(results)

@@ -5,6 +5,7 @@ from building import Building
 class Room(SitObject):
 
     table_name = 'room'
+    default_ordering = 'number'
 
     def __init__(self, db_id: int = None, number: str = None, building: Building = None):
         super().__init__(db_id)
@@ -59,8 +60,16 @@ class Room(SitObject):
         super().delete()
 
     @classmethod
+    def get_all(cls, order_by: str = None):
+        all_rooms = super().get_all(order_by=order_by)
+
+        all_rooms.sort(key=lambda x: x.building.number)
+
+        return all_rooms
+
+    @classmethod
     def get_for_building(cls, building: Building):
-        results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE building=?;', (building.id,))
+        results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE building=?{cls.get_ordering_str()};', (building.id,))
         return cls._get_multiple_from_db_result(results)
 
     @classmethod
