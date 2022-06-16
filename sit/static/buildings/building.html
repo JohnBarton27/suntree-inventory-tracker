@@ -8,13 +8,13 @@
 <body>
     {% include 'header.html' %}
 
-    <h1 style="text-align: center; margin-bottom: 25px;">
-        <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ building.number }}
-    </h1>
+    <div id="buildingHeader">
+        {% include 'buildings/building_header.html' %}
+    </div>
 
     {% include 'rooms/list_rooms.html' %}
 
-    <!-- Modal -->
+    <!-- New Room Modal -->
     <div class="modal fade" id="newRoomModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -41,6 +41,33 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="newRoomForm" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Building Modal -->
+    <div class="modal fade" id="deleteBuildingModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Building</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>Building {{ building.number }}</strong>?</p>
+
+                    <div class="btn-danger" style="display: flex; align-items: center; justify-content: center; font-size:1.25rem; border-radius: 15px; padding: 5px 15px;">
+                        <span style="padding-left: 0; padding-right: 15px; font-size:2rem;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </span>
+                        <span>Deleting this building will also delete all rooms & items contained in it.</span>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
                 </div>
             </div>
         </div>

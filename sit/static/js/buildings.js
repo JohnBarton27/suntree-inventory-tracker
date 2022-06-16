@@ -1,4 +1,3 @@
-
 $(function(){
     $('#newBldgForm').on('submit', function(e){
         e.preventDefault();
