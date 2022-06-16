@@ -6,6 +6,7 @@ class SitObject(ABC):
 
     db_name = 'suntree-inventory-tracker.db'
     table_name = None
+    default_ordering = None
 
     def __init__(self, db_id: int = None):
         self.id = db_id
@@ -113,6 +114,9 @@ class SitObject(ABC):
     @classmethod
     def get_all(cls, order_by: str = None):
         cls._check_for_class_name()
+
+        if cls.default_ordering and not order_by:
+            order_by = cls.default_ordering
 
         query = f'SELECT * FROM {cls.table_name}'
 

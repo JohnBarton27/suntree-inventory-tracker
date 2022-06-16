@@ -4,6 +4,7 @@ from sit_object import SitObject
 class Building(SitObject):
 
     table_name = 'building'
+    default_ordering = 'number'
 
     def __init__(self, db_id: int = None, number: str = None):
         super().__init__(db_id)
