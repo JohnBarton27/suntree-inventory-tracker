@@ -9,10 +9,16 @@ def create_room():
     bldg_id = int(request.form['roomBldg'])
     room_num = request.form['roomNumber']
 
-    room = Room(building=Building(db_id=bldg_id), number=room_num)
+    bldg = Building(db_id=bldg_id)
+
+    room = Room(building=bldg, number=room_num)
     room.create()
 
-    all_rooms = Room.get_all()
+    if 'forBuilding' in request.form and request.form['forBuilding'] == 'true':
+        # Only get rooms for building
+        all_rooms = Room.get_for_building(bldg)
+    else:
+        all_rooms = Room.get_all()
 
     return render_template('rooms/list_rooms.html', rooms=all_rooms)
 

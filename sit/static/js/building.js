@@ -29,6 +29,30 @@ $(function(){
             }
         });
     });
+
+    $('#newRoomForm').on('submit', function(e){
+        e.preventDefault();
+
+        let form = $('#newRoomForm')[0];
+        let formData = new FormData(form);
+        formData.append('roomBldg', building_id);
+        formData.append('forBuilding', 'true')
+
+        $.ajax({
+                url: '/api/rooms/create',
+                data: formData,
+                processData: false,
+                contentType: false,
+                type: 'POST',
+                success:  function(data){
+                    // Hide Modal
+                    $('#newRoomModal').modal('hide')
+
+                    // Update data on page
+                    $('#roomList').html(data);
+                }
+        });
+    });
 });
 
 function deleteBuilding() {
