@@ -14,13 +14,15 @@ def create_room():
     room = Room(building=bldg, number=room_num)
     room.create()
 
-    if 'forBuilding' in request.form and request.form['forBuilding'] == 'true':
+    for_bldg = 'forBuilding' in request.form and request.form['forBuilding'] == 'true'
+
+    if for_bldg:
         # Only get rooms for building
         all_rooms = Room.get_for_building(bldg)
     else:
         all_rooms = Room.get_all()
 
-    return render_template('rooms/list_rooms.html', rooms=all_rooms)
+    return render_template('rooms/list_rooms.html', rooms=all_rooms, show_room_locations=not for_bldg)
 
 
 def get_room_dropdown():
