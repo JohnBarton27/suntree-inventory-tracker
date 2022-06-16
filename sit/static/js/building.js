@@ -7,6 +7,28 @@ $(function(){
     $("#confirmDeleteBtn").on("click", function() {
         deleteBuilding();
     });
+
+    $('#editBuildingForm').on('submit', function(e){
+        e.preventDefault();
+
+        let form = $('#editBuildingForm')[0];
+        let formData = new FormData(form);
+
+        $.ajax({
+            url: '/api/buildings/update?id=' + building_id,
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                // Hide Modal
+                $('#editBuildingModal').modal('hide')
+
+                // Update data on page
+                $('#buildingHeader').html(data.replace(/<html>(.*)<\/html>/, "$1"));
+            }
+        });
+    });
 });
 
 function deleteBuilding() {

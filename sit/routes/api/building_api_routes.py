@@ -26,9 +26,9 @@ def delete_building():
 def edit_building():
     building_id = int(request.args['id'])
 
-    bldg_num = request.form['editBldgNumber']
+    bldg_num = request.form['editBuildingNumber']
 
     bldg_to_update = Building.get_by_id(building_id)
     bldg_to_update.update_number(bldg_num)
 
-    return render_template('buildings/building_header.html', bldg=bldg_to_update)
+    return render_template('buildings/building_header.html', building=bldg_to_update)

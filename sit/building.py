@@ -43,6 +43,14 @@ class Building(SitObject):
 
         super().delete()
 
+    def update_number(self, number: str):
+        if self._number == number:
+            return
+
+        self._number = number
+        self.update()
+
+
     @classmethod
     def _get_from_db_result(cls, db_result):
         return Building(db_id=db_result['id'], number=db_result['number'])
