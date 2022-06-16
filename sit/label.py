@@ -94,6 +94,13 @@ class Label(SitObject):
 
         return self._color
 
+    def update_text(self, text: str):
+        if self._text == text:
+            return
+
+        self._text = text
+        self.update()
+
     def _get_create_params_dict(self):
         return {
             'text': self.text,

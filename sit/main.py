@@ -58,7 +58,9 @@ app.add_url_rule('/api/items/update', view_func=item_api_routes.edit_item, metho
 
 # Labels
 app.add_url_rule('/api/labels/create', view_func=label_api_routes.create_label, methods=['POST'])
+app.add_url_rule('/api/labels/delete', view_func=label_api_routes.delete_label, methods=['DELETE'])
 app.add_url_rule('/api/labels/get_dropdown', view_func=label_api_routes.get_label_dropdown, methods=['GET'])
+app.add_url_rule('/api/labels/update', view_func=label_api_routes.edit_label, methods=['POST'])
 
 # Printing
 app.add_url_rule('/api/printing/<order_id>/add_item', view_func=printing_api_routes.add_item_to_print_order, methods=['POST'])

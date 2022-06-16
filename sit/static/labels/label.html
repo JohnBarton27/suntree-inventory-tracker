@@ -3,16 +3,59 @@
 	<title>Suntree Inventory Tracker</title>
     {% include 'head.html' %}
 
-    <script src="{{ url_for('static', filename='/js/labels.js') }}"></script>
+    <script src="{{ url_for('static', filename='/js/label.js') }}"></script>
 </head>
 <body>
     {% include 'header.html' %}
 
-    <h1 style="text-align: center; margin-bottom: 25px;">
-        <i class="fas fa-tag" style="margin-right: 5px;"></i> {{ label.text }}
-    </h1>
+    <div id="labelHeader">
+        {% include 'labels/label_header.html' %}
+    </div>
 
     {% include 'items/list_items.html' %}
 
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editLabelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editLabelModalLabel">Edit Label</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editLabelForm" name="editLabelForm" method="post">
+                        <div class="mb-3">
+                            <label for="labelText" class="form-label">Text</label>
+                            <input type="text" class="form-control" id="labelText" name="labelText" value="{{ label.text }}" required/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="editLabelForm" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteLabelModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Label</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <strong>{{ label.text }}</strong>?</p>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="confirmDeleteBtn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
