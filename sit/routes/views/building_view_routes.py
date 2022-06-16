@@ -5,7 +5,7 @@ from room import Room
 
 
 def buildings():
-    all_buildings = Building.get_all()
+    all_buildings = Building.get_all(order_by='number')
     return render_template('buildings/buildings.html', buildings=all_buildings)
 
 
