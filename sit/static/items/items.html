@@ -132,7 +132,8 @@
                             <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate"/>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Current Condition</label><br>
+                            <label class="form-label">Current Condition <i id="conditionHelpQ" class="fas fa-question-circle" style="color: gray; cursor: pointer;"></i></label><br>
+                            <div id="conditionHelp" style="height: 0px; overflow: hidden;">{% include 'items/condition_help.html' %}</div>
                             <span style="display: grid; grid-auto-flow: column; text-align: center;">
                                 <span>
                                     <input type="radio" name="itemCondition" id="itemConditionPoor" value="1"><br>
