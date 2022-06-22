@@ -1,3 +1,10 @@
+{#
+   Requireds two elements - a 'conditionHelpTrigger' (which, when pressed, opens/closes this table) and a
+   'conditionHelp' div, which will contain this element like so:
+
+   <div id="conditionHelp" style="height: 0; overflow: hidden;">{% include 'items/condition_help.html' %}</div>
+#}
+
 <table class="sit-item-table">
     <tr>
         <th>Level</th>
@@ -20,3 +27,18 @@
         <td>Needs replacement ASAP. Not functional (or, marginally functional).</td>
     </tr>
 </table>
+
+<script type="application/javascript">
+    let conditionHelpShown = false;
+
+    $("#conditionHelpTrigger").on("click", function(){
+        let height = "275px";
+        if (conditionHelpShown) {
+            height = "0px";
+        }
+
+        $("#conditionHelp").animate({height: height})
+
+        conditionHelpShown = !conditionHelpShown;
+    });
+</script>

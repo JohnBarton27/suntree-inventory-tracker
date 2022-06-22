@@ -1,5 +1,4 @@
 let current_rating = null;
-let conditionHelpShown = false;
 
 $(function() {
     $('#newItemForm').on('submit', function (e) {
@@ -43,17 +42,6 @@ $(function() {
             current_rating = this.value;
         }
     );
-
-    $("#conditionHelpQ").on("click", function(){
-        let height = "275px";
-        if (conditionHelpShown) {
-            height = "0px";
-        }
-
-        $("#conditionHelp").animate({height: height})
-
-        conditionHelpShown = !conditionHelpShown;
-    });
 });
 
 $(document).ready( function () {
