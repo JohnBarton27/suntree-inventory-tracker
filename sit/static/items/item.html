@@ -39,7 +39,8 @@
                             <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate" value="{{ item.end_of_life_date }}"/>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Current Condition</label><br>
+                            <label class="form-label">Current Condition <i id="conditionHelpTrigger" class="fas fa-question-circle" style="color: gray; cursor: pointer;"></i></label><br>
+                            <div id="conditionHelp" style="height: 0; overflow: hidden;">{% include 'items/condition_help.html' %}</div>
                             <span style="display: grid; grid-auto-flow: column; text-align: center;">
                                 <span>
                                     <input type="radio" name="itemCondition" id="itemConditionPoor" value="1" {{ 'checked' if item.condition.int_value == 1 else '' }}><br>
