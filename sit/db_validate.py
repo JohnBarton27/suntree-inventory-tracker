@@ -4,6 +4,7 @@ from urllib.request import pathname2url
 
 from item import Item
 from barcode_print_order import BarcodePrintOrder
+from label import Label
 
 conn = None
 
@@ -116,17 +117,18 @@ def validate(db_name):
             );
         """)
 
+    check_columns()
+
     with conn:
         conn.execute("""
         UPDATE item SET condition = 4 WHERE condition = 5;
         """)
 
-    check_columns()
-
 
 def check_columns():
     check_items()
     check_barcode_print_orders()
+    check_labels()
 
 
 def check_items():
@@ -148,6 +150,16 @@ def check_barcode_print_orders():
     _correct_columns(BarcodePrintOrder, column_defs)
 
 
+def check_labels():
+    column_defs = {
+        'text': 'TEXT NOT NULL',
+        'label_color_id': 'INT DEFAULT 1',
+    }
+
+    _correct_columns(Label, column_defs)
+    _check_foreign_key(Label, 'label_color_id', 'id', 'label_color')
+
+
 def _correct_columns(object_class, column_defs):
     results = object_class.run_query(f"PRAGMA table_info({object_class.table_name});")
 
@@ -155,3 +167,13 @@ def _correct_columns(object_class, column_defs):
         if not any(result['name'] == column for result in results):
             logging.warning(f'Found missing column in {object_class.table_name}: {column}. Adding now...')
             object_class.run_query(f'ALTER TABLE {object_class.table_name} ADD COLUMN {column} {column_defs[column]}')
+
+
+def _check_foreign_key(object_class, local_col_name, remote_col_name, remote_table_name):
+    results = object_class.run_query(f'PRAGMA foreign_key_list({object_class.table_name});')
+    for result in results:
+        if result['from'] == local_col_name and result['to'] == remote_col_name and result['table'] == remote_table_name:
+            # Found, can assume it is correct & present
+            return
+
+    logging.warning(f'Missing foreign key reference - {object_class.table_name}({local_col_name}) -> {remote_table_name}({remote_col_name})')
