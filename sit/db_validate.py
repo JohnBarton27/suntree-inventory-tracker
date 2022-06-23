@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import sqlite3 as sl
 from urllib.request import pathname2url
@@ -51,7 +52,9 @@ def validate(db_name):
                 room INT REFERENCES room(id) ON DELETE CASCADE,
                 photo TEXT,
                 condition INTEGER DEFAULT 4,
-                quantity INTEGER
+                quantity INTEGER,
+                original_inventory_date INTEGER,
+                last_modified_date INTEGER
             );
         """)
 
@@ -132,11 +135,14 @@ def check_columns():
 
 
 def check_items():
+    now = datetime.now()
     column_defs = {
         'photo': 'TEXT',
         'quantity': 'INTEGER',
         'end_of_life_date': 'INTEGER',
-        'condition': 'INTEGER DEFAULT 5'
+        'condition': 'INTEGER DEFAULT 5',
+        'original_inventory_date': f'INTEGER DEFAULT {int(now.timestamp())}',
+        'last_modified_date': 'INTEGER'
     }
 
     _correct_columns(Item, column_defs)
