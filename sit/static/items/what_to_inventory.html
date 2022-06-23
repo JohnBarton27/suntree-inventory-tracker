@@ -1,0 +1,48 @@
+<table style="margin: auto;">
+    <tr>
+        <th><h3><i class="fas fa-check-circle" style="color: green;"></i>&nbsp;Yes, Inventory:</h3></th>
+        <th><h3><i class="fas fa-times-circle" style="color: red;"></i>&nbsp;No, Do Not Inventory:</h3></th>
+    </tr>
+    <tr>
+        <td style="vertical-align: top; padding: 0 40px;">
+            <ul>
+                <li>Furniture (tables, desks, chairs)</li>
+                <li>Cabinets (but <em>not</em> the contents of cabinets)</li>
+                <li>TVs and other large electronics</li>
+                <li>Audio/Video Equipment</li>
+                <li>Whiteboards & other non-permanent fixtures</li>
+                <li>Items worth more than $100</li>
+            </ul>
+        </td>
+        <td style="vertical-align: top; padding: 0 40px;">
+            <ul>
+                <li>
+                    Leased Equipment (ABS-owned printers, computers, etc.
+                    <ul>
+                        <li>These should already have an ABS sticker/barcode</li>
+                    </ul>
+                </li>
+                <li>Contents of cabinets/desks/drawers</li>
+                <li>Tubs of "stuff"</li>
+                <li>Knick-knacks (decorative vases, small crosses on walls, etc.)</li>
+                <li>Cords/cables</li>
+                <li>Items worth less than $100</li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<script type="application/javascript">
+    let conditionHelpShown = false;
+
+    $("#conditionHelpTrigger").on("click", function(){
+        let height = "275px";
+        if (conditionHelpShown) {
+            height = "0px";
+        }
+
+        $("#conditionHelp").animate({height: height})
+
+        conditionHelpShown = !conditionHelpShown;
+    });
+</script>
