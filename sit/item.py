@@ -264,8 +264,8 @@ class Item(SitObject):
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
             'quantity': self._quantity,
-            'original_inventory_date': self.original_inventory_date_timestamp,
-            'last_modified_date': self.last_modified_date_timestamp
+            'original_inventory_date': self.original_inventory_date_timestamp if self._original_inventory_date else None,
+            'last_modified_date': self.last_modified_date_timestamp if self._last_modified_date else None
         }
 
     @classmethod
