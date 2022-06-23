@@ -80,8 +80,16 @@
         </span>
     <span style="justify-self: start;">
             {{ item.original_inventory_date }}
-        </span>
+    </span>
 
+    {% if item.last_modified_date %}
+        <span style="justify-self: end;">
+            <strong>Last Modified: </strong>
+        </span>
+        <span style="justify-self: start;">
+            {{ item.last_modified_date }}
+        </span>
+    {% endif %}
 
     <span style="justify-self: end;">
         <strong>Labels:</strong>

@@ -44,6 +44,11 @@ class Item(SitObject):
     def __str__(self):
         return f'{self.description}'
 
+    def update(self):
+        # Update last_modified_date whenever updating
+        self._last_modified_date = datetime.now()
+        super().update()
+
     @property
     def description(self):
         if self._description is None:
@@ -133,7 +138,21 @@ class Item(SitObject):
         if not self.original_inventory_date:
             return None
 
-        return self.original_inventory_date.timestamp()
+        return int(self.original_inventory_date.timestamp())
+
+    @property
+    def last_modified_date(self):
+        if self._last_modified_date is None:
+            self.populate()
+
+        return self._last_modified_date
+
+    @property
+    def last_modified_date_timestamp(self):
+        if not self.last_modified_date:
+            return None
+
+        return int(self.last_modified_date.timestamp())
 
     @property
     def room(self):
@@ -245,7 +264,8 @@ class Item(SitObject):
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
             'quantity': self._quantity,
-            'original_inventory_date': self.original_inventory_date_timestamp
+            'original_inventory_date': self.original_inventory_date_timestamp,
+            'last_modified_date': self.last_modified_date_timestamp
         }
 
     @classmethod
@@ -258,6 +278,9 @@ class Item(SitObject):
 
         original_inventory_date_seconds = db_result['original_inventory_date']
         original_inventory_date = datetime.fromtimestamp(original_inventory_date_seconds) if original_inventory_date_seconds else None
+
+        last_modified_date_seconds = db_result['last_modified_date']
+        last_modified_date = datetime.fromtimestamp(last_modified_date_seconds) if last_modified_date_seconds else None
 
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
 
@@ -274,4 +297,5 @@ class Item(SitObject):
                     photo=db_result['photo'],
                     quantity=db_result['quantity'],
                     condition=condition,
-                    original_inventory_date=original_inventory_date)
+                    original_inventory_date=original_inventory_date,
+                    last_modified_date=last_modified_date)
