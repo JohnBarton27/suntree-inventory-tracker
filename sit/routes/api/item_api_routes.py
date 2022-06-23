@@ -99,7 +99,8 @@ def create_item():
                 room=Room(db_id=int(request.form['itemRoom'])),
                 photo=photo_src,
                 quantity=quantity,
-                condition=condition)
+                condition=condition,
+                original_inventory_date=datetime.now())
 
     item.create()
 

@@ -14,7 +14,18 @@ class Item(SitObject):
 
     table_name = 'item'
 
-    def __init__(self, db_id: int = None, description: str = None, purchase_price: float = None, purchase_date: date = None, end_of_life_date: date = None, room: Room = None, photo: str = None, condition: Condition = None, quantity: int = None):
+    def __init__(self,
+                 db_id: int = None,
+                 description: str = None,
+                 purchase_price: float = None,
+                 purchase_date: date = None,
+                 end_of_life_date: date = None,
+                 room: Room = None,
+                 photo: str = None,
+                 condition: Condition = None,
+                 quantity: int = None,
+                 original_inventory_date: datetime = None,
+                 last_modified_date: datetime = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
@@ -24,6 +35,8 @@ class Item(SitObject):
         self._photo = photo
         self._condition = condition
         self._quantity = quantity
+        self._original_inventory_date = original_inventory_date
+        self._last_modified_date = last_modified_date
 
     def __repr__(self):
         return f'{self.description}'
@@ -107,6 +120,20 @@ class Item(SitObject):
             return None
 
         return datetime.combine(self.end_of_life_date, datetime.min.time()).timestamp()
+
+    @property
+    def original_inventory_date(self):
+        if self._original_inventory_date is None:
+            self.populate()
+
+        return self._original_inventory_date
+
+    @property
+    def original_inventory_date_timestamp(self):
+        if not self.original_inventory_date:
+            return None
+
+        return self.original_inventory_date.timestamp()
 
     @property
     def room(self):
@@ -217,7 +244,8 @@ class Item(SitObject):
             'condition': self.condition.int_value,
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
-            'quantity': self._quantity
+            'quantity': self._quantity,
+            'original_inventory_date': self.original_inventory_date_timestamp
         }
 
     @classmethod
@@ -227,6 +255,9 @@ class Item(SitObject):
 
         end_of_life_date_seconds = db_result['end_of_life_date']
         end_of_life_date = date.fromtimestamp(end_of_life_date_seconds) if end_of_life_date_seconds else None
+
+        original_inventory_date_seconds = db_result['original_inventory_date']
+        original_inventory_date = datetime.fromtimestamp(original_inventory_date_seconds) if original_inventory_date_seconds else None
 
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
 
@@ -242,4 +273,5 @@ class Item(SitObject):
                     room=Room(db_id=db_result['room']),
                     photo=db_result['photo'],
                     quantity=db_result['quantity'],
-                    condition=condition)
+                    condition=condition,
+                    original_inventory_date=original_inventory_date)
