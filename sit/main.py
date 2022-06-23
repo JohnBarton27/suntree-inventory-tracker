@@ -14,6 +14,7 @@ from routes.views import building_view_routes, item_view_routes, label_view_rout
 # Top Level
 app.add_url_rule('/', view_func=view_routes.index)
 app.add_url_rule('/scanner', view_func=view_routes.scanner)
+app.add_url_rule('/help', view_func=view_routes.help)
 
 # Buildings
 app.add_url_rule('/buildings', view_func=building_view_routes.buildings)

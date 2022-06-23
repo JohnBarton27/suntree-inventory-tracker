@@ -14,3 +14,7 @@ def index():
 
 def scanner():
     return render_template('items/scanner.html')
+
+
+def help():
+    return render_template('help/help_home.html')
