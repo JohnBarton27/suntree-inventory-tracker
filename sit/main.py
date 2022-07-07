@@ -7,6 +7,7 @@ from flask import Flask
 from waitress import serve
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
 # VIEWS
 from routes.views import building_view_routes, item_view_routes, label_view_routes, printing_view_routes, room_view_routes, view_routes
