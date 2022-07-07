@@ -21,10 +21,37 @@ $(function() {
         }
 
         reader.readAsDataURL(currentFilesArray[0]);
-        reader.onload = function () {
-            formData.append('itemPicture', reader.result);
+        reader.onload = function (readerEvent) {
 
-            makeCreateCall(formData);
+            let img = new Image;
+
+            img.onload = resizeImage;
+            img.src = reader.result;
+
+            let max_dimension = 1080;
+
+            function resizeImage() {
+
+                let height = this.height;
+                let width = this.width;
+
+                if (width > max_dimension) {
+                    let scale = max_dimension / width;
+                    width *= scale;
+                    height *= scale;
+                }
+
+                if (height > max_dimension) {
+                    let scale = max_dimension / height;
+                    width *= scale;
+                    height *= scale;
+                }
+
+                let resized_image = imageToDataUri(this, width, height);
+                formData.append('itemPicture', resized_image);
+                makeUpdateCall(formData);
+            }
+
         }
     });
     setupSearchField();
@@ -47,6 +74,23 @@ $(function() {
 $(document).ready( function () {
     setupDataTables();
 });
+
+function imageToDataUri(img, width, height) {
+
+    // create an off-screen canvas
+    let canvas = document.createElement('canvas'),
+        ctx = canvas.getContext('2d');
+
+    // set its dimension to target size
+    canvas.width = width;
+    canvas.height = height;
+
+    // draw source image into the off-screen canvas:
+    ctx.drawImage(img, 0, 0, width, height);
+
+    // encode image to data-uri with base64 version of compressed image
+    return canvas.toDataURL();
+}
 
 function setupDataTables() {
     $('#itemsTable').DataTable({
