@@ -54,7 +54,9 @@ $(function() {
 
         }
     });
+
     setupSearchField();
+
     $('#searchItemsForm').on('submit', function (e) {
         e.preventDefault();
 
@@ -69,6 +71,14 @@ $(function() {
             current_rating = this.value;
         }
     );
+
+    $("#newItemModal").on("show.bs.modal", function(e) {
+        $("#newItemModalLoader").css("display", "none");
+        $("#newItemModalBody").css("filter", "none");
+
+        $("#newItemFormCreateBtn").removeClass("disabled");
+        $("#newItemFormCloseBtn").removeClass("disabled");
+    })
 });
 
 $(document).ready( function () {
@@ -109,6 +119,11 @@ function setupDataTables() {
 }
 
 function makeCreateCall(formData) {
+    $("#newItemModalLoader").css("display", "block");
+    $("#newItemModalBody").css("filter", "blur(4px)");
+    $("#newItemFormCreateBtn").addClass("disabled");
+    $("#newItemFormCloseBtn").addClass("disabled");
+
     $.ajax({
         url: '/api/items/create',
         data: formData,

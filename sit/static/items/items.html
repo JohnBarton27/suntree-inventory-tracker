@@ -113,7 +113,8 @@
                     <h5 class="modal-title" id="newItemModalLabel">Create New Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div id="newItemModalLoader" class="loader"></div>
+                <div id="newItemModalBody" class="modal-body">
                     <form id="newItemForm" name="newItemForm" method="post">
                         <div class="mb-3">
                             <label for="itemDesc" class="form-label">Description</label>
@@ -180,8 +181,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="newItemForm" class="btn btn-primary">Create</button>
+                    <button type="button" id="newItemFormCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="newItemFormCreateBtn" form="newItemForm" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>
