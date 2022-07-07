@@ -6,6 +6,11 @@ $(function(){
     item_id = url_pieces[url_pieces.length - 1];
 
     $('#editItemForm').on('submit', function(e){
+        $("#editItemModalLoader").css("display", "block");
+        $("#editItemModalBody").css("filter", "blur(4px)");
+        $("#editItemFormCloseBtn").addClass("disabled");
+        $("#editItemFormSaveBtn").addClass("disabled");
+
         e.preventDefault();
 
         let form = $('#editItemForm')[0];
@@ -58,6 +63,11 @@ $(function(){
     });
 
     $('#editItemModal').on('show.bs.modal', function () {
+        $("#editItemModalLoader").css("display", "none");
+        $("#editItemModalBody").css("filter", "none");
+        $("#editItemFormCloseBtn").removeClass("disabled");
+        $("#editItemFormSaveBtn").removeClass("disabled");
+
         // Get Rooms
         let roomSelect = $('#roomSelectElem');
 

@@ -20,7 +20,8 @@
                     <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div id="editItemModalLoader" class="loader"></div>
+                <div id="editItemModalBody" class="modal-body">
                     <form id="editItemForm" name="editItemForm" method="post">
                         <div class="mb-3">
                             <label for="itemDesc" class="form-label">Description</label>
@@ -75,8 +76,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="editItemForm" class="btn btn-primary">Save</button>
+                    <button type="button" id="editItemFormCloseBtn" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" id="editItemFormSaveBtn" form="editItemForm" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>
