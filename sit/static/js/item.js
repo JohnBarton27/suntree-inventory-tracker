@@ -145,6 +145,8 @@ $(function(){
                 current_rating = this.value;
             });
     });
+
+    setMobileCss();
 });
 
 function imageToDataUri(img, width, height) {

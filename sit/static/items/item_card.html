@@ -1,24 +1,18 @@
-<div style="display:flex; justify-content: center; align-items: center;">
+<div class="header-with-btns">
     <h1 style="text-align: center; display: inline-block; margin-right: 15px;">{{ item.description }}
     {% if item.quantity != 1 %}
         (x{{ item.quantity }})
     {% endif %}
     </h1>
-    <span>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editItemModal" style="margin-top: -15px;">
-            Edit &nbsp;<i class="fas fa-edit"></i>
-        </button>
-    </span>
-    <span style="margin-left: 15px;">
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal" style="margin-top: -15px;">
-            Delete &nbsp;<i class="fas fa-trash"></i>
-        </button>
-    </span>
-    <span style="margin-left: 15px;">
-        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#printItemModal" style="margin-top: -15px;">
-            Print &nbsp;<i class="fas fa-print"></i>
-        </button>
-    </span>
+    <button type="button" class="btn btn-primary action-btn" data-bs-toggle="modal" data-bs-target="#editItemModal">
+        Edit &nbsp;<i class="fas fa-edit"></i>
+    </button>
+    <button type="button" class="btn btn-danger action-btn" data-bs-toggle="modal" data-bs-target="#deleteItemModal">
+        Delete &nbsp;<i class="fas fa-trash"></i>
+    </button>
+    <button type="button" class="btn btn-secondary action-btn" data-bs-toggle="modal" data-bs-target="#printItemModal">
+        Print &nbsp;<i class="fas fa-print"></i>
+    </button>
 </div>
 
 <div style="display:flex; justify-content: center; align-items: center;">
