@@ -51,7 +51,7 @@ app.add_url_rule('/api/buildings/delete', view_func=building_api_routes.delete_b
 app.add_url_rule('/api/buildings/update', view_func=building_api_routes.edit_building, methods=['POST'])
 
 # Items
-app.add_url_rule('/api/items/<item_id>', view_func=item_api_routes.get_barcode_for_item, methods=['GET'])
+app.add_url_rule('/api/items/<item_id>/barcode.png', view_func=item_api_routes.get_barcode_for_item, methods=['GET'])
 app.add_url_rule('/api/items/advanced_search', view_func=item_api_routes.advanced_search_items, methods=['POST'])
 app.add_url_rule('/api/items/create', view_func=item_api_routes.create_item, methods=['POST'])
 app.add_url_rule('/api/items/delete', view_func=item_api_routes.delete_item, methods=['DELETE'])
