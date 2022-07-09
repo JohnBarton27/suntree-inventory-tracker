@@ -1,5 +1,6 @@
 let item_id = null;
 let current_rating = null;
+let showOptionalFields = false;
 
 $(function(){
     let url_pieces = window.location.href.split('/')
@@ -147,6 +148,7 @@ $(function(){
     });
 
     setMobileCss();
+    setupOptionalFields();
 });
 
 function imageToDataUri(img, width, height) {
@@ -198,4 +200,30 @@ function makeDeleteCall(formData) {
             window.location.href = data
         }
     });
+}
+
+function setupOptionalFields() {
+    $("div[data-required='false']").each(function() {
+        $(this).css('display', 'none');
+    });
+}
+
+function toggleOptionalFields() {
+    let caretDown = '<i class="fas fa-caret-down"></i>';
+    let caretUp = '<i class="fas fa-caret-up"></i>';
+    let display = 'block';
+    let toggleText = caretUp + " Hide optional fields " + caretUp;
+
+    if (showOptionalFields) {
+        display = 'none';
+        toggleText = caretDown + " Show optional fields " + caretDown;
+    }
+
+    $("div[data-required='false']").each(function() {
+        $(this).css('display', display);
+    });
+
+    $("#showOptionalFieldsToggle").html(toggleText);
+
+    showOptionalFields = !showOptionalFields;
 }

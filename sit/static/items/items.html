@@ -158,20 +158,24 @@
                             <label for="itemPicture">Picture</label>
                             <input type="file" class="form-control" id="itemPicture" name="itemPicture" accept="image/png, image/jpeg"/>
                         </div>
-                        <hr>
-                        <div class="mb-3">
+
+                        <div id="showOptionalFieldsToggle" onclick="toggleOptionalFields();" style="text-align: center; color: gray; margin: 1rem 0;">
+                            <i class="fas fa-caret-down"></i> Show optional fields <i class="fas fa-caret-down"></i>
+                        </div>
+
+                        <div class="mb-3" data-required="false">
                             <label for="itemPurchasePrice" class="form-label">Unit Purchase Price (USD)</label>
                             <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" data-required="false">
                             <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
                             <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" />
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" data-required="false">
                             <label for="itemEndOfLifeDate" class="form-label">End-of-Life Date</label>
                             <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate"/>
                         </div>
-                        <div class="mb-3" id="labelSelectElem">
+                        <div class="mb-3" id="labelSelectElem" data-required="false">
                             <label for="itemLabels" class="form-label">Labels</label>
                             <select class="form-control" id="itemLabels" name="itemLabels" multiple>
                                 {% for label in labels %}
