@@ -72,5 +72,29 @@
             </div>
         </div>
     </div>
+
+    <!-- Print Modal onclick="generateRoomOrder()"-->
+    <div class="modal fade" id="printRoomModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Print Barcodes for {{ room.building.number }}-{{ room.number }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="printRoomForm" name="printRoomForm" method="post">
+                        {% for item in items %}
+                            <input type="checkbox" id="check-{{ item.id }}" name="check-{{ item.id }}" value="{{ item.id }}" checked>
+                            <label for="check-{{ item.id }}"> {{ item.description }}</label><br>
+                        {% endfor %}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="printRoomForm" id="confirmDeleteBtn" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

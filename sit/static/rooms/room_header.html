@@ -10,7 +10,7 @@
         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRoomModal" style="margin: auto;">
             Delete &nbsp;<i class="fas fa-trash"></i>
         </button>
-        <button type="button" class="btn btn-secondary" style="margin: auto;" onclick="generateRoomOrder()">
+        <button type="button" class="btn btn-secondary" style="margin: auto;" data-bs-toggle="modal" data-bs-target="#printRoomModal">
             Generate Print Order for {{ room.building.number }}-{{ room.number }}&nbsp;<i class="fas fa-print"></i>
         </button>
     </div>

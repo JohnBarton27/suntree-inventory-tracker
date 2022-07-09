@@ -26,6 +26,33 @@ $(function() {
         });
     });
 
+    $('#printRoomForm').on('submit', function(e){
+        e.preventDefault();
+
+        let idsToPrint = []
+
+        $( "input:checkbox" ).each(function() {
+            if ($(this).is(":checked")) {
+                idsToPrint.push($(this).val());
+            }
+        });
+
+        let data = { 'ids': idsToPrint }
+
+        $.ajax({
+            url: '/api/printing/forRoom/' + room_id,
+            data: JSON.stringify(data),
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            success: function(data){
+                let new_order_id = data['order_id']
+                window.location.href = '/printing/' + new_order_id
+            }
+        });
+
+    });
+
     $("#confirmDeleteBtn").on("click", function() {
         deleteRoom();
     });

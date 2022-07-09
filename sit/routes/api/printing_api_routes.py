@@ -43,13 +43,24 @@ def get_printing_order_dropdown():
 
 
 def create_order_for_room(room_id):
+    import json
+    raw_input = request.data.decode('utf-8')
+    data = json.loads(raw_input)
+    ids_to_print = data["ids"]
+
     this_room = Room.get_by_id(int(room_id))
     room_items = Item.get_for_room(this_room)
+
+    items_to_print = []
+
+    for item in room_items:
+        if str(item.id) in ids_to_print:
+            items_to_print.append(item)
 
     order = BarcodePrintOrder(name=f'{str(this_room)}')
     order.create()
 
-    for room_item in room_items:
-        order.add_item(room_item)
+    for item_to_print in items_to_print:
+        order.add_item(item_to_print)
 
     return {'order_id': order.id}
