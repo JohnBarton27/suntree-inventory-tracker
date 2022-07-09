@@ -121,18 +121,6 @@
                             <input type="text" class="form-control" id="itemDesc" name="itemDesc" required/>
                         </div>
                         <div class="mb-3">
-                            <label for="itemPurchasePrice" class="form-label">Unit Purchase Price (USD)</label>
-                            <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
-                            <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemEndOfLifeDate" class="form-label">End-of-Life Date</label>
-                            <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate"/>
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">Current Condition <i id="conditionHelpTrigger" class="fas fa-question-circle" style="color: gray; cursor: pointer;"></i></label><br>
                             <div id="conditionHelp" style="height: 0; overflow: hidden;">{% include 'items/condition_help.html' %}</div>
                             <span style="display: grid; grid-auto-flow: column; text-align: center;">
@@ -155,10 +143,6 @@
                             </span>
                         </div>
                         <div class="mb-3">
-                            <label for="itemQuantity" class="form-label">Item Quantity</label>
-                            <input type="number" min="1" step="any" value="1" class="form-control" id="itemQuantity" name="itemQuantity" />
-                        </div>
-                        <div class="mb-3">
                             <label for="itemRoom" class="form-label">Current Location</label>
                             <select class="form-control" id="itemRoom" name="itemRoom">
                                 {% for room in rooms %}
@@ -167,8 +151,25 @@
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label for="itemQuantity" class="form-label">Item Quantity</label>
+                            <input type="number" min="1" step="any" value="1" class="form-control" id="itemQuantity" name="itemQuantity" />
+                        </div>
+                        <div class="mb-3">
                             <label for="itemPicture">Picture</label>
                             <input type="file" class="form-control" id="itemPicture" name="itemPicture" accept="image/png, image/jpeg"/>
+                        </div>
+                        <hr>
+                        <div class="mb-3">
+                            <label for="itemPurchasePrice" class="form-label">Unit Purchase Price (USD)</label>
+                            <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
+                            <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="itemEndOfLifeDate" class="form-label">End-of-Life Date</label>
+                            <input type="date" class="form-control" id="itemEndOfLifeDate" name="itemEndOfLifeDate"/>
                         </div>
                         <div class="mb-3" id="labelSelectElem">
                             <label for="itemLabels" class="form-label">Labels</label>
