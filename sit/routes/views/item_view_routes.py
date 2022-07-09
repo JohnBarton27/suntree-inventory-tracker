@@ -7,7 +7,7 @@ from room import Room
 
 
 def items():
-    all_items = Item.get_all()
+    all_items = Item.get_all(limit=25)
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
     all_labels = Label.get_all()

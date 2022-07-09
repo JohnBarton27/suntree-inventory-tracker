@@ -122,10 +122,15 @@ class SitObject(ABC):
         return ''
 
     @classmethod
-    def get_all(cls, order_by: str = None):
+    def get_all(cls, order_by: str = None, limit: int = None):
         cls._check_for_class_name()
 
-        query = f'SELECT * FROM {cls.table_name}{cls.get_ordering_str(order_by)};'
+        query = f'SELECT * FROM {cls.table_name}{cls.get_ordering_str(order_by)}'
+
+        if limit:
+            query += f' LIMIT {limit}'
+
+        query += ';'
 
         results = cls.run_query(query)
         return cls._get_multiple_from_db_result(results)
