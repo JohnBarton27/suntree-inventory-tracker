@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import request, render_template, send_file
 
+from building import Building
 from condition import Condition
 from item import Item
 from label import Label
