@@ -49,7 +49,7 @@ $(function() {
 
                 let resized_image = imageToDataUri(this, width, height);
                 formData.append('itemPicture', resized_image);
-                makeUpdateCall(formData);
+                makeCreateCall(formData);
             }
 
         }
