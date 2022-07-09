@@ -79,6 +79,14 @@ $(function() {
         $("#newItemFormCreateBtn").removeClass("disabled");
         $("#newItemFormCloseBtn").removeClass("disabled");
     })
+
+    setMobileCss();
+
+    if (mobileCheck() === true) {
+        // If on mobile, hide certain buttons
+        $("#advancedSearchButtons").css('display', 'none');
+        $("#searchField").css('display', 'none');
+    }
 });
 
 $(document).ready( function () {
