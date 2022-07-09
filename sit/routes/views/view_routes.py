@@ -6,9 +6,14 @@ from room import Room
 
 
 def index():
-    num_items = len(Item.get_all())
+    all_items = Item.get_all()
     num_buildings = len(Building.get_all())
     num_rooms = len(Room.get_all())
+
+    num_items = 0
+    for item in all_items:
+        num_items += item.quantity
+
     return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms)
 
 
