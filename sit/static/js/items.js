@@ -143,7 +143,8 @@ function makeCreateCall(formData) {
             $('#newItemModal').modal('hide')
 
             // Update data on page
-            $('#item_list').html(data);               }
+            location.href = '/item/' + data['id']
+        }
     });
 }
 

@@ -107,9 +107,7 @@ def create_item():
     for label in labels:
         item.add_label(label)
 
-    all_items = Item.get_all()
-
-    return render_template('items/list_items.html', items=all_items, show_item_locations=True)
+    return {'id': item.id}
 
 
 def delete_item():
