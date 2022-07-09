@@ -85,7 +85,7 @@
                     <form id="printRoomForm" name="printRoomForm" method="post">
                         {% for item in items %}
                             <input type="checkbox" id="check-{{ item.id }}" name="check-{{ item.id }}" value="{{ item.id }}" checked>
-                            <label for="check-{{ item.id }}"> {{ item.description }}</label><br>
+                            <label for="check-{{ item.id }}"> {{ item.description }} (x{{ item.quantity }})</label><br>
                         {% endfor %}
                     </form>
                 </div>

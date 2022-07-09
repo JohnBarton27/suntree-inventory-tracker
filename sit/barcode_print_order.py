@@ -111,7 +111,12 @@ class BarcodePrintOrder(SitObject):
 
         first_of_page = True
         nth_of_page = 0
-        for i, item in enumerate(self.items):
+        all_items = []
+        for item in self.items:
+            for i in range(0, item.quantity):
+                all_items.append(item)
+
+        for i, item in enumerate(all_items):
             if i % 10 == 0 and i != 0:
                 # 11th/21st/31st/etc. item, needs new page
                 pdf.add_page()
