@@ -17,7 +17,7 @@
     --action-btn-margin: -15px 0 0 15px;
     --action-btn-padding: 10px;
 }
-label, input[type="text"], input[type="number"], input[type="date"], select, option, span, button, .btn {
+label, input[type="text"], input[type="number"], input[type="date"], select, option, span, button, .btn, th, td {
     font-size: var(--default-text-size);
 }
 
