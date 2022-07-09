@@ -96,7 +96,7 @@ class BarcodePrintOrder(SitObject):
         barcode_width = barcode_height * 3
 
         # Skip first label because printer margins may cut it off
-        initial_y_offset = 0.70
+        initial_y_offset = 0.85
 
         space_between_barcode = 0.13 + text_height
 
