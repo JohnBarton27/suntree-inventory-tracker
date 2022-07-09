@@ -72,17 +72,14 @@
     <span style="justify-self: end;">
             <strong>Original Inventory Date: </strong>
         </span>
-    <span style="justify-self: start;">
-            {{ item.original_inventory_date }}
-        {{ item.original_inventory_date_timestamp }}
+    <span data-time="true" data-timestamp="{{ item.original_inventory_date_timestamp }}" style="justify-self: start;">
     </span>
 
     {% if item.last_modified_date %}
         <span style="justify-self: end;">
             <strong>Last Modified: </strong>
         </span>
-        <span style="justify-self: start;">
-            {{ item.last_modified_date }}
+        <span data-time="true" data-timestamp="{{ item.last_modified_date_timestamp }}" style="justify-self: start;">
         </span>
     {% endif %}
 
@@ -100,3 +97,11 @@
     </span>
 
 </div>
+
+<script type="application/javascript">
+    $("span[data-time='true']").each(function() {
+        let timestamp = $(this).data("timestamp");
+        let date = new Date(timestamp * 1000);
+        $(this).html(date.toLocaleString());
+    });
+</script>
