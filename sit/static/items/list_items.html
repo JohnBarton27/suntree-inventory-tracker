@@ -1,7 +1,7 @@
 <table id="itemsTable" class="sit-item-table display" style="width:100%">
     <thead>
         <tr>
-            <th data-col="picture" class="no-sort"></th>
+{#            <th data-col="picture" class="no-sort"></th>#}
             <th data-col="description">Item</th>
             {% if show_item_locations|default(true, false) %}
             <th data-col="location">Location</th>
@@ -15,11 +15,11 @@
     <tbody>
         {% for item in items %}
         <tr onclick="window.location='/item/{{ item.id }}';" style="cursor: pointer;">
-            <td data-col="picture" style="padding-top: 0; padding-bottom: 0;">
-                {% if item.photo %}
-                    <img src="{{ item.photo }}" width="50">
-                {% endif %}
-            </td>
+{#            <td data-col="picture" style="padding-top: 0; padding-bottom: 0;">#}
+{#                {% if item.photo %}#}
+{#                    <img src="{{ item.small_photo }}" width="50">#}
+{#                {% endif %}#}
+{#            </td>#}
             <td data-col="description">{{ item.description }}</td>
             {% if show_item_locations|default(true, false) %}
             <td data-col="location"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</td>
