@@ -1,5 +1,5 @@
 <div style="text-align: right;">
-    <span style="margin-right: 15px;">
+    <span id="showingXofY" style="margin-right: 15px;">
         (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
     </span>
 
@@ -37,6 +37,7 @@
 
 <script type="application/javascript">
     function goToPage(number) {
+        updatePageButtons(number);
         let url = "/api/items/page"
         $("#itemsTableLoader").css("display", "block");
         $("#itemsTable").css("filter", "blur(4px)");
@@ -55,5 +56,13 @@
                 $('#item_list').html(data);
             }
         });
+    }
+
+    function updatePageButtons(target_page) {
+        let startNum = ({{ page_size }} * target_page) + 1;
+        let endNum = ({{ page_size }} * (target_page + 1));
+        let totalNum = {{ total_items }};
+        let showingText = "(Showing " + startNum + " - " + endNum + " of " + totalNum + ")";
+        $("#showingXofY").text(showingText);
     }
 </script>
