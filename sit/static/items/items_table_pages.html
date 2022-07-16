@@ -1,7 +1,25 @@
 <div>Page:
+    {% if selected_page >= 2 %}
+        <span class="pageBtn"><<</span>
+    {% endif %}
+
+    {% if selected_page >= 1 %}
+        <span class="pageBtn"><</span>
+    {% endif %}
+
+
     {% for n in range(num_pages) %}
         <span class="pageBtn" onclick="goToPage({{ n }})" {% if selected_page == n %} style="font-weight: bold; background-color: #ddd; cursor: default;" {% endif %}>{{ n + 1 }}</span>
     {% endfor %}
+
+    {% if num_pages - selected_page > 1 %}
+        <span class="pageBtn">></span>
+    {% endif %}
+
+    {% if num_pages - selected_page > 2 %}
+        <span class="pageBtn">>></span>
+    {% endif %}
+
 </div>
 
 <script type="application/javascript">
