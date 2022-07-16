@@ -17,7 +17,7 @@ def items():
     num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
 
     return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
-                           labels=all_labels, show_item_locations=True, num_pages=num_pages)
+                           labels=all_labels, show_item_locations=True, num_pages=num_pages, selected_page=0)
 
 
 def item(item_id):

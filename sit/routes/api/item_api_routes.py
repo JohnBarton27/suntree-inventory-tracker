@@ -28,7 +28,7 @@ def get_items_page():
     items = Item.get_page(page_num, order_by='description')
 
     num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
-    return render_template('items/list_items.html', items=items, num_pages=num_pages)
+    return render_template('items/list_items.html', items=items, num_pages=num_pages, selected_page=page_num)
 
 
 def advanced_search_items():

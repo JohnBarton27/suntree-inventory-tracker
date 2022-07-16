@@ -1,6 +1,6 @@
 <div>Page:
     {% for n in range(num_pages) %}
-        <span class="pageBtn" onclick="goToPage({{ n }})">{{ n + 1 }}</span>
+        <span class="pageBtn" onclick="goToPage({{ n }})" {% if selected_page == n %} style="font-weight: bold; background-color: #ddd; cursor: default;" {% endif %}>{{ n + 1 }}</span>
     {% endfor %}
 </div>
 
