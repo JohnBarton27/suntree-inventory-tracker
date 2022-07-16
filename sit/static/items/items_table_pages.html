@@ -7,9 +7,20 @@
         <span class="pageBtn" onclick="goToPage({{ selected_page - 1 }})"><</span>
     {% endif %}
 
+    {% if selected_page > 2 %}
+        <span>...</span>
+    {% endif %}
+
     {% for n in range(num_pages) %}
-        <span class="pageBtn" onclick="goToPage({{ n }})" {% if selected_page == n %} style="font-weight: bold; background-color: #ddd; cursor: default;" {% endif %}>{{ n + 1 }}</span>
+        {% if (selected_page - 2) <= n <= (selected_page + 2) %}
+            <span class="pageBtn" onclick="goToPage({{ n }})" {% if selected_page == n %} style="font-weight: bold; background-color: #ddd; cursor: default;" {% endif %}>{{ n + 1 }}</span>
+        {% endif %}
     {% endfor %}
+
+    {% if selected_page < num_pages - 3 %}
+        <span>...</span>
+    {% endif %}
+
 
     {% if num_pages - selected_page > 1 %}
         <span class="pageBtn" onclick="goToPage({{ selected_page + 1 }})">></span>
