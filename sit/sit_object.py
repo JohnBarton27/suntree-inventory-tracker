@@ -153,3 +153,12 @@ class SitObject(ABC):
     def _check_for_class_name(cls):
         if cls.table_name is None:
             raise Exception(f'The \'table_name\' class variable is undefined for {cls.__name__}!')
+
+    @classmethod
+    def get_count(cls):
+        cls._check_for_class_name()
+
+        query = f'SELECT COUNT(*) FROM {cls.table_name};'
+
+        results = cls.run_query(query)
+        return results[0]['COUNT(*)']
