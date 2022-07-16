@@ -1,9 +1,9 @@
-from barcode import EAN13
 from barcode.upc import UniversalProductCodeA
 from barcode.writer import ImageWriter
 import base64
 from datetime import date, datetime
 from io import BytesIO
+from PIL import Image
 
 from condition import Condition
 from sit_object import SitObject
@@ -174,6 +174,33 @@ class Item(SitObject):
             self.populate()
 
         return self._photo
+
+    @property
+    def small_photo(self):
+        if self.photo is None:
+            return None
+
+        img_max_dimension = 100
+        image_data = base64.b64decode(self.photo.split(",")[1])
+        im_file = BytesIO(image_data)
+        img = Image.open(im_file)
+        original_format = img.format
+
+        if img.size[0] > img.size[1]:
+            # If width > height
+            w_percent = (img_max_dimension / float(img.size[0]))
+            h_size = int((float(img.size[1]) * float(w_percent)))
+            img = img.resize((img_max_dimension, h_size), Image.ANTIALIAS)
+        else:
+            # If height > width
+            h_percent = (img_max_dimension / float(img.size[1]))
+            w_size = int((float(img.size[0]) * float(h_percent)))
+            img = img.resize((w_size, img_max_dimension), Image.ANTIALIAS)
+
+        buf = BytesIO()
+        img.save(buf, format=original_format)
+        bytes_im = f'data:image/{original_format.lower()};base64,{base64.b64encode(buf.getvalue()).decode("utf-8")}'
+        return bytes_im
 
     def update_photo(self, photo: str):
         if self._photo == photo:
