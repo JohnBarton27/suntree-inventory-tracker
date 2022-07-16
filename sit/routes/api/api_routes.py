@@ -1,13 +1,13 @@
 import base64
 import cv2
 import numpy as np
-import os
 from urllib.request import pathname2url
 from pyzbar.pyzbar import decode
 
 from flask import request, send_file
 
 import settings
+
 
 def scan_barcode():
     image_base_64 = request.form['image_source'].split(',')[-1]
@@ -29,6 +29,5 @@ def scan_barcode():
 
 def download_database():
     file = pathname2url(settings.DB_NAME)
-    print(file)
     return send_file(file, download_name='sit.db')
 
