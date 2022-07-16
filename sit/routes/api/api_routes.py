@@ -19,7 +19,6 @@ def scan_barcode():
 
     if len(detected_barcodes) > 0:
         barcode_val = detected_barcodes[0].data.decode('utf-8')
-        print(detected_barcodes[0])
         item_id = int(f'{barcode_val}'[:-1]) - 10000000000
 
         return f'/item/{item_id}'
