@@ -13,11 +13,12 @@ def items():
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
     all_labels = Label.get_all()
-
-    num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
+    total_num_items = Item.get_count()
+    num_pages = math.ceil(total_num_items / settings.TABLE_PAGE_SIZE)
 
     return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
-                           labels=all_labels, show_item_locations=True, num_pages=num_pages, selected_page=0)
+                           labels=all_labels, show_item_locations=True, num_pages=num_pages, selected_page=0,
+                           page_size=settings.TABLE_PAGE_SIZE, total_items=total_num_items)
 
 
 def item(item_id):

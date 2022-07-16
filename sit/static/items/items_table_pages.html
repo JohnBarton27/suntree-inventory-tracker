@@ -1,4 +1,8 @@
-<div>Page:
+<div style="text-align: right;">
+    <span style="margin-right: 15px;">
+        (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
+    </span>
+
     {% if selected_page >= 2 %}
         <span class="pageBtn" onclick="goToPage({{ 0 }})"><<</span>
     {% endif %}
@@ -29,7 +33,6 @@
     {% if num_pages - selected_page > 2 %}
         <span class="pageBtn" onclick="goToPage({{ num_pages - 1 }})">>></span>
     {% endif %}
-
 </div>
 
 <script type="application/javascript">
