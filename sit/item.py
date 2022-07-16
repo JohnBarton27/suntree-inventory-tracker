@@ -8,6 +8,7 @@ from PIL import Image
 from condition import Condition
 from sit_object import SitObject
 from room import Room
+import settings
 
 
 class Item(SitObject):
@@ -180,7 +181,7 @@ class Item(SitObject):
         if self.photo is None:
             return None
 
-        img_max_dimension = 100
+        img_max_dimension = settings.MAX_SMALL_PHOTO_DIMENSION
         image_data = base64.b64decode(self.photo.split(",")[1])
         im_file = BytesIO(image_data)
         img = Image.open(im_file)
