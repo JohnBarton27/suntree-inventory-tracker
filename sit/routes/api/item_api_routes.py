@@ -19,6 +19,17 @@ def get_barcode_for_item(item_id):
     return send_file(f, download_name='barcode.png')
 
 
+def get_items_page():
+    count = Item.get_count()
+
+    data = request.form
+    page_num = int(data['page'])
+
+    items = Item.get_page(page_num, order_by='description')
+
+    return render_template('items/list_items.html', items=items)
+
+
 def advanced_search_items():
     all_items = Item.get_all()
     if not request.form:

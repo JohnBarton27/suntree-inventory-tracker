@@ -61,6 +61,8 @@ app.add_url_rule('/api/items/create', view_func=item_api_routes.create_item, met
 app.add_url_rule('/api/items/delete', view_func=item_api_routes.delete_item, methods=['DELETE'])
 app.add_url_rule('/api/items/search', view_func=item_api_routes.search_items, methods=['GET'])
 app.add_url_rule('/api/items/update', view_func=item_api_routes.edit_item, methods=['POST'])
+app.add_url_rule('/api/items/page', view_func=item_api_routes.get_items_page, methods=['POST'])
+
 
 # Labels
 app.add_url_rule('/api/labels/create', view_func=label_api_routes.create_label, methods=['POST'])

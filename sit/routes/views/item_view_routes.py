@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import request, render_template
 
 from building import Building
 from item import Item

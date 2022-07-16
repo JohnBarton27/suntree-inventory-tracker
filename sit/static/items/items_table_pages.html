@@ -1,0 +1,22 @@
+<div>Page:
+    <span onclick="goToPage(1)">1</span>
+    <span onclick="goToPage(2)">2</span>
+    <span onclick="goToPage(3)">3</span>
+</div>
+
+<script type="application/javascript">
+    function goToPage(number) {
+        let url = "/api/items/page"
+        $.ajax({
+            url: url,
+            data: {
+                'page': number
+            },
+            type: 'POST',
+            success: function(data){
+                // Update data on page
+                $('#item_list').html(data);
+            }
+        });
+    }
+</script>

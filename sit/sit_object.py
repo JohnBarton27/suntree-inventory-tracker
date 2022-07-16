@@ -136,6 +136,15 @@ class SitObject(ABC):
         return cls._get_multiple_from_db_result(results)
 
     @classmethod
+    def get_page(cls, page_num: int = 0, order_by: str = None, page_size: int = 25):
+        cls._check_for_class_name()
+
+        # Use rowid subquery to greatly improve DB performance with LIMIT/OFFSET
+        query = f'SELECT * FROM {cls.table_name} where rowid in (select rowid from {cls.table_name}{cls.get_ordering_str(order_by)} limit {page_size} offset {page_size * page_num}){cls.get_ordering_str(order_by)}'
+        results = cls.run_query(query)
+        return cls._get_multiple_from_db_result(results)
+
+    @classmethod
     def get_by_id(cls, db_id: int):
         cls._check_for_class_name()
 
