@@ -6,6 +6,9 @@ import os
 from flask import Flask
 from waitress import serve
 
+# SIT
+import settings
+
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
@@ -44,6 +47,7 @@ from routes.api import api_routes, building_api_routes, item_api_routes, label_a
 
 # Top Level
 app.add_url_rule('/api/scan_barcode', view_func=api_routes.scan_barcode, methods=['POST'])
+app.add_url_rule('/api/export_db', view_func=api_routes.download_database, methods=['GET'])
 
 # Buildings
 app.add_url_rule('/api/buildings/create', view_func=building_api_routes.create_building, methods=['POST'])
@@ -80,8 +84,7 @@ app.add_url_rule('/api/rooms/update', view_func=room_api_routes.edit_room, metho
 
 def connect_to_database():
     from db_validate import validate
-    db_name = 'suntree-inventory-tracker.db'
-    validate(db_name)
+    validate(settings.DB_NAME)
 
 
 if __name__ == '__main__':
