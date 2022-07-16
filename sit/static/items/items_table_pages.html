@@ -38,7 +38,9 @@
 <script type="application/javascript">
     function goToPage(number) {
         let url = "/api/items/page"
-        $('#itemsTable').html('<div class="loader" style="display: block;"></div>');
+        $("#itemsTableLoader").css("display", "block");
+        $("#itemsTable").css("filter", "blur(4px)");
+
         $.ajax({
             url: url,
             data: {
@@ -46,6 +48,9 @@
             },
             type: 'POST',
             success: function(data){
+                $("#itemsTableLoader").css("display", "none");
+                $("#itemsTable").css("filter", "none");
+
                 // Update data on page
                 $('#item_list').html(data);
             }
