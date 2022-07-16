@@ -1,9 +1,11 @@
-from flask import request, render_template
+from flask import render_template
+import math
 
 from building import Building
 from item import Item
 from label import Label
 from room import Room
+import settings
 
 
 def items():
@@ -11,8 +13,11 @@ def items():
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
     all_labels = Label.get_all()
+
+    num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
+
     return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
-                           labels=all_labels, show_item_locations=True)
+                           labels=all_labels, show_item_locations=True, num_pages=num_pages)
 
 
 def item(item_id):

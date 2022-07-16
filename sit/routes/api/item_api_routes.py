@@ -1,11 +1,13 @@
 from datetime import datetime
 from flask import request, render_template, send_file
+import math
 
 from building import Building
 from condition import Condition
 from item import Item
 from label import Label
 from room import Room
+import settings
 
 
 def get_barcode_for_item(item_id):
@@ -20,14 +22,13 @@ def get_barcode_for_item(item_id):
 
 
 def get_items_page():
-    count = Item.get_count()
-
     data = request.form
     page_num = int(data['page'])
 
     items = Item.get_page(page_num, order_by='description')
 
-    return render_template('items/list_items.html', items=items)
+    num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
+    return render_template('items/list_items.html', items=items, num_pages=num_pages)
 
 
 def advanced_search_items():

@@ -1,7 +1,7 @@
 <div>Page:
-    <span onclick="goToPage(1)">1</span>
-    <span onclick="goToPage(2)">2</span>
-    <span onclick="goToPage(3)">3</span>
+    {% for n in range(num_pages) %}
+    <span onclick="goToPage({{ n }})">{{ n + 1 }}</span>
+    {% endfor %}
 </div>
 
 <script type="application/javascript">
