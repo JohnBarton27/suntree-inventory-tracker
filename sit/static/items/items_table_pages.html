@@ -1,25 +1,23 @@
 <div style="text-align: right;">
-    <span id="showingXofY" style="margin-right: 15px;">
+    <span data-x-of-y="true" style="margin-right: 15px;">
         (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
     </span>
 
-    <span id="goToFirstPageBtn" class="pageBtn" onclick="goToPage({{ 0 }})" style="display: none;"><<</span>
+    <span data-page-btn="first" class="pageBtn" onclick="goToPage({{ 0 }})" style="display: none;"><<</span>
+    <span data-page-btn="prev" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})" style="display: none;"><</span>
 
-    <span id="goToPrevPageBtn" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})" style="display: none;"><</span>
+    <span data-page-btn="prevPlaceholders" style="display: none;">...</span>
 
-    <span id="prevPlaceholders" style="display: none;">...</span>
+    <span data-page-btn="A" class="pageBtn" style="display: none;"></span>
+    <span data-page-btn="B" class="pageBtn" style="display: none;"></span>
+    <span data-page-btn="C" class="pageBtn" style="display: none; font-weight: bold; background-color: #ddd; cursor: default;"></span>
+    <span data-page-btn="D" class="pageBtn" style="display: none;"></span>
+    <span data-page-btn="E" class="pageBtn" style="display: none;"></span>
 
-    <span id="pageABtn" class="pageBtn" style="display: none;"></span>
-    <span id="pageBBtn" class="pageBtn" style="display: none;"></span>
-    <span id="pageCBtn" class="pageBtn" style="display: none; font-weight: bold; background-color: #ddd; cursor: default;"></span>
-    <span id="pageDBtn" class="pageBtn" style="display: none;"></span>
-    <span id="pageEBtn" class="pageBtn" style="display: none;"></span>
-    
-    <span id="nextPlaceholders" style="display: none;">...</span>
+    <span data-page-btn="nextPlaceholders" style="display: none;">...</span>
 
-    <span id="goToNextPageBtn" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})" style="display: none;">></span>
-
-    <span id="goToLastPageBtn" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" style="display: none;">>></span>
+    <span data-page-btn="next" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})" style="display: none;">></span>
+    <span data-page-btn="last" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" style="display: none;">>></span>
 </div>
 
 <script type="application/javascript">
@@ -59,26 +57,26 @@
             endNum = totalNum;
         }
         let showingText = "(Showing " + startNum + " - " + endNum + " of " + totalNum + ")";
-        $("#showingXofY").text(showingText);
+        $('[data-x-of-y="true"]').text(showingText);
 
         // Page buttons
-        showCheck(target_page >= 2, "goToFirstPageBtn");
-        showCheck(target_page >= 1, "goToPrevPageBtn");
-        showCheck(target_page > 2, "prevPlaceholders");
+        showCheck(target_page >= 2, '[data-page-btn="first"]');
+        showCheck(target_page >= 1, '[data-page-btn="prev"]');
+        showCheck(target_page > 2, '[data-page-btn="prevPlaceholders"]');
 
-        setNumeralButton("pageABtn", target_page >= 2, target_page - 2);
-        setNumeralButton("pageBBtn", target_page >= 1, target_page - 1);
-        setNumeralButton("pageCBtn", true, target_page)
-        setNumeralButton("pageDBtn", target_page + 1 < numPages, target_page + 1);
-        setNumeralButton("pageEBtn", target_page + 2 < numPages, target_page + 2);
+        setNumeralButton('[data-page-btn="A"]', target_page >= 2, target_page - 2);
+        setNumeralButton('[data-page-btn="B"]', target_page >= 1, target_page - 1);
+        setNumeralButton('[data-page-btn="C"]', true, target_page)
+        setNumeralButton('[data-page-btn="D"]', target_page + 1 < numPages, target_page + 1);
+        setNumeralButton('[data-page-btn="E"]', target_page + 2 < numPages, target_page + 2);
 
-        showCheck(numPages > target_page + 3, "nextPlaceholders");
-        showCheck(numPages - target_page > 1, "goToNextPageBtn");
-        showCheck(numPages - target_page > 2, "goToLastPageBtn");
+        showCheck(numPages > target_page + 3, '[data-page-btn="nextPlaceholders"]');
+        showCheck(numPages - target_page > 1, '[data-page-btn="next"]');
+        showCheck(numPages - target_page > 2, '[data-page-btn="last"]');
     }
 
-    function setNumeralButton(btnId, showBtn, pageTarget) {
-        let btnElem = $("#" + btnId);
+    function setNumeralButton(btnSelector, showBtn, pageTarget) {
+        let btnElem = $(btnSelector);
         if (showBtn) {
             btnElem.text(pageTarget + 1);
             btnElem.css("display", "inline");
@@ -90,11 +88,11 @@
         }
     }
 
-    function showCheck(showElem, elemId) {
+    function showCheck(showElem, elemSelector) {
         if (showElem) {
-            $("#" + elemId).css("display", "inline");
+            $(elemSelector).css("display", "inline");
         } else {
-            $("#" + elemId).css("display", "none");
+            $(elemSelector).css("display", "none");
         }
     }
 </script>
