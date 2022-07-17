@@ -3,39 +3,28 @@
         (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
     </span>
 
-    {% if selected_page >= 2 %}
-        <span class="pageBtn" onclick="goToPage({{ 0 }})"><<</span>
-    {% endif %}
+    <span id="goToFirstPageBtn" class="pageBtn" onclick="goToPage({{ 0 }})" style="display: none;"><<</span>
 
-    {% if selected_page >= 1 %}
-        <span class="pageBtn" onclick="goToPage({{ selected_page - 1 }})"><</span>
-    {% endif %}
+    <span id="goToPrevPageBtn" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})" style="display: none;"><</span>
 
-    {% if selected_page > 2 %}
-        <span>...</span>
-    {% endif %}
+    <span id="prevPlaceholders" style="display: none;">...</span>
 
-    {% for n in range(num_pages) %}
-        {% if (selected_page - 2) <= n <= (selected_page + 2) %}
-            <span class="pageBtn" onclick="goToPage({{ n }})" {% if selected_page == n %} style="font-weight: bold; background-color: #ddd; cursor: default;" {% endif %}>{{ n + 1 }}</span>
-        {% endif %}
-    {% endfor %}
+    <span id="pageABtn" class="pageBtn" style="display: none;"></span>
+    <span id="pageBBtn" class="pageBtn" style="display: none;"></span>
+    <span id="pageCBtn" class="pageBtn" style="display: none; font-weight: bold; background-color: #ddd; cursor: default;"></span>
+    <span id="pageDBtn" class="pageBtn" style="display: none;"></span>
+    <span id="pageEBtn" class="pageBtn" style="display: none;"></span>
+    
+    <span id="nextPlaceholders" style="display: none;">...</span>
 
-    {% if selected_page < num_pages - 3 %}
-        <span>...</span>
-    {% endif %}
+    <span id="goToNextPageBtn" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})" style="display: none;">></span>
 
-
-    {% if num_pages - selected_page > 1 %}
-        <span class="pageBtn" onclick="goToPage({{ selected_page + 1 }})">></span>
-    {% endif %}
-
-    {% if num_pages - selected_page > 2 %}
-        <span class="pageBtn" onclick="goToPage({{ num_pages - 1 }})">>></span>
-    {% endif %}
+    <span id="goToLastPageBtn" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" style="display: none;">>></span>
 </div>
 
 <script type="application/javascript">
+    updatePageButtons({{ selected_page }});
+
     function goToPage(number) {
         updatePageButtons(number);
         let url = "/api/items/page"
@@ -59,10 +48,53 @@
     }
 
     function updatePageButtons(target_page) {
+        // X-Y of Z text
         let startNum = ({{ page_size }} * target_page) + 1;
         let endNum = ({{ page_size }} * (target_page + 1));
         let totalNum = {{ total_items }};
+        let numPages = {{ num_pages }};
+
+        if (endNum > totalNum) {
+            // We are on the last page, which isn't full
+            endNum = totalNum;
+        }
         let showingText = "(Showing " + startNum + " - " + endNum + " of " + totalNum + ")";
         $("#showingXofY").text(showingText);
+
+        // Page buttons
+        showCheck(target_page >= 2, "goToFirstPageBtn");
+        showCheck(target_page >= 1, "goToPrevPageBtn");
+        showCheck(target_page > 2, "prevPlaceholders");
+
+        setNumeralButton("pageABtn", target_page >= 2, target_page - 2);
+        setNumeralButton("pageBBtn", target_page >= 1, target_page - 1);
+        setNumeralButton("pageCBtn", true, target_page)
+        setNumeralButton("pageDBtn", target_page + 1 < numPages, target_page + 1);
+        setNumeralButton("pageEBtn", target_page + 2 < numPages, target_page + 2);
+
+        showCheck(numPages > target_page + 3, "nextPlaceholders");
+        showCheck(numPages - target_page > 1, "goToNextPageBtn");
+        showCheck(numPages - target_page > 2, "goToLastPageBtn");
+    }
+
+    function setNumeralButton(btnId, showBtn, pageTarget) {
+        let btnElem = $("#" + btnId);
+        if (showBtn) {
+            btnElem.text(pageTarget + 1);
+            btnElem.css("display", "inline");
+            btnElem.click(function() {
+                goToPage(pageTarget);
+            })
+        } else {
+            btnElem.css("display", "none");
+        }
+    }
+
+    function showCheck(showElem, elemId) {
+        if (showElem) {
+            $("#" + elemId).css("display", "inline");
+        } else {
+            $("#" + elemId).css("display", "none");
+        }
     }
 </script>
