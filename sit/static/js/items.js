@@ -1,5 +1,6 @@
 let current_rating = null;
 let showOptionalFields = false;
+let searchFormData = null;
 
 $(function() {
     $('#newItemForm').on('submit', function (e) {
@@ -152,6 +153,7 @@ function makeCreateCall(formData) {
 }
 
 function makeSearchCall(formData) {
+    searchFormData = formData;
     $.ajax({
         url: '/api/items/advanced_search',
         data: formData,

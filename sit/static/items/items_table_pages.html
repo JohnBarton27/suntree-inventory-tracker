@@ -25,15 +25,26 @@
 
     function goToPage(number) {
         updatePageButtons(number);
-        let url = "/api/items/page"
+
         $("#itemsTableLoader").css("display", "block");
         $("#itemsTable").css("filter", "blur(4px)");
 
+        let url = "/api/items/page"
+        let data = {'page': number};
+
+        if (searchFormData != null) {
+            // We are searching - re-send the existing formData for the search parameters
+            url = "/api/items/advanced_search";
+            searchFormData.forEach(function(value, key){
+                if (key !== 'page') {
+                    data[key] = value;
+                }
+            });
+        }
+
         $.ajax({
             url: url,
-            data: {
-                'page': number
-            },
+            data: data,
             type: 'POST',
             success: function(data){
                 $("#itemsTableLoader").css("display", "none");

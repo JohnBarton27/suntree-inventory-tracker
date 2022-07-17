@@ -136,11 +136,15 @@ class SitObject(ABC):
         return cls._get_multiple_from_db_result(results)
 
     @classmethod
-    def get_page(cls, page_num: int = 0, order_by: str = None, page_size: int = 25):
+    def get_page(cls, page_num: int = 0, order_by: str = None, page_size: int = 25, where_clause: str = None):
         cls._check_for_class_name()
 
+        # Ensure `where_clause` has a leading space (if given)
+        if where_clause and where_clause[0] != ' ':
+            where_clause = f' {where_clause}'
+
         # Use rowid subquery to greatly improve DB performance with LIMIT/OFFSET
-        query = f'SELECT * FROM {cls.table_name} where rowid in (select rowid from {cls.table_name}{cls.get_ordering_str(order_by)} limit {page_size} offset {page_size * page_num}){cls.get_ordering_str(order_by)}'
+        query = f'SELECT * FROM {cls.table_name} where rowid in (select rowid from {cls.table_name}{where_clause if where_clause else ""}{cls.get_ordering_str(order_by)} limit {page_size} offset {page_size * page_num}){cls.get_ordering_str(order_by)}'
         results = cls.run_query(query)
         return cls._get_multiple_from_db_result(results)
 
@@ -164,10 +168,10 @@ class SitObject(ABC):
             raise Exception(f'The \'table_name\' class variable is undefined for {cls.__name__}!')
 
     @classmethod
-    def get_count(cls):
+    def get_count(cls, where_clause: str = None):
         cls._check_for_class_name()
 
-        query = f'SELECT COUNT(*) FROM {cls.table_name};'
+        query = f'SELECT COUNT(*) FROM {cls.table_name}{where_clause if where_clause else ""};'
 
         results = cls.run_query(query)
         return results[0]['COUNT(*)']

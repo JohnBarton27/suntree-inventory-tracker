@@ -28,17 +28,21 @@ def get_items_page():
     items = Item.get_page(page_num, order_by='description')
     total_num_items = Item.get_count()
 
-    num_pages = math.ceil(Item.get_count() / settings.TABLE_PAGE_SIZE)
+    num_pages = math.ceil(total_num_items / settings.TABLE_PAGE_SIZE)
     return render_template('items/list_items.html', items=items, num_pages=num_pages, selected_page=page_num,
                            page_size=settings.TABLE_PAGE_SIZE, total_items=total_num_items)
 
 
 def advanced_search_items():
-    all_items = Item.get_all()
-    if not request.form:
-        return render_template('items/list_items.html', items=all_items)
+    page_num = int(request.form.get('page', 0))
+
+    where_clauses = [" WHERE"]
 
     description_search = request.form['itemDescSearch']
+
+    if description_search:
+        where_clauses.append(f'description LIKE \'%{description_search}%\'')
+
     lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
     highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
 
@@ -52,42 +56,12 @@ def advanced_search_items():
 
     search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
 
-    matching_items = []
-    for item_to_check in all_items:
-        if description_search and description_search.lower() not in item_to_check.description.lower():
-            continue
-
-        if (lowest_price or highest_price) and not item_to_check.purchase_price:
-            continue
-
-        if lowest_price and lowest_price > item_to_check.purchase_price:
-            continue
-
-        if highest_price and highest_price < item_to_check.purchase_price:
-            continue
-
-        if (earliest_purchase_date or latest_purchase_date) and not item_to_check.purchase_date:
-            continue
-
-        if earliest_purchase_date and earliest_purchase_date > item_to_check.purchase_date:
-            continue
-
-        if latest_purchase_date and latest_purchase_date < item_to_check.purchase_date:
-            continue
-
-        if search_building and not item_to_check.room:
-            continue
-
-        if search_building and item_to_check.room.building != search_building:
-            continue
-
-        if search_label and search_label not in item_to_check.labels:
-            continue
-
-        # Match!
-        matching_items.append(item_to_check)
-
-    return render_template('items/list_items.html', items=matching_items)
+    where_clause = " ".join(where_clauses)
+    matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
+    total_matching_items = Item.get_count(where_clause=where_clause)
+    num_pages = math.ceil(total_matching_items / settings.TABLE_PAGE_SIZE)
+    return render_template('items/list_items.html', items=matching_items, num_pages=num_pages, selected_page=page_num,
+                           page_size=settings.TABLE_PAGE_SIZE, total_items=total_matching_items)
 
 
 def create_item():
