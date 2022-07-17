@@ -3,21 +3,21 @@
         (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
     </span>
 
-    <span data-page-btn="first" class="pageBtn" onclick="goToPage({{ 0 }})" style="display: none;"><<</span>
-    <span data-page-btn="prev" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})" style="display: none;"><</span>
+    <span data-page-btn="first" class="pageBtn" onclick="goToPage({{ 0 }})"><<</span>
+    <span data-page-btn="prev" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})"><</span>
 
     <span data-page-btn="prevPlaceholders" style="display: none;">...</span>
 
-    <span data-page-btn="A" class="pageBtn" style="display: none;"></span>
-    <span data-page-btn="B" class="pageBtn" style="display: none;"></span>
-    <span data-page-btn="C" class="pageBtn" style="display: none; font-weight: bold; background-color: #ddd; cursor: default;"></span>
-    <span data-page-btn="D" class="pageBtn" style="display: none;"></span>
-    <span data-page-btn="E" class="pageBtn" style="display: none;"></span>
+    <span data-page-btn="A" class="pageBtn" ></span>
+    <span data-page-btn="B" class="pageBtn" ></span>
+    <span data-page-btn="C" class="pageBtn" style="font-weight: bold; background-color: #ddd; cursor: default;"></span>
+    <span data-page-btn="D" class="pageBtn" ></span>
+    <span data-page-btn="E" class="pageBtn" ></span>
 
-    <span data-page-btn="nextPlaceholders" style="display: none;">...</span>
+    <span data-page-btn="nextPlaceholders">...</span>
 
-    <span data-page-btn="next" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})" style="display: none;">></span>
-    <span data-page-btn="last" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" style="display: none;">>></span>
+    <span data-page-btn="next" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})">></span>
+    <span data-page-btn="last" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" >>></span>
 </div>
 
 <script type="application/javascript">

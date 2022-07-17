@@ -272,6 +272,7 @@ input[type=radio] {
     margin: 3px 0;
     border-radius: 3px;
     cursor: pointer;
+    display: none;
 }
 
 .pageBtn:hover {
