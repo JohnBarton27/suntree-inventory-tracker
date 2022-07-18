@@ -62,10 +62,17 @@ def advanced_search_items():
         latest_purchase_timestamp = int(datetime.timestamp(latest_purchase_date))
         where_clauses.append(f'purchase_date <= {latest_purchase_timestamp}')
 
-    search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form[
-        'itemBuildingSearch'] else None
+    search_building_id = request.form.get('itemBuildingSearch')
+    if search_building_id:
+        rooms = Room.get_for_building(Building(db_id=int(search_building_id)))
+        where_clauses.append(f'({" OR ".join([f"room = {room.id}" for room in rooms])})')
 
-    search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
+    search_label_id = request.form.get('itemLabelSearch')
+    if search_label_id:
+        label = Label.get_by_id(int(search_label_id))
+        items_in_label = label.get_items()
+        where_clauses.append(f'({" OR ".join([f"id = {item.id}" for item in items_in_label])})')
+
 
     where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) >= 1 else ''
     matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
