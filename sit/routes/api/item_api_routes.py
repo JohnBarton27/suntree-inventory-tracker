@@ -73,7 +73,6 @@ def advanced_search_items():
         items_in_label = label.get_items()
         where_clauses.append(f'({" OR ".join([f"id = {item.id}" for item in items_in_label])})')
 
-
     where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) >= 1 else ''
     matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
     total_matching_items = Item.get_count(where_clause=where_clause)
