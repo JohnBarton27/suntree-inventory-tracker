@@ -36,15 +36,19 @@ def get_items_page():
 def advanced_search_items():
     page_num = int(request.form.get('page', 0))
 
-    where_clauses = [" WHERE"]
+    where_clauses = []
 
     description_search = request.form['itemDescSearch']
-
     if description_search:
         where_clauses.append(f'description LIKE \'%{description_search}%\'')
 
-    lowest_price = int(request.form['itemLowestPrice']) if request.form['itemLowestPrice'] else None
-    highest_price = int(request.form['itemHighestPrice']) if request.form['itemHighestPrice'] else None
+    lowest_price = request.form.get('itemLowestPrice')
+    if lowest_price or lowest_price == 0:  # 0 needs to eval as True
+        where_clauses.append(f'purchase_price >= {lowest_price}')
+
+    highest_price = request.form.get('itemHighestPrice')
+    if highest_price or highest_price == 0:  # 0 needs to eval as True
+        where_clauses.append(f'purchase_price <= {highest_price}')
 
     earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if \
         request.form['itemEarliestPurchaseDate'] else None
@@ -56,7 +60,7 @@ def advanced_search_items():
 
     search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
 
-    where_clause = " ".join(where_clauses)
+    where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) > 1 else ''
     matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
     total_matching_items = Item.get_count(where_clause=where_clause)
     num_pages = math.ceil(total_matching_items / settings.TABLE_PAGE_SIZE)
