@@ -86,7 +86,6 @@ $(function() {
 
     if (mobileCheck() === true) {
         // If on mobile, hide certain buttons
-        $("#advancedSearchButtons").css('display', 'none');
         $("#searchField").css('display', 'none');
     }
 
