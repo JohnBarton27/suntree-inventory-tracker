@@ -46,7 +46,7 @@ def validate(db_name):
             CREATE TABLE IF NOT EXISTS item (
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 description TEXT NOT NULL,
-                purchase_price TEXT,
+                purchase_price INTEGER,
                 purchase_date INTEGER,
                 end_of_life_date INTEGER,
                 room INT REFERENCES room(id) ON DELETE CASCADE,
@@ -146,6 +146,7 @@ def check_items():
     }
 
     _correct_columns(Item, column_defs)
+    _ensure_purchase_price_is_int()
 
 
 def check_barcode_print_orders():
@@ -183,3 +184,50 @@ def _check_foreign_key(object_class, local_col_name, remote_col_name, remote_tab
             return
 
     logging.warning(f'Missing foreign key reference - {object_class.table_name}({local_col_name}) -> {remote_table_name}({remote_col_name})')
+
+
+def _ensure_purchase_price_is_int():
+    columns = Item.run_query(f'PRAGMA table_info({Item.table_name});')
+    temp_table_name = f'{Item.table_name}_TEMP'
+
+    curr_type = None
+
+    for column in columns:
+        if column['name'] == 'purchase_price':
+            if column['type'].upper() == 'INTEGER':
+                return
+            curr_type = column['type']
+
+    logging.error(f'{Item.table_name}\'s \'purchase_price\' is type {curr_type} - should be INTEGER. Attempting to fix...')
+
+    # Get current CREATE TABLE SQL
+    table_def_sql = Item.run_query(f"SELECT sql FROM sqlite_master WHERE type='table' AND name='{Item.table_name}';")[0]['sql']
+
+    column_defs_str = table_def_sql.split(f"CREATE TABLE {Item.table_name} (")[-1][:-1]
+    if column_defs_str[-1] == ')':
+        column_defs_str = column_defs_str[:-1]
+
+    column_defs = [col_def.strip() for col_def in column_defs_str.split(',')]
+    new_col_defs = []
+
+    for col_def in column_defs:
+        if col_def.startswith('purchase_price'):
+            new_col_defs.append('purchase_price INTEGER')
+        else:
+            new_col_defs.append(col_def)
+
+    logging.info(f'Creating temporary duplicate table ({temp_table_name} to house data for conversion...')
+    new_create_query = f"CREATE TABLE {temp_table_name} ({', '.join(new_col_defs)});"
+    Item.run_query(new_create_query)
+
+    logging.info(f'Copying data from {Item.table_name} -> {temp_table_name}...')
+    insert_query = f"INSERT INTO {temp_table_name} SELECT * FROM {Item.table_name};"
+    Item.run_query(insert_query)
+
+    logging.info(f'Dropping original table...')
+    drop_query = f"DROP TABLE {Item.table_name};"
+    Item.run_query(drop_query)
+
+    logging.info(f'Renaming {temp_table_name} -> {Item.table_name}...')
+    rename_query = f"ALTER TABLE {temp_table_name} RENAME TO {Item.table_name};"
+    Item.run_query(rename_query)
