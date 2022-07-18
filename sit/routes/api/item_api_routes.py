@@ -50,17 +50,24 @@ def advanced_search_items():
     if highest_price or highest_price == 0:  # 0 needs to eval as True
         where_clauses.append(f'purchase_price <= {highest_price}')
 
-    earliest_purchase_date = datetime.strptime(request.form['itemEarliestPurchaseDate'], '%Y-%m-%d').date() if \
-        request.form['itemEarliestPurchaseDate'] else None
-    latest_purchase_date = datetime.strptime(request.form['itemLatestPurchaseDate'], '%Y-%m-%d').date() if request.form[
-        'itemLatestPurchaseDate'] else None
+    earliest_purchase_date_str = request.form.get('itemEarliestPurchaseDate')
+    if earliest_purchase_date_str:
+        earliest_purchase_date = datetime.strptime(earliest_purchase_date_str, '%Y-%m-%d')
+        earliest_purchase_timestamp = int(datetime.timestamp(earliest_purchase_date))
+        where_clauses.append(f'purchase_date >= {earliest_purchase_timestamp}')
+
+    latest_purchase_date_str = request.form.get('itemLatestPurchaseDate')
+    if latest_purchase_date_str:
+        latest_purchase_date = datetime.strptime(latest_purchase_date_str, '%Y-%m-%d')
+        latest_purchase_timestamp = int(datetime.timestamp(latest_purchase_date))
+        where_clauses.append(f'purchase_date <= {latest_purchase_timestamp}')
 
     search_building = Building.get_by_id(int(request.form['itemBuildingSearch'])) if request.form[
         'itemBuildingSearch'] else None
 
     search_label = Label.get_by_id(int(request.form['itemLabelSearch'])) if request.form['itemLabelSearch'] else None
 
-    where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) > 1 else ''
+    where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) >= 1 else ''
     matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
     total_matching_items = Item.get_count(where_clause=where_clause)
     num_pages = math.ceil(total_matching_items / settings.TABLE_PAGE_SIZE)
