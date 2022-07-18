@@ -172,7 +172,7 @@ function makeSearchCall(formData) {
 
 function makeResetCall() {
     $.ajax({
-        url: '/api/items/advanced_search',
+        url: '/api/items/advanced_search/clear',
         processData: false,
         contentType: false,
         type: 'POST',

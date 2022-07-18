@@ -81,6 +81,15 @@ def advanced_search_items():
                            page_size=settings.TABLE_PAGE_SIZE, total_items=total_matching_items)
 
 
+def clear_advanced_search():
+    items = Item.get_page(0, order_by='description')
+    total_num_items = Item.get_count()
+
+    num_pages = math.ceil(total_num_items / settings.TABLE_PAGE_SIZE)
+    return render_template('items/list_items.html', items=items, num_pages=num_pages, selected_page=0,
+                           page_size=settings.TABLE_PAGE_SIZE, total_items=total_num_items)
+
+
 def create_item():
     purchase_date_str = request.form['itemPurchaseDate']
     purchase_date = datetime.strptime(purchase_date_str, '%Y-%m-%d').date() if purchase_date_str else None
