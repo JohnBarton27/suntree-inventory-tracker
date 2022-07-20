@@ -1,109 +1,111 @@
-<div style="text-align: right;">
-    <span data-x-of-y="true" style="margin-right: 15px;">
-        (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
-    </span>
+{% if page_size is defined %}
+    <div style="text-align: right;">
+        <span data-x-of-y="true" style="margin-right: 15px;">
+            (Showing {{ (page_size * selected_page) + 1 }} - {{ page_size * (selected_page + 1) }} of {{ total_items }})
+        </span>
 
-    <span data-page-btn="first" class="pageBtn" onclick="goToPage({{ 0 }})"><<</span>
-    <span data-page-btn="prev" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})"><</span>
+        <span data-page-btn="first" class="pageBtn" onclick="goToPage({{ 0 }})"><<</span>
+        <span data-page-btn="prev" class="pageBtn" onclick="goToPage({{ selected_page - 1 }})"><</span>
 
-    <span data-page-btn="prevPlaceholders" style="display: none;">...</span>
+        <span data-page-btn="prevPlaceholders" style="display: none;">...</span>
 
-    <span data-page-btn="A" class="pageBtn" ></span>
-    <span data-page-btn="B" class="pageBtn" ></span>
-    <span data-page-btn="C" class="pageBtn" style="font-weight: bold; background-color: #ddd; cursor: default;"></span>
-    <span data-page-btn="D" class="pageBtn" ></span>
-    <span data-page-btn="E" class="pageBtn" ></span>
+        <span data-page-btn="A" class="pageBtn" ></span>
+        <span data-page-btn="B" class="pageBtn" ></span>
+        <span data-page-btn="C" class="pageBtn" style="font-weight: bold; background-color: #ddd; cursor: default;"></span>
+        <span data-page-btn="D" class="pageBtn" ></span>
+        <span data-page-btn="E" class="pageBtn" ></span>
 
-    <span data-page-btn="nextPlaceholders">...</span>
+        <span data-page-btn="nextPlaceholders">...</span>
 
-    <span data-page-btn="next" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})">></span>
-    <span data-page-btn="last" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" >>></span>
-</div>
+        <span data-page-btn="next" class="pageBtn" onclick="goToPage({{ selected_page + 1 }})">></span>
+        <span data-page-btn="last" class="pageBtn" onclick="goToPage({{ num_pages - 1 }})" >>></span>
+    </div>
 
-<script type="application/javascript">
-    updatePageButtons({{ selected_page }});
+    <script type="application/javascript">
+        updatePageButtons({{ selected_page }});
 
-    function goToPage(number) {
-        updatePageButtons(number);
+        function goToPage(number) {
+            updatePageButtons(number);
 
-        $("#itemsTableLoader").css("display", "block");
-        $("#itemsTable").css("filter", "blur(4px)");
+            $("#itemsTableLoader").css("display", "block");
+            $("#itemsTable").css("filter", "blur(4px)");
 
-        let url = "/api/items/page"
-        let data = {'page': number};
+            let url = "/api/items/page"
+            let data = {'page': number};
 
-        if (searchFormData != null) {
-            // We are searching - re-send the existing formData for the search parameters
-            url = "/api/items/advanced_search";
-            searchFormData.forEach(function(value, key){
-                if (key !== 'page') {
-                    data[key] = value;
+            if (searchFormData != null) {
+                // We are searching - re-send the existing formData for the search parameters
+                url = "/api/items/advanced_search";
+                searchFormData.forEach(function(value, key){
+                    if (key !== 'page') {
+                        data[key] = value;
+                    }
+                });
+            }
+
+            $.ajax({
+                url: url,
+                data: data,
+                type: 'POST',
+                success: function(data){
+                    $("#itemsTableLoader").css("display", "none");
+                    $("#itemsTable").css("filter", "none");
+
+                    // Update data on page
+                    $('#item_list').html(data);
                 }
             });
         }
 
-        $.ajax({
-            url: url,
-            data: data,
-            type: 'POST',
-            success: function(data){
-                $("#itemsTableLoader").css("display", "none");
-                $("#itemsTable").css("filter", "none");
+        function updatePageButtons(target_page) {
+            // X-Y of Z text
+            let startNum = ({{ page_size }} * target_page) + 1;
+            let endNum = ({{ page_size }} * (target_page + 1));
+            let totalNum = {{ total_items }};
+            let numPages = {{ num_pages }};
 
-                // Update data on page
-                $('#item_list').html(data);
+            if (endNum > totalNum) {
+                // We are on the last page, which isn't full
+                endNum = totalNum;
             }
-        });
-    }
+            let showingText = "(Showing " + startNum + " - " + endNum + " of " + totalNum + ")";
+            $('[data-x-of-y="true"]').text(showingText);
 
-    function updatePageButtons(target_page) {
-        // X-Y of Z text
-        let startNum = ({{ page_size }} * target_page) + 1;
-        let endNum = ({{ page_size }} * (target_page + 1));
-        let totalNum = {{ total_items }};
-        let numPages = {{ num_pages }};
+            // Page buttons
+            showCheck(target_page >= 2, '[data-page-btn="first"]');
+            showCheck(target_page >= 1, '[data-page-btn="prev"]');
+            showCheck(target_page > 2, '[data-page-btn="prevPlaceholders"]');
 
-        if (endNum > totalNum) {
-            // We are on the last page, which isn't full
-            endNum = totalNum;
+            setNumeralButton('[data-page-btn="A"]', target_page >= 2, target_page - 2);
+            setNumeralButton('[data-page-btn="B"]', target_page >= 1, target_page - 1);
+            setNumeralButton('[data-page-btn="C"]', true, target_page)
+            setNumeralButton('[data-page-btn="D"]', target_page + 1 < numPages, target_page + 1);
+            setNumeralButton('[data-page-btn="E"]', target_page + 2 < numPages, target_page + 2);
+
+            showCheck(numPages > target_page + 3, '[data-page-btn="nextPlaceholders"]');
+            showCheck(numPages - target_page > 1, '[data-page-btn="next"]');
+            showCheck(numPages - target_page > 2, '[data-page-btn="last"]');
         }
-        let showingText = "(Showing " + startNum + " - " + endNum + " of " + totalNum + ")";
-        $('[data-x-of-y="true"]').text(showingText);
 
-        // Page buttons
-        showCheck(target_page >= 2, '[data-page-btn="first"]');
-        showCheck(target_page >= 1, '[data-page-btn="prev"]');
-        showCheck(target_page > 2, '[data-page-btn="prevPlaceholders"]');
-
-        setNumeralButton('[data-page-btn="A"]', target_page >= 2, target_page - 2);
-        setNumeralButton('[data-page-btn="B"]', target_page >= 1, target_page - 1);
-        setNumeralButton('[data-page-btn="C"]', true, target_page)
-        setNumeralButton('[data-page-btn="D"]', target_page + 1 < numPages, target_page + 1);
-        setNumeralButton('[data-page-btn="E"]', target_page + 2 < numPages, target_page + 2);
-
-        showCheck(numPages > target_page + 3, '[data-page-btn="nextPlaceholders"]');
-        showCheck(numPages - target_page > 1, '[data-page-btn="next"]');
-        showCheck(numPages - target_page > 2, '[data-page-btn="last"]');
-    }
-
-    function setNumeralButton(btnSelector, showBtn, pageTarget) {
-        let btnElem = $(btnSelector);
-        if (showBtn) {
-            btnElem.text(pageTarget + 1);
-            btnElem.css("display", "inline");
-            btnElem.click(function() {
-                goToPage(pageTarget);
-            })
-        } else {
-            btnElem.css("display", "none");
+        function setNumeralButton(btnSelector, showBtn, pageTarget) {
+            let btnElem = $(btnSelector);
+            if (showBtn) {
+                btnElem.text(pageTarget + 1);
+                btnElem.css("display", "inline");
+                btnElem.click(function() {
+                    goToPage(pageTarget);
+                })
+            } else {
+                btnElem.css("display", "none");
+            }
         }
-    }
 
-    function showCheck(showElem, elemSelector) {
-        if (showElem) {
-            $(elemSelector).css("display", "inline");
-        } else {
-            $(elemSelector).css("display", "none");
+        function showCheck(showElem, elemSelector) {
+            if (showElem) {
+                $(elemSelector).css("display", "inline");
+            } else {
+                $(elemSelector).css("display", "none");
+            }
         }
-    }
-</script>
+    </script>
+{% endif %}
