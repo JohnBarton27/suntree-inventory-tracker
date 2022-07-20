@@ -17,7 +17,7 @@
 
 <div style="display:flex; justify-content: center; align-items: center;">
 {% if item.photo %}
-<img src="{{ item.photo }}" width="300">
+<img src="{{ item.photo }}" width="300" data-bs-toggle="modal" data-bs-target="#itemPictureModal">
 {% endif %}
 <img src="data:image/png;base64, {{ item.barcode }}" width="300">
 </div>
@@ -106,3 +106,21 @@
         $(this).html(date.toLocaleString());
     });
 </script>
+
+<!-- Item Picture Modal -->
+<div class="modal fade" id="itemPictureModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 100%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ item.description }} - Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <img src="{{ item.photo }}" style="margin: auto; max-width: 100%;">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
