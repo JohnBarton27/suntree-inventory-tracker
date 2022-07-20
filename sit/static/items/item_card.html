@@ -27,8 +27,9 @@
     <span style="justify-self: end;">
         <strong>Location: </strong>
     </span>
-    <span style="justify-self: start;">
-       <i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}
+    <span style="justify-self: start; margin-bottom: 15px; margin-top: 15px;">
+        <a class="sit-inline-link sit-info-card" style="margin: 0" href="/building/{{ item.room.building.id }}"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ item.room.building.number }}</a>
+        <a class="sit-inline-link sit-info-card" style="margin: 0" href="/room/{{ item.room.id }}"><i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ item.room.number }}</a>
     </span>
 
     <span style="justify-self: end;">

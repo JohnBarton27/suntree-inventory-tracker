@@ -153,6 +153,16 @@ a.sit-info-card:hover {
     text-decoration: inherit; /* no underline */
 }
 
+.sit-inline-link {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+    cursor: pointer;
+}
+
+.sit-inline-link:hover {
+    color: var(--sit-blue);
+}
+
 /* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the sit-navbar (.icon) */
 @media screen and (max-width: 950px) {
     .sit-navbar a:not(:first-child) {display: none;}
