@@ -3,6 +3,11 @@
 	<title>Suntree Inventory Tracker</title>
 
     {% include 'head.html' %}
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+
+    <script src="{{ url_for('static', filename='/js/index.js') }}"></script>
+
 </head>
 <body>
     {% include 'header.html' %}
@@ -24,6 +29,18 @@
             <p>Room{{ '' if num_rooms == 1 else 's' }}</p>
         </a>
 
+    </div>
+
+    <div id="metrics" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; grid-auto-rows: minmax(100px, auto); justify-items: center">
+        <div style="width: 600px; height: 600px;">
+            <canvas id="conditionChart" width="400" height="400"></canvas>
+            <script type="application/javascript">
+                setupConditionChart({{ excellent }}, {{ good }}, {{ fair }}, {{ poor }})
+            </script>
+        </div>
+        <div>
+            Another div!
+        </div>
     </div>
 </body>
 </html>

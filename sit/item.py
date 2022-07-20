@@ -327,3 +327,11 @@ class Item(SitObject):
                     condition=condition,
                     original_inventory_date=original_inventory_date,
                     last_modified_date=last_modified_date)
+
+    @classmethod
+    def get_total_num(cls, items_list: list):
+        total_num = 0
+        for item in items_list:
+            total_num += item.quantity
+
+        return total_num
