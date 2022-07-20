@@ -282,6 +282,11 @@ class Item(SitObject):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE room=?;', (room.id,))
         return cls._get_multiple_from_db_result(results)
 
+    @classmethod
+    def get_count_for_room(cls, room: Room):
+        results = cls.run_query(f'SELECT COUNT(*) FROM {cls.table_name} WHERE room=?;', (room.id,))
+        return results[0]['COUNT(*)']
+
     def _get_create_params_dict(self):
         return {
             'description': self.description,

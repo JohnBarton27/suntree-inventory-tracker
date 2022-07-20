@@ -75,3 +75,23 @@ class Room(SitObject):
     @classmethod
     def _get_from_db_result(cls, db_result):
         return Room(db_id=db_result['id'], number=db_result['number'], building=Building(db_id=db_result['building']))
+
+    @classmethod
+    def get_biggest_rooms(cls, limit: int = 5):
+        results = cls.run_query(f"SELECT room, count(room) FROM item GROUP BY room;")
+        room_counts = {}
+        for result in results:
+            room_counts[result['room']] = result['count(room)']
+
+        biggest_rooms = []
+
+        for i in range(0, limit):
+            room_id = max(room_counts, key=room_counts.get)
+            item_count = room_counts[room_id]
+
+            room = Room(db_id=room_id)
+            biggest_rooms.append({'room': room, 'count': item_count})
+
+            room_counts.pop(room_id)
+
+        return biggest_rooms

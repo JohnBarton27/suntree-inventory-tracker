@@ -33,7 +33,10 @@ def index():
     good_num = Item.get_total_num(good_items)
     excellent_num = Item.get_total_num(excellent_items)
 
-    return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms, poor=poor_num, fair=fair_num, good=good_num, excellent=excellent_num)
+    biggest_rooms = Room.get_biggest_rooms()
+    return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms,
+                           poor=poor_num, fair=fair_num, good=good_num, excellent=excellent_num,
+                           biggest_rooms=biggest_rooms)
 
 
 def scanner():
