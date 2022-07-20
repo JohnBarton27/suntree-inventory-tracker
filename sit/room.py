@@ -78,10 +78,18 @@ class Room(SitObject):
 
     @classmethod
     def get_biggest_rooms(cls, limit: int = 5):
-        results = cls.run_query(f"SELECT room, count(room) FROM item GROUP BY room;")
+        from item import Item
+
+        all_items = Item.get_all()
+
         room_counts = {}
-        for result in results:
-            room_counts[result['room']] = result['count(room)']
+
+        for item in all_items:
+            room_id = item.room.id
+            if room_id in room_counts:
+                room_counts[room_id] += item.quantity
+            else:
+                room_counts[room_id] = item.quantity
 
         biggest_rooms = []
 
