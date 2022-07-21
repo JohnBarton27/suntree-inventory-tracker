@@ -73,6 +73,19 @@ def advanced_search_items():
         items_in_label = label.get_items()
         where_clauses.append(f'({" OR ".join([f"id = {item.id}" for item in items_in_label])})')
 
+    conditions = []
+    if 'poor' in request.form:
+        conditions.append(1)
+    if 'fair' in request.form:
+        conditions.append(2)
+    if 'good' in request.form:
+        conditions.append(3)
+    if 'excellent' in request.form:
+        conditions.append(4)
+
+    if conditions:
+        where_clauses.append(f'condition in ({",".join([str(condition) for condition in conditions])})')
+
     where_clause = f' WHERE {" AND ".join(where_clauses)}' if len(where_clauses) >= 1 else ''
     matching_items = Item.get_page(page_num, order_by='description', where_clause=where_clause)
     total_matching_items = Item.get_count(where_clause=where_clause)
