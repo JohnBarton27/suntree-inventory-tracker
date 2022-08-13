@@ -176,6 +176,7 @@ def edit_item():
     item_to_update.update_condition(condition)
     item_to_update.update_quantity(quantity)
     item_to_update.update_labels(labels)
+    item_to_update.update_notes(request.form.get('itemNotes'))
 
     if 'itemPicture' in request.form:
         item_to_update.update_photo(request.form['itemPicture'])

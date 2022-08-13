@@ -97,6 +97,15 @@
         </div>
     </span>
 
+    {% if item.notes %}
+    <span style="justify-self: end;">
+        <strong>Notes:</strong>
+    </span>
+    <span style="justify-self: start; font-size: 1rem">
+        {{ item.notes }}
+    </span>
+    {% endif %}
+
 </div>
 
 <script type="application/javascript">
