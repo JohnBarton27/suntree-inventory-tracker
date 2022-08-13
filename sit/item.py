@@ -19,6 +19,7 @@ class Item(SitObject):
                  db_id: int = None,
                  description: str = None,
                  purchase_price: float = None,
+                 purchase_price_is_estimate: bool = None,
                  purchase_date: date = None,
                  end_of_life_date: date = None,
                  room: Room = None,
@@ -30,6 +31,7 @@ class Item(SitObject):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
+        self._purchase_price_is_estimate = purchase_price_is_estimate
         self._purchase_date = purchase_date
         self._end_of_life_date = end_of_life_date
         self._room = room
@@ -76,6 +78,20 @@ class Item(SitObject):
             return
 
         self._purchase_price = purchase_price
+        self.update()
+
+    @property
+    def purchase_price_is_estimate(self):
+        if self._purchase_price_is_estimate is None:
+            self.populate()
+
+        return self._purchase_price_is_estimate
+
+    def update_purchase_price_is_estimate(self, purchase_price_is_estimate: bool):
+        if self._purchase_price_is_estimate == purchase_price_is_estimate:
+            return
+
+        self._purchase_price_is_estimate = purchase_price_is_estimate
         self.update()
 
     @property
@@ -291,6 +307,7 @@ class Item(SitObject):
         return {
             'description': self.description,
             'purchase_price': self._purchase_price,
+            'purchase_price_is_estimate': self._purchase_price_is_estimate,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
             'condition': self.condition.int_value,
@@ -316,6 +333,7 @@ class Item(SitObject):
         last_modified_date = datetime.fromtimestamp(last_modified_date_seconds) if last_modified_date_seconds else None
 
         purchase_price = float(db_result['purchase_price']) if db_result['purchase_price'] else None
+        purchase_price_is_estimate = int(db_result.get('purchase_price_is_estimate', '0')) == 1
 
         item_id = int(db_result['item_id'] if 'item_id' in db_result else db_result['id'])
 
@@ -324,6 +342,7 @@ class Item(SitObject):
         return Item(db_id=item_id,
                     description=db_result['description'],
                     purchase_price=purchase_price,
+                    purchase_price_is_estimate=purchase_price_is_estimate,
                     purchase_date=purchase_date,
                     end_of_life_date=end_of_life_date,
                     room=Room(db_id=db_result['room']),

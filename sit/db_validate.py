@@ -47,6 +47,7 @@ def validate(db_name):
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 description TEXT NOT NULL,
                 purchase_price INTEGER,
+                purchase_price_is_estimate INTEGER DEFAULT 0,
                 purchase_date INTEGER,
                 end_of_life_date INTEGER,
                 room INT REFERENCES room(id) ON DELETE CASCADE,
@@ -142,7 +143,8 @@ def check_items():
         'end_of_life_date': 'INTEGER',
         'condition': 'INTEGER DEFAULT 5',
         'original_inventory_date': f'INTEGER DEFAULT {int(now.timestamp())}',
-        'last_modified_date': 'INTEGER'
+        'last_modified_date': 'INTEGER',
+        'purchase_price_is_estimate': 'INTEGER DEFAULT 0'
     }
 
     _correct_columns(Item, column_defs)
