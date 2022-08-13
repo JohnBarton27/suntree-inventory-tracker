@@ -99,7 +99,12 @@ class Item(SitObject):
         if self.purchase_price is None:
             return None
 
-        return '${:.2f}'.format(self.purchase_price)
+        price_str = '${:.2f}'.format(self.purchase_price)
+
+        if self.purchase_price_is_estimate:
+            price_str = f'{price_str} (est.)'
+
+        return price_str
 
     def update_purchase_date(self, purchase_date: date):
         if self._purchase_date == purchase_date:
@@ -307,7 +312,7 @@ class Item(SitObject):
         return {
             'description': self.description,
             'purchase_price': self._purchase_price,
-            'purchase_price_is_estimate': self._purchase_price_is_estimate,
+            'purchase_price_is_estimate': 1 if self._purchase_price_is_estimate else 0,
             'room': self.room.id,
             'purchase_date': self.purchase_date_timestamp if self._purchase_date else None,
             'condition': self.condition.int_value,

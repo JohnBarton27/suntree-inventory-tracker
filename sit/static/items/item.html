@@ -69,6 +69,11 @@
                             <input type="number" min="1" step="any" class="form-control" id="itemPurchasePrice" name="itemPurchasePrice" value="{{ item.purchase_price }}"/>
                         </div>
                         <div class="mb-3" data-required="false">
+                            <label for="itemPurchasePriceEstimate" class="form-label">Estimated Purchase Price?</label>
+                            <input type="checkbox" class="form-check-input" id="itemPurchasePriceEstimate" name="itemPurchasePriceEstimate" value="itemPurchasePriceEstimate" {{ 'checked' if item.purchase_price_is_estimate else '' }}/> <i id="estimatedPriceHelpTrigger" class="fas fa-question-circle" style="color: gray; cursor: pointer;"></i>
+                            <div id="estimatedPriceHelp" style="height: 0; overflow: hidden;">{% include 'items/estimated_price_help.html' %}</div>
+                        </div>
+                        <div class="mb-3" data-required="false">
                             <label for="itemPurchaseDate" class="form-label">Purchase Date</label>
                             <input type="date" class="form-control" id="itemPurchaseDate" name="itemPurchaseDate" value="{{ item.purchase_date }}"/>
                         </div>

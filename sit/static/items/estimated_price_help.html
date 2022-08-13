@@ -1,0 +1,23 @@
+{#
+   Requireds two elements - a 'estimatedPriceHelpTrigger' (which, when pressed, opens/closes this table) and a
+   'conditionHelp' div, which will contain this element like so:
+
+   <div id="estimatedPriceHelp" style="height: 0; overflow: hidden;">{% include 'items/condition_help.html' %}</div>
+#}
+
+<em>Check this box if estimating the item's price (i.e., performing inventory long after the item was originally purchased & a purchase receipt is unavailable).</em>
+
+<script type="application/javascript">
+    let estimatedPriceHelpShown = false;
+
+    $("#estimatedPriceHelpTrigger").on("click", function(){
+        let height = "75px";
+        if (estimatedPriceHelpShown) {
+            height = "0px";
+        }
+
+        $("#estimatedPriceHelp").animate({height: height})
+
+        estimatedPriceHelpShown = !estimatedPriceHelpShown;
+    });
+</script>
