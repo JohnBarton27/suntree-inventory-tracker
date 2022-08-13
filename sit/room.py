@@ -81,6 +81,8 @@ class Room(SitObject):
         from item import Item
 
         all_items = Item.get_all()
+        if len(all_items) == 0:
+            return []
 
         room_counts = {}
 
@@ -92,6 +94,9 @@ class Room(SitObject):
                 room_counts[room_id] = item.quantity
 
         biggest_rooms = []
+
+        if len(room_counts.keys()) < limit:
+            limit = len(room_counts.keys())
 
         for i in range(0, limit):
             room_id = max(room_counts, key=room_counts.get)

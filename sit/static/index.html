@@ -32,30 +32,34 @@
     </div>
 
     <div id="metrics" style="display: grid; grid-auto-columns: auto; gap: 10px; grid-auto-rows: auto; justify-items: center">
-        <div style="width: 600px; height: 600px;">
-            <canvas id="conditionChart" width="400" height="400"></canvas>
-            <script type="application/javascript">
-                setupConditionChart({{ excellent }}, {{ good }}, {{ fair }}, {{ poor }})
-            </script>
-        </div>
-        <div style="width: 600px; text-align: center;">
-            <h3 style="margin: auto;">Biggest Rooms</h3>
-            <table class="sit-item-table">
-            <tr>
-                <th>Room</th>
-                <th># of Items</th>
-            </tr>
-            {% for room in biggest_rooms %}
+        {% if (excellent + good + fair + poor) > 0 %}
+            <div style="width: 600px; height: 600px;">
+                <canvas id="conditionChart" width="400" height="400"></canvas>
+                <script type="application/javascript">
+                    setupConditionChart({{ excellent }}, {{ good }}, {{ fair }}, {{ poor }})
+                </script>
+            </div>
+        {% endif %}
+        {% if biggest_rooms|length > 0 %}
+            <div style="width: 600px; text-align: center;">
+                <h3 style="margin: auto;">Biggest Rooms</h3>
+                <table class="sit-item-table">
                 <tr>
-                    <td>
-                        <a class="sit-inline-link sit-info-card" style="margin: 0" href="/building/{{ room['room'].building.id }}"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ room['room'].building.number }}</a>
-                        <a class="sit-inline-link sit-info-card" style="margin: 0" href="/room/{{ room['room'].id }}"><i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room['room'].number }}</a>
-                    </td>
-                    <td>{{ room['count'] }}</td>
+                    <th>Room</th>
+                    <th># of Items</th>
                 </tr>
-            {% endfor %}
-            </table>
-        </div>
+                {% for room in biggest_rooms %}
+                    <tr>
+                        <td>
+                            <a class="sit-inline-link sit-info-card" style="margin: 0" href="/building/{{ room['room'].building.id }}"><i class="fas fa-building" style="margin-right: 5px;"></i> {{ room['room'].building.number }}</a>
+                            <a class="sit-inline-link sit-info-card" style="margin: 0" href="/room/{{ room['room'].id }}"><i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room['room'].number }}</a>
+                        </td>
+                        <td>{{ room['count'] }}</td>
+                    </tr>
+                {% endfor %}
+                </table>
+            </div>
+        {% endif %}
     </div>
 </body>
 </html>
