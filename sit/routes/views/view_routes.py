@@ -18,7 +18,10 @@ def index():
     good_items = []
     excellent_items = []
 
+    total_value = 0
+
     for item in all_items:
+        # Condition Metrics
         if item.condition == Condition.ONE:
             poor_items.append(item)
         elif item.condition == Condition.TWO:
@@ -28,6 +31,12 @@ def index():
         elif item.condition == Condition.FOUR:
             excellent_items.append(item)
 
+        # Price Metrics
+        if item.purchase_price:
+            total_value += item.purchase_price * item.quantity
+
+    total_value_str = '${:,.2f}'.format(total_value)
+
     poor_num = Item.get_total_num(poor_items)
     fair_num = Item.get_total_num(fair_items)
     good_num = Item.get_total_num(good_items)
@@ -36,7 +45,7 @@ def index():
     biggest_rooms = Room.get_biggest_rooms()
     return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms,
                            poor=poor_num, fair=fair_num, good=good_num, excellent=excellent_num,
-                           biggest_rooms=biggest_rooms)
+                           biggest_rooms=biggest_rooms, total_value=total_value_str)
 
 
 def scanner():
