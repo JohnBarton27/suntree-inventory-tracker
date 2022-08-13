@@ -111,6 +111,8 @@ def create_item():
     end_of_life_date = datetime.strptime(end_of_life_date_str, '%Y-%m-%d').date() if end_of_life_date_str else None
 
     purchase_price = float(request.form['itemPurchasePrice']) if request.form['itemPurchasePrice'] else None
+    purchase_price_is_estimate = request.form.get("itemPurchasePriceEstimate") is not None
+
     quantity = int(request.form['itemQuantity']) if request.form['itemQuantity'] else 1
     photo_src = None
     if 'itemPicture' in request.form:
@@ -122,6 +124,7 @@ def create_item():
 
     item = Item(description=request.form['itemDesc'],
                 purchase_price=purchase_price,
+                purchase_price_is_estimate=purchase_price_is_estimate,
                 purchase_date=purchase_date,
                 end_of_life_date=end_of_life_date,
                 room=Room(db_id=int(request.form['itemRoom'])),
