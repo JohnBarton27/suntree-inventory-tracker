@@ -131,7 +131,8 @@ def create_item():
                 photo=photo_src,
                 quantity=quantity,
                 condition=condition,
-                original_inventory_date=datetime.now())
+                original_inventory_date=datetime.now(),
+                notes=request.form.get('itemNotes'))
 
     item.create()
 
