@@ -41,7 +41,7 @@ class Item(SitObject):
         self._quantity = quantity
         self._original_inventory_date = original_inventory_date
         self._last_modified_date = last_modified_date
-        self._notes = notes
+        self._notes = notes.replace('\n', '<br/>') if isinstance(notes, str) else None
 
     def __repr__(self):
         return f'{self.description}'
@@ -268,11 +268,16 @@ class Item(SitObject):
 
         return self._notes
 
+    @property
+    def notes_for_field(self):
+        if self.notes:
+            return self.notes.replace('<br/>', '\n')
+
     def update_notes(self, notes: str):
         if self._notes == notes:
             return
 
-        self._notes = notes
+        self._notes = notes.replace('\n', '<br/>')
         self.update()
 
     @property

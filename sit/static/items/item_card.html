@@ -98,11 +98,13 @@
     </span>
 
     {% if item.notes %}
-    <span style="justify-self: end;">
+    <span style="align-self: start; justify-self: end;">
         <strong>Notes:</strong>
     </span>
-    <span style="justify-self: start; font-size: 1rem">
-        {{ item.notes }}
+    <span style="align-self: start; justify-self: start; font-size: 1rem;">
+        {% autoescape false %}
+            {{ item.notes }}
+        {% endautoescape %}
     </span>
     {% endif %}
 
