@@ -27,7 +27,8 @@ class Item(SitObject):
                  condition: Condition = None,
                  quantity: int = None,
                  original_inventory_date: datetime = None,
-                 last_modified_date: datetime = None):
+                 last_modified_date: datetime = None,
+                 notes: str = None):
         super().__init__(db_id)
         self._description = description
         self._purchase_price = purchase_price
@@ -40,6 +41,7 @@ class Item(SitObject):
         self._quantity = quantity
         self._original_inventory_date = original_inventory_date
         self._last_modified_date = last_modified_date
+        self._notes = notes
 
     def __repr__(self):
         return f'{self.description}'
@@ -260,6 +262,20 @@ class Item(SitObject):
         self.update()
 
     @property
+    def notes(self):
+        if self._notes is None:
+            self.populate()
+
+        return self._notes
+
+    def update_notes(self, notes: str):
+        if self._notes == notes:
+            return
+
+        self._notes = notes
+        self.update()
+
+    @property
     def labels(self):
         from label import Label
         return Label.get_for_item(self)
@@ -320,7 +336,8 @@ class Item(SitObject):
             'photo': self._photo,
             'quantity': self._quantity,
             'original_inventory_date': self.original_inventory_date_timestamp if self._original_inventory_date else None,
-            'last_modified_date': self.last_modified_date_timestamp if self._last_modified_date else None
+            'last_modified_date': self.last_modified_date_timestamp if self._last_modified_date else None,
+            'notes': self.notes if self._notes else None
         }
 
     @classmethod
@@ -355,7 +372,8 @@ class Item(SitObject):
                     quantity=db_result['quantity'],
                     condition=condition,
                     original_inventory_date=original_inventory_date,
-                    last_modified_date=last_modified_date)
+                    last_modified_date=last_modified_date,
+                    notes=db_result.get('notes', ''))
 
     @classmethod
     def get_total_num(cls, items_list: list):
