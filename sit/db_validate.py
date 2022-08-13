@@ -55,7 +55,8 @@ def validate(db_name):
                 condition INTEGER DEFAULT 4,
                 quantity INTEGER,
                 original_inventory_date INTEGER,
-                last_modified_date INTEGER
+                last_modified_date INTEGER,
+                notes TEXT
             );
         """)
 
@@ -144,7 +145,8 @@ def check_items():
         'condition': 'INTEGER DEFAULT 5',
         'original_inventory_date': f'INTEGER DEFAULT {int(now.timestamp())}',
         'last_modified_date': 'INTEGER',
-        'purchase_price_is_estimate': 'INTEGER DEFAULT 0'
+        'purchase_price_is_estimate': 'INTEGER DEFAULT 0',
+        'notes': 'TEXT'
     }
 
     _correct_columns(Item, column_defs)
