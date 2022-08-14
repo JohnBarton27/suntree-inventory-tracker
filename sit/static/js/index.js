@@ -19,8 +19,7 @@ function setupConditionChart(excellent, good, fair, poor) {
         options: {
             plugins: {
                 title: {
-                    display: true,
-                    text: 'Condition Breakdown'
+                    display: false
                 }
             }
         },
