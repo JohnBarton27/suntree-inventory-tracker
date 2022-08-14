@@ -12,19 +12,21 @@
 
     </div>
 
-    <h1 style="text-align: center; margin-bottom: 25px; grid-column: 2">
-        <i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}
-    </h1>
+    <div style="display: flex; text-align: center; align-items: center; justify-content: center">
+        <h1 style="margin-bottom: 0">
+            <i class="fas fa-building" style="margin-right: 5px;"></i> {{ room.building.number }} | <i class="fas fa-door-open" style="margin-right: 5px;"></i> {{ room.number }}
+        </h1>
+    </div>
 
-    <div id="roomButtons">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editRoomModal" style="margin: auto;">
+    <div id="roomButtons" style="display: flex; align-items: center; justify-content: center;">
+        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#printRoomModal">
+            Print <i class="fas fa-print"></i>
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editRoomModal">
             Edit &nbsp;<i class="fas fa-edit"></i>
         </button>
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRoomModal" style="margin: auto;">
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteRoomModal">
             Delete &nbsp;<i class="fas fa-trash"></i>
-        </button>
-        <button type="button" class="btn btn-secondary" style="margin: auto;" data-bs-toggle="modal" data-bs-target="#printRoomModal">
-            Generate Print Order for {{ room.building.number }}-{{ room.number }}&nbsp;<i class="fas fa-print"></i>
         </button>
     </div>
 </div>
