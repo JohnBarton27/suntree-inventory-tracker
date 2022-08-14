@@ -387,3 +387,29 @@ class Item(SitObject):
             total_num += item.quantity
 
         return total_num
+
+    @classmethod
+    def get_value(cls, items_list: list):
+        total_value = 0
+
+        for item in items_list:
+            if item.purchase_price:
+                total_value += item.purchase_price * item.quantity
+
+        return total_value
+
+    @classmethod
+    def get_percentage_of_valued(cls, items_list):
+        """
+        Returns the percentage of items in the list that have a populated Purchase Price.
+
+        :param items_list: List of items
+        :return: float - percentage of items with a populated Purchase Price
+        """
+        items_with_value = 0
+
+        for item in items_list:
+            if item.purchase_price:
+                items_with_value += 1
+
+        return items_with_value / len(items_list)

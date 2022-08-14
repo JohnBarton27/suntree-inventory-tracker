@@ -18,9 +18,6 @@ def index():
     good_items = []
     excellent_items = []
 
-    total_value = 0
-    items_with_prices = 0
-
     for item in all_items:
         # Condition Metrics
         if item.condition == Condition.ONE:
@@ -32,13 +29,8 @@ def index():
         elif item.condition == Condition.FOUR:
             excellent_items.append(item)
 
-        # Price Metrics
-        if item.purchase_price:
-            items_with_prices += 1
-            total_value += item.purchase_price * item.quantity
-
-    total_value_str = '${:,.2f}'.format(total_value)
-    percentage_of_valued_items = f"{items_with_prices/len(all_items):.2%}"
+    total_value_str = '${:,.2f}'.format(Item.get_value(all_items))
+    percentage_of_valued_items = f"{Item.get_percentage_of_valued(all_items):.2%}"
 
     poor_num = Item.get_total_num(poor_items)
     fair_num = Item.get_total_num(fair_items)
