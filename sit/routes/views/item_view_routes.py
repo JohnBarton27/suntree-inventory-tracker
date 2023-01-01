@@ -1,5 +1,6 @@
 from flask import render_template
 import math
+import time
 
 from building import Building
 from item import Item
@@ -9,6 +10,7 @@ import settings
 
 
 def items():
+    time.sleep(65)
     all_items = Item.get_all(limit=25, order_by="description")
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
