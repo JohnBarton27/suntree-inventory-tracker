@@ -2,7 +2,7 @@ flask
 fpdf
 xmlrunner
 coverage
-waitress
+gunicorn
 python-barcode
 pillow
 pyzbar

@@ -4,7 +4,6 @@ import os
 
 # Flask/webapps
 from flask import Flask
-from waitress import serve
 
 # SIT
 import settings
@@ -106,4 +105,4 @@ if __name__ == '__main__':
     connect_to_database()
     logging.info('Successfully connected to database.')
 
-    serve(app, host='0.0.0.0', port=9263, threads=12)
+    app.run(host='0.0.0.0', port=9263)
