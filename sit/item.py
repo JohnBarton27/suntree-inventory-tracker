@@ -408,6 +408,9 @@ class Item(SitObject):
         """
         items_with_value = 0
 
+        if len(items_list) == 0:
+            return 0
+
         for item in items_list:
             if item.purchase_price:
                 items_with_value += 1
