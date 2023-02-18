@@ -1,10 +1,11 @@
 # Standard Packages
+import time
 import logging
+from logging.handlers import RotatingFileHandler
 import os
 
 # Flask/webapps
-from flask import Flask
-
+from flask import Flask, g, request
 # SIT
 import settings
 
@@ -21,7 +22,7 @@ app.add_url_rule('/help', view_func=view_routes.help)
 
 # Buildings
 app.add_url_rule('/buildings', view_func=building_view_routes.buildings)
-app.add_url_rule('/building/<building_id>', view_func=building_view_routes.building)
+app.add_url_rule('/building/<building_id>`', view_func=building_view_routes.building)
 
 # Items
 app.add_url_rule('/items', view_func=item_view_routes.items)
@@ -84,6 +85,24 @@ app.add_url_rule('/api/rooms/get_dropdown', view_func=room_api_routes.get_room_d
 app.add_url_rule('/api/rooms/update', view_func=room_api_routes.edit_room, methods=['POST'])
 
 
+@app.before_request
+def before_request():
+    g.start = time.time()
+    if not request.full_path.startswith('/static'):
+        timestamp = time.strftime('[%Y-%b-%d %H:%M]')
+        logger.info(f'{timestamp} RECEIVED {request.method} {request.scheme} {request.full_path} FROM '
+                    f'{request.remote_addr}')
+
+
+@app.after_request
+def after_request(response):
+    diff = round(time.time() - g.start, 3)
+    if not request.full_path.startswith('/static'):
+        timestamp = time.strftime('[%Y-%b-%d %H:%M]')
+        logger.info(f'{timestamp} RESPONSE TO {request.method} {request.full_path} {response.status} ({diff}s)')
+    return response
+
+
 def connect_to_database():
     from db_validate import validate
     validate(settings.DB_NAME)
@@ -97,12 +116,17 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # Setup Logging
+    handler = RotatingFileHandler('app.log', maxBytes=100000, backupCount=3)
     logging.basicConfig(format='%(levelname)s [%(asctime)s]: %(message)s', level=logging.INFO)
     logging.info('Starting Suntree Inventory Tracker...')
 
+    logger = logging.getLogger('sit')
+    logger.setLevel(logging.INFO)
+    logger.addHandler(handler)
+
     # Connect to database
-    logging.info('About to connect to database...')
+    logger.info('About to connect to database...')
     connect_to_database()
-    logging.info('Successfully connected to database.')
+    logger.info('Successfully connected to database.')
 
     app.run(host='0.0.0.0', port=9263)
