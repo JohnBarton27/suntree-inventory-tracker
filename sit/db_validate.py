@@ -3,7 +3,9 @@ import logging
 import sqlite3 as sl
 from urllib.request import pathname2url
 
+from building import Building
 from item import Item
+from room import Room
 from barcode_print_order import BarcodePrintOrder
 from label import Label
 
@@ -20,6 +22,18 @@ def validate(db_name):
         # handle missing database case
         logging.warning('Could not find database - will initialize an empty one!')
         conn = sl.connect(db_name)
+
+    # META INFO
+    with conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS metainfo (
+                item_count INT,
+                building_count INT,
+                room_count INT,
+                total_dollar_value TEXT,
+                valued_item_count INT
+            );
+        """)
 
     # BUILDING
     with conn:
@@ -129,6 +143,46 @@ def validate(db_name):
         UPDATE item SET condition = 4 WHERE condition = 5;
         """)
 
+    # Set Meta Data
+    set_metadata(conn)
+
+
+def set_metadata(db_conn):
+    logging.info('Updating metadata in the database...')
+
+    # Delete existing metadata
+    initial_delete_query = 'DELETE FROM metainfo;'
+    insert_vals = []
+    with db_conn:
+        db_conn.execute(initial_delete_query)
+
+        all_items = Item.get_all()
+
+        # Get item count
+        item_count = len(all_items)
+        insert_vals.append(('item_count', item_count))
+
+        # Get building count
+        bldg_count = Building.get_count()
+        insert_vals.append(('building_count', bldg_count))
+
+        # Get room count
+        room_count = Room.get_count()
+        insert_vals.append(('room_count', room_count))
+
+        # Total dollar value
+        total_value_str = '\'${:,.2f}\''.format(Item.get_value(all_items))
+        insert_vals.append(('total_dollar_value', total_value_str))
+
+        # Valued item count
+        valued_item_count = len([item for item in all_items if item.purchase_price])
+        insert_vals.append(('valued_item_count', valued_item_count))
+
+        col_names = ",".join([insert_val[0] for insert_val in insert_vals])
+        val_names = ",".join([str(insert_val[1]) for insert_val in insert_vals])
+        insert_metadata_query = f"INSERT INTO metainfo ({col_names}) VALUES ({val_names});"
+
+        db_conn.execute(insert_metadata_query)
 
 def check_columns():
     check_items()
