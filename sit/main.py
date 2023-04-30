@@ -6,7 +6,9 @@ import os
 
 # Flask/webapps
 from flask import Flask, g, request
+
 # SIT
+from metainfo import MetaInfo
 import settings
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
@@ -22,7 +24,7 @@ app.add_url_rule('/help', view_func=view_routes.help)
 
 # Buildings
 app.add_url_rule('/buildings', view_func=building_view_routes.buildings)
-app.add_url_rule('/building/<building_id>`', view_func=building_view_routes.building)
+app.add_url_rule('/building/<building_id>', view_func=building_view_routes.building)
 
 # Items
 app.add_url_rule('/items', view_func=item_view_routes.items)
@@ -128,5 +130,7 @@ if __name__ == '__main__':
     logger.info('About to connect to database...')
     connect_to_database()
     logger.info('Successfully connected to database.')
+
+    app.extensions['meta_info'] = MetaInfo.get_from_db()
 
     app.run(host='0.0.0.0', port=9263)

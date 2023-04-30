@@ -16,7 +16,7 @@ def index():
 
     num_items = meta_info.item_count
 
-    total_value_str = meta_info.total_dollar_value
+    total_value_str = meta_info.total_dollar_value[1:-1]
     percentage_of_valued_items = f"{meta_info.valued_item_count/num_items:.2%}"
 
     poor_num = meta_info.poor_item_count

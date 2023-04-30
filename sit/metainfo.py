@@ -53,7 +53,7 @@ class MetaInfo:
         item_count = result.get(MetaInfoCols.ITEM_COUNT.value)
         building_count = result.get(MetaInfoCols.BUILDING_COUNT.value)
         room_count = result.get(MetaInfoCols.ROOM_COUNT.value)
-        total_dollar_value = result.get(MetaInfoCols.TOTAL_DOLLAR_VALUE.value)
+        total_dollar_value = f'\'{result.get(MetaInfoCols.TOTAL_DOLLAR_VALUE.value)}\''
         valued_item_count = result.get(MetaInfoCols.VALUED_ITEM_COUNT.value)
 
         poor_item_count = result.get(MetaInfoCols.POOR_ITEM_COUNT.value)
