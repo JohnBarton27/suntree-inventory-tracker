@@ -71,6 +71,35 @@ class MetaInfo:
                         good_item_count=good_item_count,
                         excellent_item_count=excellent_item_count)
 
+    def update_in_db(self):
+        db_conn = SitObject.get_db_conn()
+
+        table_name = self.__class__.table_name
+
+        with db_conn:
+            db_conn.execute(f'DELETE FROM {table_name};')
+
+            insert_query = f"""INSERT into {table_name} ({MetaInfoCols.ITEM_COUNT.value},
+                                                         {MetaInfoCols.BUILDING_COUNT.value},
+                                                         {MetaInfoCols.ROOM_COUNT.value},
+                                                         {MetaInfoCols.TOTAL_DOLLAR_VALUE.value},
+                                                         {MetaInfoCols.VALUED_ITEM_COUNT.value},
+                                                         {MetaInfoCols.POOR_ITEM_COUNT.value},
+                                                         {MetaInfoCols.FAIR_ITEM_COUNT.value},
+                                                         {MetaInfoCols.GOOD_ITEM_COUNT.value},
+                                                         {MetaInfoCols.EXCELLENT_ITEM_COUNT.value}) 
+                        VALUES ({self.item_count},
+                                {self.building_count},
+                                {self.room_count},
+                                {self.total_dollar_value},
+                                {self.valued_item_count},
+                                {self.poor_item_count},
+                                {self.fair_item_count},
+                                {self.good_item_count},
+                                {self.excellent_item_count});"""
+
+            db_conn.execute(insert_query)
+
     @classmethod
     def get_from_instance(cls):
         all_items = Item.get_all()
@@ -93,29 +122,6 @@ class MetaInfo:
     @classmethod
     def update_db(cls):
         mi = cls.get_from_instance()
+        mi.update_in_db()
 
-        db_conn = SitObject.get_db_conn()
 
-        with db_conn:
-            db_conn.execute(f'DELETE FROM {cls.table_name};')
-
-            insert_query = f"""INSERT into {cls.table_name} ({MetaInfoCols.ITEM_COUNT.value},
-                                                            {MetaInfoCols.BUILDING_COUNT.value},
-                                                            {MetaInfoCols.ROOM_COUNT.value},
-                                                            {MetaInfoCols.TOTAL_DOLLAR_VALUE.value},
-                                                            {MetaInfoCols.VALUED_ITEM_COUNT.value},
-                                                            {MetaInfoCols.POOR_ITEM_COUNT.value},
-                                                            {MetaInfoCols.FAIR_ITEM_COUNT.value},
-                                                            {MetaInfoCols.GOOD_ITEM_COUNT.value},
-                                                            {MetaInfoCols.EXCELLENT_ITEM_COUNT.value}) 
-                    VALUES ({mi.item_count},
-                            {mi.building_count},
-                            {mi.room_count},
-                            {mi.total_dollar_value},
-                            {mi.valued_item_count},
-                            {mi.poor_item_count},
-                            {mi.fair_item_count},
-                            {mi.good_item_count},
-                            {mi.excellent_item_count});"""
-
-            db_conn.execute(insert_query)
