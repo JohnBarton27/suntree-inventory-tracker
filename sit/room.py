@@ -52,12 +52,25 @@ class Room(SitObject):
         self._number = number
         self.update()
 
+    def create(self):
+        super().create()
+
+        # Update metainfo
+        from flask import current_app
+        current_app.extensions['meta_info'].room_count += 1
+        current_app.extensions['meta_info'].update_in_db()
+
     def delete(self):
         from item import Item
         for item in Item.get_for_room(self):
             item.delete()
 
         super().delete()
+
+        # Update metainfo
+        from flask import current_app
+        current_app.extensions['meta_info'].room_count -= 1
+        current_app.extensions['meta_info'].update_in_db()
 
     @classmethod
     def get_all(cls, order_by: str = None):
