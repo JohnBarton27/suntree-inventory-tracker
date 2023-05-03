@@ -124,4 +124,30 @@ class MetaInfo:
         mi = cls.get_from_instance()
         mi.update_in_db()
 
+    @classmethod
+    def update_item_quantity(cls, item: Item, old_qty: int, new_qty: int = None):
+        current_mi = cls.get_from_db()
 
+        if not new_qty:
+            new_qty = item.quantity
+
+        diff = new_qty - old_qty
+
+        # Item Count
+        current_mi.item_count += diff
+
+        # Condition
+        if item.condition == Condition.ONE:
+            current_mi.poor_item_count += diff
+        elif item.condition == Condition.TWO:
+            current_mi.fair_item_count += diff
+        elif item.condition == Condition.THREE:
+            current_mi.good_item_count += diff
+        elif item.condition == Condition.FOUR:
+            current_mi.excellent_item_count += diff
+
+        # Valued items
+        if item.purchase_price:
+            current_mi.valued_item_count += diff
+
+        current_mi.update_in_db()

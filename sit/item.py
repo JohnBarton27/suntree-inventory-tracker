@@ -258,7 +258,12 @@ class Item(SitObject):
         if self._quantity == quantity:
             return
 
+        # Update metainfo
+        from metainfo import MetaInfo
+        MetaInfo.update_item_quantity(self, self._quantity, quantity)
+
         self._quantity = quantity
+
         self.update()
 
     @property
@@ -324,46 +329,12 @@ class Item(SitObject):
 
         # Update metainfo
         from metainfo import MetaInfo
-        mi = MetaInfo.get_from_db()
-        mi.item_count += self.quantity
-
-        # Condition
-        if self.condition == Condition.ONE:
-            mi.poor_item_count += self.quantity
-        elif self.condition == Condition.TWO:
-            mi.fair_item_count += self.quantity
-        elif self.condition == Condition.THREE:
-            mi.good_item_count += self.quantity
-        elif self.condition == Condition.FOUR:
-            mi.excellent_item_count += self.quantity
-
-        # Valued?
-        if self.purchase_date:
-            mi.valued_item_count += self.quantity
-
-        mi.update_in_db()
+        MetaInfo.update_item_quantity(self, 0)
 
     def delete(self):
         # Update metainfo
         from metainfo import MetaInfo
-        mi = MetaInfo.get_from_db()
-        mi.item_count -= self.quantity
-
-        # Condition
-        if self.condition == Condition.ONE:
-            mi.poor_item_count -= self.quantity
-        elif self.condition == Condition.TWO:
-            mi.fair_item_count -= self.quantity
-        elif self.condition == Condition.THREE:
-            mi.good_item_count -= self.quantity
-        elif self.condition == Condition.FOUR:
-            mi.excellent_item_count -= self.quantity
-
-        # Valued?
-        if self.purchase_date:
-            mi.valued_item_count -= self.quantity
-
-        mi.update_in_db()
+        MetaInfo.update_item_quantity(self, self.quantity, 0)
 
         super().delete()
 
