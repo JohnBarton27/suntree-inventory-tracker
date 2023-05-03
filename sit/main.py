@@ -91,6 +91,15 @@ app.add_url_rule('/api/rooms/delete', view_func=room_api_routes.delete_room, met
 app.add_url_rule('/api/rooms/get_dropdown', view_func=room_api_routes.get_room_dropdown, methods=['GET'])
 app.add_url_rule('/api/rooms/update', view_func=room_api_routes.edit_room, methods=['POST'])
 
+# Setup Logging
+handler = RotatingFileHandler('app.log', maxBytes=100000, backupCount=3)
+logging.basicConfig(format='%(levelname)s [%(asctime)s]: %(message)s', level=logging.INFO)
+logging.info('Starting Suntree Inventory Tracker...')
+
+logger = logging.getLogger('sit')
+logger.setLevel(logging.INFO)
+logger.addHandler(handler)
+
 
 @app.before_request
 def before_request():
@@ -119,22 +128,7 @@ def update_metainfo():
     MetaInfo.update_db()
 
 
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Suntree Inventory Tracker')
-
-    args = parser.parse_args()
-
-    # Setup Logging
-    handler = RotatingFileHandler('app.log', maxBytes=100000, backupCount=3)
-    logging.basicConfig(format='%(levelname)s [%(asctime)s]: %(message)s', level=logging.INFO)
-    logging.info('Starting Suntree Inventory Tracker...')
-
-    logger = logging.getLogger('sit')
-    logger.setLevel(logging.INFO)
-    logger.addHandler(handler)
-
+def startup():
     # Connect to database
     logger.info('About to connect to database...')
     connect_to_database()
@@ -152,4 +146,15 @@ if __name__ == '__main__':
 
     scheduler.start()
 
+    return app
+
+
+if __name__ == '__main__':
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Suntree Inventory Tracker')
+
+    args = parser.parse_args()
+
+    app = startup()
     app.run(host='0.0.0.0', port=9263)
