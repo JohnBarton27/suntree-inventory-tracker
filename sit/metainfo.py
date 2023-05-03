@@ -104,17 +104,17 @@ class MetaInfo:
     def get_from_instance(cls):
         all_items = Item.get_all()
 
-        item_count = len(all_items)
+        item_count = sum([item.quantity for item in all_items])
         bldg_count = Building.get_count()
         room_count = Room.get_count()
 
         total_value_str = '\'${:,.2f}\''.format(Item.get_value(all_items))
-        valued_item_count = len([item for item in all_items if item.purchase_price])
+        valued_item_count = sum([item.quantity for item in all_items if item.purchase_price])
 
-        poor_item_count = len([item for item in all_items if item.condition == Condition.ONE])
-        fair_item_count = len([item for item in all_items if item.condition == Condition.TWO])
-        good_item_count = len([item for item in all_items if item.condition == Condition.THREE])
-        excellent_item_count = len([item for item in all_items if item.condition == Condition.FOUR])
+        poor_item_count = sum([item.quantity for item in all_items if item.condition == Condition.ONE])
+        fair_item_count = sum([item.quantity for item in all_items if item.condition == Condition.TWO])
+        good_item_count = sum([item.quantity for item in all_items if item.condition == Condition.THREE])
+        excellent_item_count = sum([item.quantity for item in all_items if item.condition == Condition.FOUR])
 
         return MetaInfo(item_count, bldg_count, room_count, total_value_str, valued_item_count,
                         poor_item_count, fair_item_count, good_item_count, excellent_item_count)
