@@ -1,10 +1,5 @@
 from flask import render_template
 
-from building import Building
-from condition import Condition
-from item import Item
-from room import Room
-
 from metainfo import MetaInfo
 
 

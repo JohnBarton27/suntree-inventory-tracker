@@ -4,11 +4,9 @@ import sqlite3 as sl
 from urllib.request import pathname2url
 
 from barcode_print_order import BarcodePrintOrder
-from building import Building
 from item import Item
 from label import Label
 from metainfo import MetaInfo
-from room import Room
 
 conn = None
 
