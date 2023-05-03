@@ -1,43 +1,25 @@
 from flask import render_template
 
-from building import Building
-from condition import Condition
-from item import Item
-from room import Room
+from metainfo import MetaInfo
 
 
 def index():
-    all_items = Item.get_all()
-    num_buildings = len(Building.get_all())
-    num_rooms = len(Room.get_all())
+    meta_info = MetaInfo.get_from_db()
 
-    num_items = Item.get_total_num(all_items)
+    num_buildings = meta_info.building_count
+    num_rooms = meta_info.room_count
 
-    poor_items = []
-    fair_items = []
-    good_items = []
-    excellent_items = []
+    num_items = meta_info.item_count
 
-    for item in all_items:
-        # Condition Metrics
-        if item.condition == Condition.ONE:
-            poor_items.append(item)
-        elif item.condition == Condition.TWO:
-            fair_items.append(item)
-        elif item.condition == Condition.THREE:
-            good_items.append(item)
-        elif item.condition == Condition.FOUR:
-            excellent_items.append(item)
+    total_value_str = meta_info.total_dollar_value[1:-1]
+    percentage_of_valued_items = f"{meta_info.valued_item_count/num_items:.2%}"
 
-    total_value_str = '${:,.2f}'.format(Item.get_value(all_items))
-    percentage_of_valued_items = f"{Item.get_percentage_of_valued(all_items):.2%}"
+    poor_num = meta_info.poor_item_count
+    fair_num = meta_info.fair_item_count
+    good_num = meta_info.good_item_count
+    excellent_num = meta_info.excellent_item_count
 
-    poor_num = Item.get_total_num(poor_items)
-    fair_num = Item.get_total_num(fair_items)
-    good_num = Item.get_total_num(good_items)
-    excellent_num = Item.get_total_num(excellent_items)
-
-    biggest_rooms = Room.get_biggest_rooms()
+    biggest_rooms = []
     return render_template('index.html', num_items=num_items, num_buildings=num_buildings, num_rooms=num_rooms,
                            poor=poor_num, fair=fair_num, good=good_num, excellent=excellent_num,
                            biggest_rooms=biggest_rooms, total_value=total_value_str,

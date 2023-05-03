@@ -3,9 +3,10 @@ import logging
 import sqlite3 as sl
 from urllib.request import pathname2url
 
-from item import Item
 from barcode_print_order import BarcodePrintOrder
+from item import Item
 from label import Label
+from metainfo import MetaInfo
 
 conn = None
 
@@ -20,6 +21,22 @@ def validate(db_name):
         # handle missing database case
         logging.warning('Could not find database - will initialize an empty one!')
         conn = sl.connect(db_name)
+
+    # META INFO
+    with conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS metainfo (
+                item_count INT,
+                building_count INT,
+                room_count INT,
+                total_dollar_value TEXT,
+                valued_item_count INT,
+                poor_item_count INT,
+                fair_item_count INT,
+                good_item_count INT,
+                excellent_item_count INT
+            );
+        """)
 
     # BUILDING
     with conn:
@@ -128,6 +145,9 @@ def validate(db_name):
         conn.execute("""
         UPDATE item SET condition = 4 WHERE condition = 5;
         """)
+
+    # Set Meta Data
+    MetaInfo.update_db()
 
 
 def check_columns():

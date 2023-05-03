@@ -258,7 +258,12 @@ class Item(SitObject):
         if self._quantity == quantity:
             return
 
+        # Update metainfo
+        from metainfo import MetaInfo
+        MetaInfo.update_item_quantity(self, self._quantity, quantity)
+
         self._quantity = quantity
+
         self.update()
 
     @property
@@ -318,6 +323,20 @@ class Item(SitObject):
         from item_label_mapping import ItemLabelMap
         ilm = ItemLabelMap(item=self, label=label)
         ilm.create()
+
+    def create(self):
+        super().create()
+
+        # Update metainfo
+        from metainfo import MetaInfo
+        MetaInfo.update_item_quantity(self, 0)
+
+    def delete(self):
+        # Update metainfo
+        from metainfo import MetaInfo
+        MetaInfo.update_item_quantity(self, self.quantity, 0)
+
+        super().delete()
 
     @classmethod
     def get_for_room(cls, room: Room):
