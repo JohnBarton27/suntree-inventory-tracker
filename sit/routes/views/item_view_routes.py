@@ -4,16 +4,19 @@ import math
 from building import Building
 from item import Item
 from label import Label
+from metainfo import MetaInfo
 from room import Room
 import settings
 
 
 def items():
+    mi = MetaInfo.get_from_db()
+
     all_items = Item.get_all(limit=25, order_by="description")
     all_rooms = Room.get_all()
     all_buildings = Building.get_all()
     all_labels = Label.get_all()
-    total_num_items = Item.get_count()
+    total_num_items = mi.item_count
     num_pages = math.ceil(total_num_items / settings.TABLE_PAGE_SIZE)
 
     return render_template('items/items.html', items=all_items, rooms=all_rooms, buildings=all_buildings,
