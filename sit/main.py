@@ -1,8 +1,10 @@
 # Standard Packages
-import time
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+import time
 
 # Flask/webapps
 from flask import Flask, g, request
@@ -13,6 +15,9 @@ import settings
 
 app = Flask(__name__, template_folder=os.path.abspath('static'))
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
+
+# Scheduler for background jobs
+scheduler = BackgroundScheduler()
 
 # VIEWS
 from routes.views import building_view_routes, item_view_routes, label_view_routes, printing_view_routes, room_view_routes, view_routes
@@ -110,6 +115,10 @@ def connect_to_database():
     validate(settings.DB_NAME)
 
 
+def update_metainfo():
+    MetaInfo.update_db()
+
+
 if __name__ == '__main__':
     import argparse
 
@@ -132,5 +141,15 @@ if __name__ == '__main__':
     logger.info('Successfully connected to database.')
 
     app.extensions['meta_info'] = MetaInfo.get_from_db()
+
+    # Add scheduled maintenance job to update metainfo
+    scheduler.add_job(
+        func=update_metainfo,
+        trigger=IntervalTrigger(hours=12),
+        id='update_metainfo',
+        name='Update metainfo DB table every 12 hours'
+    )
+
+    scheduler.start()
 
     app.run(host='0.0.0.0', port=9263)
