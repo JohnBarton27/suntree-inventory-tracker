@@ -24,6 +24,7 @@ class Item(SitObject):
                  end_of_life_date: date = None,
                  room: Room = None,
                  photo: str = None,
+                 small_photo: str = None,
                  condition: Condition = None,
                  quantity: int = None,
                  original_inventory_date: datetime = None,
@@ -37,6 +38,7 @@ class Item(SitObject):
         self._end_of_life_date = end_of_life_date
         self._room = room
         self._photo = photo
+        self._small_photo = small_photo
         self._condition = condition
         self._quantity = quantity
         self._original_inventory_date = original_inventory_date
@@ -201,11 +203,23 @@ class Item(SitObject):
 
     @property
     def small_photo(self):
-        if self.photo is None:
+        if self._small_photo is None:
+            self.populate()
+
+        if self.photo and not self._small_photo:
+            # Had a photo but no preview - generate the preview!
+            self._small_photo = self.generate_small_photo
+            self.update()
+
+        return self._small_photo
+
+    @property
+    def generate_small_photo(self):
+        if self._photo is None:
             return None
 
         img_max_dimension = settings.MAX_SMALL_PHOTO_DIMENSION
-        image_data = base64.b64decode(self.photo.split(",")[1])
+        image_data = base64.b64decode(self._photo.split(",")[1])
         im_file = BytesIO(image_data)
         img = Image.open(im_file)
         original_format = img.format
@@ -231,6 +245,7 @@ class Item(SitObject):
             return
 
         self._photo = photo
+        self._small_photo = self.generate_small_photo
         self.update()
 
     @property
@@ -358,6 +373,7 @@ class Item(SitObject):
             'condition': self.condition.int_value,
             'end_of_life_date': self.end_of_life_date_timestamp if self._end_of_life_date else None,
             'photo': self._photo,
+            'small_photo': self._small_photo,
             'quantity': self._quantity,
             'original_inventory_date': self.original_inventory_date_timestamp if self._original_inventory_date else None,
             'last_modified_date': self.last_modified_date_timestamp if self._last_modified_date else None,
@@ -393,6 +409,7 @@ class Item(SitObject):
                     end_of_life_date=end_of_life_date,
                     room=Room(db_id=db_result['room']),
                     photo=db_result['photo'],
+                    small_photo=db_result['small_photo'],
                     quantity=db_result['quantity'],
                     condition=condition,
                     original_inventory_date=original_inventory_date,

@@ -69,6 +69,7 @@ def validate(db_name):
                 end_of_life_date INTEGER,
                 room INT REFERENCES room(id) ON DELETE CASCADE,
                 photo TEXT,
+                small_photo TEXT,
                 condition INTEGER DEFAULT 4,
                 quantity INTEGER,
                 original_inventory_date INTEGER,
@@ -160,6 +161,7 @@ def check_items():
     now = datetime.now()
     column_defs = {
         'photo': 'TEXT',
+        'small_photo': 'TEXT',
         'quantity': 'INTEGER',
         'end_of_life_date': 'INTEGER',
         'condition': 'INTEGER DEFAULT 5',
