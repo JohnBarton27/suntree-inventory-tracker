@@ -319,6 +319,54 @@ class Item(SitObject):
         ilm = ItemLabelMap(item=self, label=label)
         ilm.create()
 
+    def create(self):
+        super().create()
+
+        # Update metainfo
+        from metainfo import MetaInfo
+        mi = MetaInfo.get_from_db()
+        mi.item_count += self.quantity
+
+        # Condition
+        if self.condition == Condition.ONE:
+            mi.poor_item_count += self.quantity
+        elif self.condition == Condition.TWO:
+            mi.fair_item_count += self.quantity
+        elif self.condition == Condition.THREE:
+            mi.good_item_count += self.quantity
+        elif self.condition == Condition.FOUR:
+            mi.excellent_item_count += self.quantity
+
+        # Valued?
+        if self.purchase_date:
+            mi.valued_item_count += self.quantity
+
+        mi.update_in_db()
+
+    def delete(self):
+        # Update metainfo
+        from metainfo import MetaInfo
+        mi = MetaInfo.get_from_db()
+        mi.item_count -= self.quantity
+
+        # Condition
+        if self.condition == Condition.ONE:
+            mi.poor_item_count -= self.quantity
+        elif self.condition == Condition.TWO:
+            mi.fair_item_count -= self.quantity
+        elif self.condition == Condition.THREE:
+            mi.good_item_count -= self.quantity
+        elif self.condition == Condition.FOUR:
+            mi.excellent_item_count -= self.quantity
+
+        # Valued?
+        if self.purchase_date:
+            mi.valued_item_count -= self.quantity
+
+        mi.update_in_db()
+
+        super().delete()
+
     @classmethod
     def get_for_room(cls, room: Room):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE room=?;', (room.id,))
