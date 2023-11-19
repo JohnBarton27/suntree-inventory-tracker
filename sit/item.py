@@ -353,6 +353,23 @@ class Item(SitObject):
 
         super().delete()
 
+    def get_csv_export(self):
+        dict_repr = {
+            'id': self.id,
+            'description': self.description,
+            'purchase_price': self.purchase_price,
+            'purchase_date': self.purchase_date,
+            'room': self.room,
+            'quantity': self.quantity,
+            'end_of_life_date': self.end_of_life_date,
+            'condition': self.condition.text,
+            'original_inventory_date': self.original_inventory_date,
+            'last_modified_date': self.last_modified_date,
+            'purchase_price_is_estimate': self.purchase_price_is_estimate,
+            'notes': self.notes
+        }
+        return dict_repr
+
     @classmethod
     def get_for_room(cls, room: Room):
         results = cls.run_query(f'SELECT * FROM {cls.table_name} WHERE room=?;', (room.id,))

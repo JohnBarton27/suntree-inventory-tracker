@@ -55,6 +55,7 @@ from routes.api import api_routes, building_api_routes, item_api_routes, label_a
 # Top Level
 app.add_url_rule('/api/scan_barcode', view_func=api_routes.scan_barcode, methods=['POST'])
 app.add_url_rule('/api/export_db', view_func=api_routes.download_database, methods=['GET'])
+app.add_url_rule('/api/export_csv', view_func=api_routes.csv_export, methods=['GET'])
 
 # Buildings
 app.add_url_rule('/api/buildings/create', view_func=building_api_routes.create_building, methods=['POST'])
